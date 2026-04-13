@@ -70,21 +70,10 @@
       startOnLoad: false,
       securityLevel: "loose",
       theme,
-      layout: "elk",
       themeVariables: getThemeVariables(theme),
-      elk: {
-        mergeEdges: false,
-      },
       flowchart: {
-        useMaxWidth: true,
         htmlLabels: true,
-        defaultRenderer: "elk",
-      },
-      state: {
-        defaultRenderer: "elk",
-      },
-      class: {
-        defaultRenderer: "elk",
+        useMaxWidth: true,
       },
       sequence: {
         useMaxWidth: true,
@@ -127,29 +116,8 @@
     return source;
   }
 
-  function applyPerDiagramConfig(source) {
-    if (!source) {
-      return source;
-    }
-
-    const hasFrontmatter = source.startsWith("---");
-    const isErDiagram = /^erDiagram\b/m.test(source);
-
-    if (isErDiagram && !hasFrontmatter) {
-      return [
-        "---",
-        "config:",
-        "  layout: elk",
-        "---",
-        source,
-      ].join("\n");
-    }
-
-    return source;
-  }
-
   async function renderTarget(target) {
-    const source = applyPerDiagramConfig(getSource(target));
+    const source = getSource(target);
 
     if (!source) {
       return;
