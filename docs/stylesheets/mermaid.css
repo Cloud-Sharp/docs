@@ -1,5 +1,5 @@
-.md-typeset .mermaid,
-.md-typeset pre.mermaid {
+.md-typeset .mermaid-host,
+.md-typeset pre.mermaid-host {
   margin: 1.25em 0;
   padding: 1rem;
   border: 1px solid var(--md-default-fg-color--lightest);
@@ -8,31 +8,31 @@
   overflow-x: auto;
 }
 
-.md-typeset pre.mermaid {
+.md-typeset pre.mermaid-host {
   white-space: normal;
 }
 
-.md-typeset .mermaid svg,
-.md-typeset pre.mermaid svg {
+.md-typeset .mermaid-host .mermaid svg,
+.md-typeset pre.mermaid-host .mermaid svg {
   display: block;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
 
-.md-typeset .mermaid text,
-.md-typeset pre.mermaid text {
+.md-typeset .mermaid-host .mermaid text,
+.md-typeset pre.mermaid-host .mermaid text {
   font-family: var(--md-text-font-family);
 }
 
-.md-typeset .mermaid[data-mermaid-rendered="error"],
-.md-typeset pre.mermaid[data-mermaid-rendered="error"] {
+.md-typeset .mermaid-host[data-mermaid-rendered="error"],
+.md-typeset pre.mermaid-host[data-mermaid-rendered="error"] {
   color: var(--md-default-fg-color);
   font-family: var(--md-code-font-family);
   white-space: pre-wrap;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .mermaid,
-[data-md-color-scheme="slate"] .md-typeset pre.mermaid {
+[data-md-color-scheme="slate"] .md-typeset .mermaid-host,
+[data-md-color-scheme="slate"] .md-typeset pre.mermaid-host {
   background: rgba(255, 255, 255, 0.02);
 }

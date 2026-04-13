@@ -5,9 +5,8 @@
 
   window.__mkdocsMermaidInit = true;
 
-  const MERMAID_SELECTOR = [
+  const SOURCE_SELECTOR = [
     ".md-typeset pre.mermaid",
-    ".md-typeset div.mermaid",
     ".md-typeset pre > code.language-mermaid",
     ".md-typeset pre > code.mermaid",
   ].join(", ");
@@ -70,10 +69,21 @@
       startOnLoad: false,
       securityLevel: "loose",
       theme,
+      layout: "elk",
       themeVariables: getThemeVariables(theme),
+      elk: {
+        mergeEdges: false,
+      },
       flowchart: {
         htmlLabels: true,
         useMaxWidth: true,
+        defaultRenderer: "elk",
+      },
+      state: {
+        defaultRenderer: "elk",
+      },
+      class: {
+        defaultRenderer: "elk",
       },
       sequence: {
         useMaxWidth: true,
@@ -88,21 +98,23 @@
   }
 
   function getTargets(root) {
-    const targets = [];
-    const seen = new Set();
+    const targets = new Set();
 
-    for (const node of root.querySelectorAll(MERMAID_SELECTOR)) {
+    for (const node of root.querySelectorAll(".md-typeset [data-mermaid-source]")) {
+      targets.add(node);
+    }
+
+    for (const node of root.querySelectorAll(SOURCE_SELECTOR)) {
       const target = node.tagName === "CODE" ? node.parentElement : node;
 
-      if (!target || seen.has(target)) {
+      if (!target) {
         continue;
       }
 
-      seen.add(target);
-      targets.push(target);
+      targets.add(target);
     }
 
-    return targets;
+    return Array.from(targets);
   }
 
   function getSource(target) {
@@ -116,14 +128,46 @@
     return source;
   }
 
+  function applyPerDiagramConfig(source) {
+    if (!source) {
+      return source;
+    }
+
+    if (source.startsWith("---")) {
+      return source;
+    }
+
+    if (/^erDiagram\b/m.test(source)) {
+      return ["---", "config:", "  layout: elk", "---", source].join("\n");
+    }
+
+    return source;
+  }
+
+  function ensureRenderHost(target) {
+    target.classList.add("mermaid-host");
+
+    let host = target.querySelector(":scope > .mermaid-host__svg");
+
+    if (!host) {
+      target.innerHTML = "";
+      host = document.createElement("div");
+      host.className = "mermaid mermaid-host__svg";
+      target.appendChild(host);
+    }
+
+    return host;
+  }
+
   async function renderTarget(target) {
-    const source = getSource(target);
+    const originalSource = getSource(target);
+    const source = applyPerDiagramConfig(originalSource);
 
     if (!source) {
       return;
     }
 
-    target.classList.add("mermaid");
+    const host = ensureRenderHost(target);
     target.dataset.mermaidRendered = "pending";
 
     try {
@@ -131,15 +175,15 @@
       const id = "mermaid-diagram-" + renderCount;
       const result = await window.mermaid.render(id, source);
 
-      target.innerHTML = result.svg;
+      host.innerHTML = result.svg;
       target.dataset.mermaidRendered = "true";
       target.classList.remove("mermaid-error");
 
       if (typeof result.bindFunctions === "function") {
-        result.bindFunctions(target);
+        result.bindFunctions(host);
       }
     } catch (error) {
-      target.textContent = source;
+      host.textContent = originalSource;
       target.dataset.mermaidRendered = "error";
       target.classList.add("mermaid-error");
       console.error("[mermaid] Failed to render diagram.", error);
