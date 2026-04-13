@@ -12,16 +12,16 @@
   white-space: normal;
 }
 
-.md-typeset .mermaid-host .mermaid svg,
-.md-typeset pre.mermaid-host .mermaid svg {
+.md-typeset .mermaid-host .mermaid-host__svg svg,
+.md-typeset pre.mermaid-host .mermaid-host__svg svg {
   display: block;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
 
-.md-typeset .mermaid-host .mermaid text,
-.md-typeset pre.mermaid-host .mermaid text {
+.md-typeset .mermaid-host .mermaid-host__svg text,
+.md-typeset pre.mermaid-host .mermaid-host__svg text {
   font-family: var(--md-text-font-family);
 }
 

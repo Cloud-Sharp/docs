@@ -63,7 +63,7 @@ plugins:
   - panzoom:
       full_screen: True
       include_selectors:
-        - ".mermaid"   # 기본값 (Mermaid)
+        - ".mermaid-host"
         - ".d2"        # 기본값 (D2)
         - "img"        # <img> 태그 전체에 pan/zoom
   - roamlinks

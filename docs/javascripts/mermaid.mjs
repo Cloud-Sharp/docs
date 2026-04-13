@@ -123,9 +123,56 @@
     }
 
     const code = target.querySelector("code");
-    const source = (code ? code.textContent : target.textContent || "").trim();
+    const source = normalizeSource(code ? code.textContent : target.textContent || "");
     target.dataset.mermaidSource = source;
     return source;
+  }
+
+  function normalizeSource(source) {
+    return String(source || "")
+      .replace(/\r\n?/g, "\n")
+      .replace(/\uFEFF/g, "")
+      .replace(/[\u00A0\u2007\u202F]/g, " ")
+      .trim();
+  }
+
+  function stripFrontmatter(source) {
+    if (!source.startsWith("---")) {
+      return source;
+    }
+
+    const lines = source.split("\n");
+    let i = 1;
+
+    while (i < lines.length) {
+      if (lines[i].trim() === "---") {
+        return lines.slice(i + 1).join("\n").trim();
+      }
+
+      i += 1;
+    }
+
+    return source;
+  }
+
+  function detectDiagramType(source) {
+    const body = stripFrontmatter(source);
+    const firstLine = body
+      .split("\n")
+      .map(function (line) {
+        return line.trim();
+      })
+      .find(Boolean);
+
+    if (!firstLine) {
+      return null;
+    }
+
+    const match = firstLine.match(
+      /^(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram(?:-v2)?|erDiagram|journey|gantt|pie|mindmap|timeline|gitGraph|requirementDiagram|requirement|quadrantChart|sankey-beta|xychart-beta|block-beta|packet-beta|architecture-beta|kanban)\b/
+    );
+
+    return match ? match[1] : null;
   }
 
   function applyPerDiagramConfig(source) {
@@ -145,6 +192,7 @@
   }
 
   function ensureRenderHost(target) {
+    target.classList.remove("mermaid");
     target.classList.add("mermaid-host");
 
     let host = target.querySelector(":scope > .mermaid-host__svg");
@@ -152,7 +200,7 @@
     if (!host) {
       target.innerHTML = "";
       host = document.createElement("div");
-      host.className = "mermaid mermaid-host__svg";
+      host.className = "mermaid-host__svg";
       target.appendChild(host);
     }
 
@@ -161,6 +209,13 @@
 
   async function renderTarget(target) {
     const originalSource = getSource(target);
+    const diagramType = detectDiagramType(originalSource);
+
+    if (!diagramType) {
+      target.dataset.mermaidRendered = "skipped";
+      return;
+    }
+
     const source = applyPerDiagramConfig(originalSource);
 
     if (!source) {
