@@ -29,8 +29,6 @@ nav:
   - Home: index.md
   - 기획: 기획/
   - 설계: 설계/
-  - 컨벤션: 컨벤션/
-  - API: API/
 
 # Extensions
 markdown_extensions:
@@ -77,9 +75,13 @@ plugins:
         - categories
         - tags
 
+extra_css:
+  - stylesheets/mermaid.css
+
 extra_javascript:
   - javascripts/ngrok-swagger-patch.js
   - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js
   - javascripts/mermaid.mjs
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

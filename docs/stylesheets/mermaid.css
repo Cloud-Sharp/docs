@@ -1,0 +1,38 @@
+.md-typeset .mermaid,
+.md-typeset pre.mermaid {
+  margin: 1.25em 0;
+  padding: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.75rem;
+  background: var(--md-code-bg-color);
+  overflow-x: auto;
+}
+
+.md-typeset pre.mermaid {
+  white-space: normal;
+}
+
+.md-typeset .mermaid svg,
+.md-typeset pre.mermaid svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.md-typeset .mermaid text,
+.md-typeset pre.mermaid text {
+  font-family: var(--md-text-font-family);
+}
+
+.md-typeset .mermaid[data-mermaid-rendered="error"],
+.md-typeset pre.mermaid[data-mermaid-rendered="error"] {
+  color: var(--md-default-fg-color);
+  font-family: var(--md-code-font-family);
+  white-space: pre-wrap;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .mermaid,
+[data-md-color-scheme="slate"] .md-typeset pre.mermaid {
+  background: rgba(255, 255, 255, 0.02);
+}
