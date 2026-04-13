@@ -1,0 +1,85 @@
+site_name: 개발 문서
+theme:
+    name: 'material'
+    palette:
+
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: brown         
+      accent: amber
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: "다크 모드로 전환"
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: brown         
+      accent: amber
+      toggle:
+        icon: material/toggle-switch
+        name: "라이트 모드로 전환"
+
+    features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+
+nav:
+  - Home: index.md
+  - 기획: 기획/
+  - 설계: 설계/
+  - 컨벤션: 컨벤션/
+  - API: API/
+
+# Extensions
+markdown_extensions:
+  - footnotes
+  # - attr_list
+  - pymdownx.arithmatex:
+      generic: true
+  # - pymdownx.superfences
+  # - pymdownx.details
+  # - pymdownx.magiclink
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - def_list
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+  - toc:
+      permalink: true
+
+plugins:
+  - redoc-tag
+  - search
+  - literate-nav
+  - panzoom:
+      full_screen: True
+      include_selectors:
+        - ".mermaid"   # 기본값 (Mermaid)
+        - ".d2"        # 기본값 (D2)
+        - "img"        # <img> 태그 전체에 pan/zoom
+  - roamlinks
+  - rss:
+      match_path: blog/posts/.* 
+      date_from_meta:
+        as_creation: date
+      categories:
+        - categories
+        - tags
+
+extra_javascript:
+  - javascripts/ngrok-swagger-patch.js
+  - javascripts/mathjax.js
+  - javascripts/mermaid.mjs
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
