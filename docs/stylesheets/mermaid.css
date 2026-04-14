@@ -119,21 +119,21 @@
 
 .md-typeset .mermaid-host .entityBox,
 .md-typeset pre.mermaid-host .entityBox {
-  fill: var(--mermaid-surface);
-  stroke: var(--mermaid-accent);
+  fill: var(--mermaid-surface) !important;
+  stroke: var(--mermaid-accent) !important;
   stroke-width: 1.8px;
 }
 
 .md-typeset .mermaid-host .attributeBoxOdd,
 .md-typeset pre.mermaid-host .attributeBoxOdd {
-  fill: var(--mermaid-row-odd);
-  stroke: var(--mermaid-border);
+  fill: var(--mermaid-row-odd) !important;
+  stroke: var(--mermaid-border) !important;
 }
 
 .md-typeset .mermaid-host .attributeBoxEven,
 .md-typeset pre.mermaid-host .attributeBoxEven {
-  fill: var(--mermaid-row-even);
-  stroke: var(--mermaid-border);
+  fill: var(--mermaid-row-even) !important;
+  stroke: var(--mermaid-border) !important;
 }
 
 .md-typeset .mermaid-host .relationshipLine,
@@ -146,7 +146,7 @@
 
 .md-typeset .mermaid-host .relationshipLabelBox,
 .md-typeset pre.mermaid-host .relationshipLabelBox {
-  fill: var(--mermaid-label-bg);
+  fill: var(--mermaid-label-bg) !important;
   opacity: 1;
 }
 
@@ -161,7 +161,7 @@
 .md-typeset pre.mermaid-host .entityTitleText,
 .md-typeset .mermaid-host .attributeText,
 .md-typeset pre.mermaid-host .attributeText {
-  fill: var(--mermaid-text);
+  fill: var(--mermaid-text) !important;
 }
 
 .md-typeset .mermaid-host .attributeBoxOdd text,
