@@ -321,10 +321,11 @@ if (!window.__mkdocsMermaidElkRegistered) {
       resetButton.type = "button";
       resetButton.className = "mermaid-host__button";
       resetButton.dataset.role = "reset";
-      resetButton.textContent = "전체보기";
-      resetButton.title = "다이어그램 전체 보기로 되돌리기";
       toolbar.appendChild(resetButton);
     }
+
+    resetButton.textContent = "초기 위치";
+    resetButton.title = "다이어그램의 초기 위치와 배율로 되돌리기";
 
     resetButton.onclick = function () {
       resetPanzoom(target);
