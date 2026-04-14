@@ -23,6 +23,10 @@ if (!window.__mkdocsMermaidElkRegistered) {
   let lastTheme = null;
   let themeObserverInstalled = false;
 
+  function getPanzoomKeyPressed(event) {
+    return event.ctrlKey || event.metaKey;
+  }
+
   function getColorScheme() {
     return (
       document.body?.getAttribute("data-md-color-scheme") ||
@@ -211,6 +215,56 @@ if (!window.__mkdocsMermaidElkRegistered) {
     return host;
   }
 
+  function attachPanzoom(target, host) {
+    if (typeof window.panzoom !== "function") {
+      return;
+    }
+
+    if (target.__mermaidWheelHost && target.__mermaidWheelHandler) {
+      target.__mermaidWheelHost.removeEventListener("wheel", target.__mermaidWheelHandler);
+      target.__mermaidWheelHost = null;
+      target.__mermaidWheelHandler = null;
+    }
+
+    if (target.__mermaidPanzoom && typeof target.__mermaidPanzoom.dispose === "function") {
+      target.__mermaidPanzoom.dispose();
+    }
+
+    const svg = host.querySelector("svg");
+
+    if (!svg) {
+      return;
+    }
+
+    const instance = window.panzoom(svg, {
+      maxZoom: 6,
+      minZoom: 0.5,
+      smoothScroll: false,
+      zoomDoubleClickSpeed: 1,
+      beforeWheel: function (event) {
+        return !getPanzoomKeyPressed(event);
+      },
+    });
+
+    const parent = svg.parentElement;
+
+    if (parent) {
+      const wheelHandler = function (event) {
+        if (!getPanzoomKeyPressed(event)) {
+          return;
+        }
+
+        event.preventDefault();
+      };
+
+      parent.addEventListener("wheel", wheelHandler, { passive: false });
+      target.__mermaidWheelHost = parent;
+      target.__mermaidWheelHandler = wheelHandler;
+    }
+
+    target.__mermaidPanzoom = instance;
+  }
+
   async function renderTarget(target) {
     const originalSource = getSource(target);
     const diagramType = detectDiagramType(originalSource);
@@ -235,6 +289,7 @@ if (!window.__mkdocsMermaidElkRegistered) {
       const result = await mermaid.render(id, source);
 
       host.innerHTML = result.svg;
+      attachPanzoom(target, host);
       target.dataset.mermaidRendered = "true";
       target.classList.remove("mermaid-error");
 
