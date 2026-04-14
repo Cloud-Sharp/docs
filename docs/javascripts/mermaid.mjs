@@ -203,10 +203,16 @@ if (!window.__mkdocsMermaidElkRegistered) {
     target.classList.remove("mermaid-source");
     target.classList.add("mermaid-host");
 
+    let toolbar = target.querySelector(":scope > .mermaid-host__toolbar");
     let host = target.querySelector(":scope > .mermaid-host__svg");
 
-    if (!host) {
+    if (!host || !toolbar) {
       target.innerHTML = "";
+
+      toolbar = document.createElement("div");
+      toolbar.className = "mermaid-host__toolbar";
+      target.appendChild(toolbar);
+
       host = document.createElement("div");
       host.className = "mermaid-host__svg";
       target.appendChild(host);
@@ -215,8 +221,102 @@ if (!window.__mkdocsMermaidElkRegistered) {
     return host;
   }
 
+  function resetPanzoom(target) {
+    const instance = target.__mermaidPanzoom;
+    const initialTransform = target.__mermaidInitialTransform;
+
+    if (!instance || !initialTransform) {
+      return;
+    }
+
+    instance.zoomAbs(0, 0, initialTransform.scale);
+    instance.moveTo(initialTransform.x, initialTransform.y);
+  }
+
+  function isFullscreenTarget(target) {
+    return document.fullscreenElement === target;
+  }
+
+  async function toggleFullscreen(target) {
+    try {
+      if (isFullscreenTarget(target)) {
+        await document.exitFullscreen();
+      } else if (typeof target.requestFullscreen === "function") {
+        await target.requestFullscreen();
+      }
+    } catch (error) {
+      console.error("[mermaid] Failed to toggle fullscreen.", error);
+    }
+
+    updateToolbarButtons(target);
+  }
+
+  function updateToolbarButtons(target) {
+    const toolbar = target.querySelector(":scope > .mermaid-host__toolbar");
+
+    if (!toolbar) {
+      return;
+    }
+
+    const fullscreenButton = toolbar.querySelector(':scope > [data-role="fullscreen"]');
+
+    if (fullscreenButton) {
+      const active = isFullscreenTarget(target);
+      fullscreenButton.textContent = active ? "전체화면 종료" : "전체화면";
+      fullscreenButton.title = active ? "전체화면 보기 종료" : "다이어그램을 전체화면으로 보기";
+    }
+  }
+
+  function ensureToolbarButtons(target) {
+    const toolbar = target.querySelector(":scope > .mermaid-host__toolbar");
+
+    if (!toolbar) {
+      return;
+    }
+
+    let resetButton = toolbar.querySelector(':scope > [data-role="reset"]');
+
+    if (!resetButton) {
+      resetButton = document.createElement("button");
+      resetButton.type = "button";
+      resetButton.className = "mermaid-host__button";
+      resetButton.dataset.role = "reset";
+      resetButton.textContent = "전체보기";
+      resetButton.title = "다이어그램 전체 보기로 되돌리기";
+      toolbar.appendChild(resetButton);
+    }
+
+    resetButton.onclick = function () {
+      resetPanzoom(target);
+    };
+
+    let fullscreenButton = toolbar.querySelector(':scope > [data-role="fullscreen"]');
+
+    if (!fullscreenButton) {
+      fullscreenButton = document.createElement("button");
+      fullscreenButton.type = "button";
+      fullscreenButton.className = "mermaid-host__button";
+      fullscreenButton.dataset.role = "fullscreen";
+      toolbar.appendChild(fullscreenButton);
+    }
+
+    fullscreenButton.onclick = function () {
+      toggleFullscreen(target);
+    };
+
+    if (!target.__mermaidFullscreenChangeHandler) {
+      target.__mermaidFullscreenChangeHandler = function () {
+        updateToolbarButtons(target);
+      };
+      document.addEventListener("fullscreenchange", target.__mermaidFullscreenChangeHandler);
+    }
+
+    updateToolbarButtons(target);
+  }
+
   function attachPanzoom(target, host) {
     if (typeof window.panzoom !== "function") {
+      ensureToolbarButtons(target);
       return;
     }
 
@@ -263,6 +363,8 @@ if (!window.__mkdocsMermaidElkRegistered) {
     }
 
     target.__mermaidPanzoom = instance;
+    target.__mermaidInitialTransform = instance.getTransform();
+    ensureToolbarButtons(target);
   }
 
   async function renderTarget(target) {

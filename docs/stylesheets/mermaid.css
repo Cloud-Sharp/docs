@@ -1,24 +1,73 @@
 .md-typeset .mermaid-host,
 .md-typeset pre.mermaid-host {
-  --mermaid-surface: #fffdf8;
-  --mermaid-border: #cfb8a6;
-  --mermaid-text: #2d241f;
-  --mermaid-muted: #6d5b4f;
-  --mermaid-row-even: #f6efe7;
-  --mermaid-row-odd: #fffaf5;
-  --mermaid-accent: #8a5a44;
-  --mermaid-label-bg: rgba(244, 233, 220, 0.9);
+  --mermaid-surface: #f6fbff;
+  --mermaid-border: #b8cad8;
+  --mermaid-text: #14212b;
+  --mermaid-muted: #516473;
+  --mermaid-row-even: #eaf2f8;
+  --mermaid-row-odd: #ffffff;
+  --mermaid-accent: #2f6f91;
+  --mermaid-label-bg: rgba(235, 244, 251, 0.98);
   margin: 1.25em 0;
   padding: 1rem;
   border: 1px solid var(--mermaid-border);
   border-radius: 0.75rem;
-  background: linear-gradient(180deg, #fffdf9 0%, #fbf6f1 100%);
+  background: linear-gradient(180deg, #fdfefe 0%, #f2f7fb 100%);
   overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 
 .md-typeset pre.mermaid-host {
   white-space: normal;
+}
+
+.md-typeset .mermaid-host .mermaid-host__toolbar,
+.md-typeset pre.mermaid-host .mermaid-host__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.md-typeset .mermaid-host .mermaid-host__button,
+.md-typeset pre.mermaid-host .mermaid-host__button {
+  appearance: none;
+  border: 1px solid var(--mermaid-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mermaid-surface) 86%, white 14%);
+  color: var(--mermaid-text);
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.42rem 0.72rem;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.md-typeset .mermaid-host .mermaid-host__button:hover,
+.md-typeset pre.mermaid-host .mermaid-host__button:hover {
+  background: color-mix(in srgb, var(--mermaid-surface) 72%, var(--mermaid-accent) 28%);
+  border-color: var(--mermaid-accent);
+}
+
+.md-typeset .mermaid-host .mermaid-host__button:active,
+.md-typeset pre.mermaid-host .mermaid-host__button:active {
+  transform: translateY(1px);
+}
+
+.md-typeset .mermaid-host:fullscreen,
+.md-typeset pre.mermaid-host:fullscreen {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0;
+}
+
+.md-typeset .mermaid-host:fullscreen .mermaid-host__svg,
+.md-typeset pre.mermaid-host:fullscreen .mermaid-host__svg {
+  height: calc(100vh - 4.75rem);
 }
 
 .md-typeset .mermaid-host .mermaid-host__svg,
@@ -56,15 +105,15 @@
 
 [data-md-color-scheme="slate"] .md-typeset .mermaid-host,
 [data-md-color-scheme="slate"] .md-typeset pre.mermaid-host {
-  --mermaid-surface: #171a1d;
-  --mermaid-border: #4f5a61;
-  --mermaid-text: #ecdfd0;
-  --mermaid-muted: #b7ab9d;
-  --mermaid-row-even: #20262b;
-  --mermaid-row-odd: #1a2025;
-  --mermaid-accent: #d29f7f;
-  --mermaid-label-bg: rgba(49, 55, 61, 0.92);
-  background: linear-gradient(180deg, #1b1f23 0%, #14181b 100%);
+  --mermaid-surface: #16202a;
+  --mermaid-border: #4c6476;
+  --mermaid-text: #edf6fc;
+  --mermaid-muted: #adc0cf;
+  --mermaid-row-even: #22303d;
+  --mermaid-row-odd: #19242e;
+  --mermaid-accent: #7ec3e7;
+  --mermaid-label-bg: rgba(27, 39, 49, 0.96);
+  background: linear-gradient(180deg, #18212b 0%, #121a21 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
@@ -72,7 +121,7 @@
 .md-typeset pre.mermaid-host .entityBox {
   fill: var(--mermaid-surface);
   stroke: var(--mermaid-accent);
-  stroke-width: 1.5px;
+  stroke-width: 1.8px;
 }
 
 .md-typeset .mermaid-host .attributeBoxOdd,
@@ -92,6 +141,7 @@
 .md-typeset .mermaid-host .er.relationshipLine,
 .md-typeset pre.mermaid-host .er.relationshipLine {
   stroke: var(--mermaid-accent);
+  stroke-width: 1.5px;
 }
 
 .md-typeset .mermaid-host .relationshipLabelBox,
@@ -112,6 +162,15 @@
 .md-typeset .mermaid-host .attributeText,
 .md-typeset pre.mermaid-host .attributeText {
   fill: var(--mermaid-text);
+}
+
+.md-typeset .mermaid-host .attributeBoxOdd text,
+.md-typeset pre.mermaid-host .attributeBoxOdd text,
+.md-typeset .mermaid-host .attributeBoxEven text,
+.md-typeset pre.mermaid-host .attributeBoxEven text,
+.md-typeset .mermaid-host .relationshipLabelBox text,
+.md-typeset pre.mermaid-host .relationshipLabelBox text {
+  fill: var(--mermaid-text) !important;
 }
 
 .md-typeset .mermaid-host .edgeLabel rect,
