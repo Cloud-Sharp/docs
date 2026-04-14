@@ -14,7 +14,7 @@ if (!window.__mkdocsMermaidElkRegistered) {
   window.__mkdocsMermaidInit = true;
 
   const SOURCE_SELECTOR = [
-    ".md-typeset pre.mermaid",
+    ".md-typeset pre.mermaid-source",
     ".md-typeset pre > code.language-mermaid",
     ".md-typeset pre > code.mermaid",
   ].join(", ");
@@ -196,6 +196,7 @@ if (!window.__mkdocsMermaidElkRegistered) {
 
   function ensureRenderHost(target) {
     target.classList.remove("mermaid");
+    target.classList.remove("mermaid-source");
     target.classList.add("mermaid-host");
 
     let host = target.querySelector(":scope > .mermaid-host__svg");
@@ -214,7 +215,7 @@ if (!window.__mkdocsMermaidElkRegistered) {
     const originalSource = getSource(target);
     const diagramType = detectDiagramType(originalSource);
 
-    if (!diagramType) {
+    if (!diagramType || originalSource.startsWith("#mermaid-diagram-")) {
       target.dataset.mermaidRendered = "skipped";
       return;
     }
