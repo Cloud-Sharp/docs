@@ -1,3 +1,11 @@
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs";
+import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.1/dist/mermaid-layout-elk.esm.min.mjs";
+
+if (!window.__mkdocsMermaidElkRegistered) {
+  mermaid.registerLayoutLoaders(elkLayouts);
+  window.__mkdocsMermaidElkRegistered = true;
+}
+
 (function () {
   if (window.__mkdocsMermaidInit) {
     return;
@@ -58,24 +66,19 @@
   }
 
   function configureMermaid() {
-    if (!window.mermaid) {
-      console.warn("[mermaid] Mermaid runtime is not loaded.");
-      return false;
-    }
-
     const theme = getMermaidTheme();
 
-    window.mermaid.initialize({
+    mermaid.initialize({
       startOnLoad: false,
       securityLevel: "loose",
       theme,
       layout: "elk",
+      htmlLabels: true,
       themeVariables: getThemeVariables(theme),
       elk: {
         mergeEdges: false,
       },
       flowchart: {
-        htmlLabels: true,
         useMaxWidth: true,
         defaultRenderer: "elk",
       },
@@ -228,7 +231,7 @@
     try {
       renderCount += 1;
       const id = "mermaid-diagram-" + renderCount;
-      const result = await window.mermaid.render(id, source);
+      const result = await mermaid.render(id, source);
 
       host.innerHTML = result.svg;
       target.dataset.mermaidRendered = "true";
