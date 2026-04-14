@@ -24,9 +24,19 @@
 .md-typeset .mermaid-host .mermaid-host__toolbar,
 .md-typeset pre.mermaid-host .mermaid-host__toolbar {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.md-typeset .mermaid-host .mermaid-host__hint,
+.md-typeset pre.mermaid-host .mermaid-host__hint {
+  margin-right: auto;
+  color: var(--mermaid-muted);
+  font-size: 0.74rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .md-typeset .mermaid-host .mermaid-host__button,

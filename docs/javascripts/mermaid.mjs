@@ -409,6 +409,18 @@ if (!window.__mkdocsMermaidElkRegistered) {
       return;
     }
 
+    let hint = toolbar.querySelector(':scope > [data-role="hint"]');
+
+    if (!hint) {
+      hint = document.createElement("div");
+      hint.className = "mermaid-host__hint";
+      hint.dataset.role = "hint";
+      toolbar.appendChild(hint);
+    }
+
+    hint.textContent = "드래그 이동 · Ctrl/Cmd + 휠 확대/축소";
+    hint.title = "드래그로 이동하고 Ctrl 또는 Cmd를 누른 채 휠로 확대/축소합니다.";
+
     let resetButton = toolbar.querySelector(':scope > [data-role="reset"]');
 
     if (!resetButton) {
