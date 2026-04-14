@@ -202,6 +202,75 @@ if (!window.__mkdocsMermaidElkRegistered) {
     return source;
   }
 
+  function hasNoElkDirective(source) {
+    return /^\s*%%\s*no-elk\s*$/im.test(source);
+  }
+
+  function stripNoElkDirective(source) {
+    return String(source || "")
+      .split("\n")
+      .filter(function (line) {
+        return !/^\s*%%\s*no-elk\s*$/i.test(line);
+      })
+      .join("\n")
+      .trim();
+  }
+
+  function injectDirectiveAfterFrontmatter(source, directive) {
+    if (!directive) {
+      return source;
+    }
+
+    if (!source.startsWith("---")) {
+      return [directive, source].join("\n");
+    }
+
+    const lines = source.split("\n");
+    let i = 1;
+
+    while (i < lines.length) {
+      if (lines[i].trim() === "---") {
+        return [
+          lines.slice(0, i + 1).join("\n"),
+          directive,
+          lines.slice(i + 1).join("\n").trim(),
+        ]
+          .filter(Boolean)
+          .join("\n");
+      }
+
+      i += 1;
+    }
+
+    return [directive, source].join("\n");
+  }
+
+  function buildNoElkDirective(diagramType) {
+    const init = {
+      layout: "dagre",
+    };
+
+    if (diagramType === "flowchart" || diagramType === "graph") {
+      init.flowchart = {
+        defaultRenderer: "dagre",
+      };
+    }
+
+    if (/^stateDiagram/.test(diagramType)) {
+      init.state = {
+        defaultRenderer: "dagre",
+      };
+    }
+
+    if (diagramType === "classDiagram") {
+      init.class = {
+        defaultRenderer: "dagre",
+      };
+    }
+
+    return "%%{init: " + JSON.stringify(init) + "}%%";
+  }
+
   function detectDiagramType(source) {
     const body = stripFrontmatter(source);
     const firstLine = body
@@ -209,7 +278,9 @@ if (!window.__mkdocsMermaidElkRegistered) {
       .map(function (line) {
         return line.trim();
       })
-      .find(Boolean);
+      .find(function (line) {
+        return line && !line.startsWith("%%");
+      });
 
     if (!firstLine) {
       return null;
@@ -227,15 +298,27 @@ if (!window.__mkdocsMermaidElkRegistered) {
       return source;
     }
 
-    if (source.startsWith("---")) {
-      return source;
+    const noElk = hasNoElkDirective(source);
+    const normalizedSource = stripNoElkDirective(source);
+    const diagramType = detectDiagramType(normalizedSource);
+
+    if (!diagramType) {
+      return normalizedSource;
     }
 
-    if (/^erDiagram\b/m.test(source)) {
-      return ["---", "config:", "  layout: elk", "---", source].join("\n");
+    if (noElk) {
+      return injectDirectiveAfterFrontmatter(normalizedSource, buildNoElkDirective(diagramType));
     }
 
-    return source;
+    if (normalizedSource.startsWith("---")) {
+      return normalizedSource;
+    }
+
+    if (diagramType === "erDiagram") {
+      return ["---", "config:", "  layout: elk", "---", normalizedSource].join("\n");
+    }
+
+    return normalizedSource;
   }
 
   function ensureRenderHost(target) {
