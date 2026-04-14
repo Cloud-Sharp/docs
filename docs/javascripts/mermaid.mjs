@@ -273,6 +273,18 @@ if (!window.__mkdocsMermaidElkRegistered) {
     instance.moveTo(initialTransform.x, initialTransform.y);
   }
 
+  function cloneTransform(transform) {
+    if (!transform) {
+      return null;
+    }
+
+    return {
+      x: transform.x,
+      y: transform.y,
+      scale: transform.scale,
+    };
+  }
+
   function isFullscreenTarget(target) {
     return document.fullscreenElement === target;
   }
@@ -404,7 +416,7 @@ if (!window.__mkdocsMermaidElkRegistered) {
     }
 
     target.__mermaidPanzoom = instance;
-    target.__mermaidInitialTransform = instance.getTransform();
+    target.__mermaidInitialTransform = cloneTransform(instance.getTransform());
     ensureToolbarButtons(target);
   }
 
