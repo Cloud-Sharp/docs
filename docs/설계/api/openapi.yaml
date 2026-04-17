@@ -1473,7 +1473,7 @@ paths:
               - name
               - size
               - updatedAt
-              default: updatedAt
+            default: updatedAt
         - $ref: '#/components/parameters/sortDir'
       responses:
         '200':
@@ -1569,7 +1569,7 @@ paths:
               - name
               - size
               - updatedAt
-              default: updatedAt
+            default: updatedAt
         - $ref: '#/components/parameters/sortDir'
         - name: type
           in: query
@@ -1579,7 +1579,7 @@ paths:
               - all
               - file
               - folder
-              default: all
+            default: all
       responses:
         '200':
           description: 검색 성공
