@@ -156,13 +156,13 @@ Client → tusd(local temp) → 완료 → S3 복사   ← 디스크 I/O 이중 
 
 ```
 단계 1  │  DB에 storage_provider + storage_key 유지
-        │
+│
 단계 2  │  신규 업로드 → MinIO/S3에 저장
-        │
+│
 단계 3  │  기존 Local 파일 → 백그라운드 worker가 순차 복사
-        │
+│
 단계 4  │  검증 완료 → DB의 storage_provider 변경
-        │
+│
 단계 5  │  유예 기간 후 Local 파일 삭제
 ```
 
