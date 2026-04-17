@@ -919,8 +919,3 @@ sequenceDiagram
 - `ShareLink`는 외부 공유 모델
     
 - `UploadSession / FileReservation / FileItem / DownloadSession`은 기존 파이프라인을 유지한 실행 모델
-    
-
-이렇게 정리하면 기획 문서의 Space 중심 서비스 구조와 기존 설계 문서의 상태 중심 파이프라인 모델을 동시에 만족할 수 있다.
-
-원하면 다음 답변에서 이걸 이어서 **DBML 버전**이나 **실제 SQL DDL 초안**으로 바로 변환해줄게.
