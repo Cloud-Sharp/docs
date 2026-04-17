@@ -1,0 +1,1532 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/" rel="prev"/>
+<link href="../%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/" rel="next"/>
+<link href="../../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>다운로드 세션 권한 변경 및 Revoke 정책 - 개발 문서</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#revoke">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              다운로드 세션 권한 변경 및 Revoke 정책
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 개요
+      
+    </span>
+</a>
+<nav aria-label="1. 개요" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        1.1 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        1.2 적용 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        1.3 핵심 원칙 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-revoke">
+<span class="md-ellipsis">
+      
+        2. 즉시 Revoke 미지원 정책
+      
+    </span>
+</a>
+<nav aria-label="2. 즉시 Revoke 미지원 정책" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 정책 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 동작 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23">
+<span class="md-ellipsis">
+      
+        2.3 세션 상태 판정 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 설계 근거
+      
+    </span>
+</a>
+<nav aria-label="3. 설계 근거" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 세션의 특성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 보안 모델 선택
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33">
+<span class="md-ellipsis">
+      
+        3.3 세션 바인딩에 의한 재생 공격 완화
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 최대 허용 노출 시간
+      
+    </span>
+</a>
+<nav aria-label="4. 최대 허용 노출 시간" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41-ttl">
+<span class="md-ellipsis">
+      
+        4.1 TTL 상한
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 세션 만료 후 재발급 흐름
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-ttl">
+<span class="md-ellipsis">
+      
+        5. TTL 정책 확정
+      
+    </span>
+</a>
+<nav aria-label="5. TTL 정책 확정" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 세션 운영 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-ttl">
+<span class="md-ellipsis">
+      
+        5.2 TTL 내 허용·불허 요청
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 보안 사고 대응 시 강제 만료
+      
+    </span>
+</a>
+<nav aria-label="6. 보안 사고 대응 시 강제 만료" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61">
+<span class="md-ellipsis">
+      
+        6.1 현재 정책
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62">
+<span class="md-ellipsis">
+      
+        6.2 보안 사고 발생 시 대응 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#63">
+<span class="md-ellipsis">
+      
+        6.3 한계 인식
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 운영 원칙 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a">
+<span class="md-ellipsis">
+      
+        부록 A. 정책 결정 매트릭스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b">
+<span class="md-ellipsis">
+      
+        부록 B. 용어 정의
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 개요
+      
+    </span>
+</a>
+<nav aria-label="1. 개요" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        1.1 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        1.2 적용 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        1.3 핵심 원칙 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-revoke">
+<span class="md-ellipsis">
+      
+        2. 즉시 Revoke 미지원 정책
+      
+    </span>
+</a>
+<nav aria-label="2. 즉시 Revoke 미지원 정책" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 정책 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 동작 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23">
+<span class="md-ellipsis">
+      
+        2.3 세션 상태 판정 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 설계 근거
+      
+    </span>
+</a>
+<nav aria-label="3. 설계 근거" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 세션의 특성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 보안 모델 선택
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33">
+<span class="md-ellipsis">
+      
+        3.3 세션 바인딩에 의한 재생 공격 완화
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 최대 허용 노출 시간
+      
+    </span>
+</a>
+<nav aria-label="4. 최대 허용 노출 시간" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41-ttl">
+<span class="md-ellipsis">
+      
+        4.1 TTL 상한
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 세션 만료 후 재발급 흐름
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-ttl">
+<span class="md-ellipsis">
+      
+        5. TTL 정책 확정
+      
+    </span>
+</a>
+<nav aria-label="5. TTL 정책 확정" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 세션 운영 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-ttl">
+<span class="md-ellipsis">
+      
+        5.2 TTL 내 허용·불허 요청
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 보안 사고 대응 시 강제 만료
+      
+    </span>
+</a>
+<nav aria-label="6. 보안 사고 대응 시 강제 만료" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61">
+<span class="md-ellipsis">
+      
+        6.1 현재 정책
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62">
+<span class="md-ellipsis">
+      
+        6.2 보안 사고 발생 시 대응 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#63">
+<span class="md-ellipsis">
+      
+        6.3 한계 인식
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 운영 원칙 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a">
+<span class="md-ellipsis">
+      
+        부록 A. 정책 결정 매트릭스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b">
+<span class="md-ellipsis">
+      
+        부록 B. 용어 정의
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="revoke">다운로드 세션 권한 변경 및 Revoke 정책<a class="headerlink" href="#revoke" title="Permanent link">¶</a></h1>
+<blockquote>
+<p><strong>문서 분류:</strong> 보안 정책 / 다운로드 세션 관리
+<strong>상태:</strong> 확정</p>
+</blockquote>
+<hr/>
+<h2 id="1">1. 개요<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<h3 id="11">1.1 목적<a class="headerlink" href="#11" title="Permanent link">¶</a></h3>
+<p>본 문서는 다운로드 세션 발급 이후 권한 박탈, 공유 링크 폐기, 정책 변경이 발생했을 때의 시스템 동작 방식과 그 설계 근거를 정의한다.</p>
+<h3 id="12">1.2 적용 범위<a class="headerlink" href="#12" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>대상</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>인증 사용자 다운로드 세션</td>
+<td>로그인 사용자가 파일 접근 권한으로 발급받은 세션</td>
+</tr>
+<tr>
+<td>공유 링크 기반 다운로드 세션</td>
+<td>공유 링크를 통해 발급된 비인증/인증 세션</td>
+</tr>
+<tr>
+<td>정책 변경 영향권 세션</td>
+<td>다운로드 허용 정책 변경 시점에 이미 활성 상태인 세션</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13">1.3 핵심 원칙 요약<a class="headerlink" href="#13" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>다운로드 세션은 발급 시점의 권한을 기준으로 TTL 동안 유효하며,
+발급 이후의 권한 변경에 대한 즉시 revoke는 지원하지 않는다.
+</code></pre></div>
+<hr/>
+<h2 id="2-revoke">2. 즉시 Revoke 미지원 정책<a class="headerlink" href="#2-revoke" title="Permanent link">¶</a></h2>
+<h3 id="21">2.1 정책 정의<a class="headerlink" href="#21" title="Permanent link">¶</a></h3>
+<p>본 시스템은 <strong>다운로드 세션 발급 이후 권한 박탈 또는 공유 링크 폐기 시, 이미 발급된 세션에 대한 즉시 revoke를 지원하지 않는다.</strong></p>
+<p>다음 상황이 발생하더라도 이미 발급된 다운로드 세션은 남은 TTL 동안 유효하다.</p>
+<ul>
+<li>인증 사용자의 파일 접근 권한이 세션 발급 직후 박탈된 경우</li>
+<li>공유 링크가 세션 발급 직후 비활성화되거나 폐기된 경우</li>
+<li>다운로드 허용 정책이 세션 발급 이후 변경된 경우</li>
+</ul>
+<h3 id="22">2.2 동작 흐름<a class="headerlink" href="#22" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>[세션 발급 시점]          [권한 박탈 시점]          [세션 만료 시점]
+      │                        │                        │
+      ▼                        ▼                        ▼
+ ─────●━━━━━━━━━━━━━━━━━━━━━━━━●━━━━━━━━━━━━━━━━━━━━━━━━●─────
+      │          세션 유효 (최대 5분)                     │
+      │                        │                        │
+      │  권한 박탈 발생해도     │  세션은 남은 TTL 동안   │
+      │  즉시 차단하지 않음     │  계속 유효              │
+      │                                                 │
+      └─── 발급 시점 권한 기준 ──────────────────────────┘
+
+ ─────────────────────────────────────────────────────────────
+      세션 만료 후 재요청 시 → 권한 재검증 → 세션 재발급 필요
+</code></pre></div>
+<h3 id="23">2.3 세션 상태 판정 기준<a class="headerlink" href="#23" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>시점</th>
+<th>권한 상태</th>
+<th>세션 유효 여부</th>
+<th>다운로드 가능 여부</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>세션 발급 시점</td>
+<td>권한 보유</td>
+<td>유효</td>
+<td><strong>가능</strong></td>
+</tr>
+<tr>
+<td>세션 TTL 내 · 권한 박탈 후</td>
+<td>권한 없음</td>
+<td>유효 (TTL 잔여)</td>
+<td><strong>가능</strong></td>
+</tr>
+<tr>
+<td>세션 TTL 만료 후</td>
+<td>권한 없음</td>
+<td>만료</td>
+<td><strong>불가</strong> (재검증 필요)</td>
+</tr>
+<tr>
+<td>세션 TTL 만료 후</td>
+<td>권한 보유</td>
+<td>만료</td>
+<td><strong>불가</strong> (재발급 필요)</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3">3. 설계 근거<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<h3 id="31">3.1 세션의 특성<a class="headerlink" href="#31" title="Permanent link">¶</a></h3>
+<p>즉시 revoke를 기본 동작으로 두지 않는 이유는 다운로드 세션이 일반적인 API access token이 아니라, <strong>브라우저 다운로드 동작을 수용하기 위한 짧은 수명의 스트리밍 세션</strong>이기 때문이다.</p>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────────┐
+│                    다운로드 세션 설계 전제                      │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  • 세션은 짧게 유지하되, 살아 있는 동안은 다음을 허용한다:     │
+│    - 브라우저의 동일 URL 재요청                                │
+│    - Range 헤더 기반 이어받기 (resume)                         │
+│    - 네트워크 오류 후 재시도                                   │
+│                                                              │
+│  • 다음은 지원하지 않는다:                                     │
+│    - 한 HTTP 요청 안의 multi-range                            │
+│    - 병렬 Range 다운로드 (다중 커넥션 분할)                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p>이 전제 아래에서 "발급 직후 즉시 무효화 가능" 정책은 브라우저 호환성과 충돌할 수 있다.</p>
+<h3 id="32">3.2 보안 모델 선택<a class="headerlink" href="#32" title="Permanent link">¶</a></h3>
+<p>본 시스템은 두 가지 보안 모델 중 후자를 채택하였다.</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────┐    ┌─────────────────────────────────┐
+│   모델 A: 중앙 강제 차단 방식     │    │   모델 B: 단명 세션 방식 (채택)  │
+├─────────────────────────────────┤    ├─────────────────────────────────┤
+│                                 │    │                                 │
+│  • 세션을 길게 유지              │    │  • 세션 자체를 짧게 유지 (≤5분)  │
+│  • 중앙에서 실시간 강제 차단     │    │  • 노출 시간을 구조적으로 제한   │
+│  • 매 요청마다 세션 유효성 조회  │    │  • TTL 만료 후 자동 재검증       │
+│                                 │    │                                 │
+│  장점: 즉시 revoke 가능         │    │  장점: 단순, 브라우저 호환       │
+│  단점: 조회 부하, 복잡도 증가   │    │  단점: TTL 내 즉시 차단 불가     │
+│                                 │    │                                 │
+└─────────────────────────────────┘    └─────────────────────────────────┘
+</code></pre></div>
+<h3 id="33">3.3 세션 바인딩에 의한 재생 공격 완화<a class="headerlink" href="#33" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>다운로드 세션 = f(파일 ID, 요청자 식별자, 발급 시각)
+
+  ┌────────────────┐
+  │  세션 바인딩    │──→ 파일 ID         : 특정 파일에만 유효
+  │  (replay 방지) │──→ 요청자 식별자    : 발급 대상자만 사용 가능
+  │                │──→ 짧은 TTL (≤5분) : 시간 제한으로 노출 최소화
+  │                │──→ 재요청 허용      : 정상 브라우저 동작 수용
+  └────────────────┘
+</code></pre></div>
+<hr/>
+<h2 id="4">4. 최대 허용 노출 시간<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41-ttl">4.1 TTL 상한<a class="headerlink" href="#41-ttl" title="Permanent link">¶</a></h3>
+<p>즉시 revoke를 지원하지 않는 대신, 다운로드 세션의 최대 허용 노출 시간은 <strong>5분</strong>으로 제한한다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>세션 TTL 상한</td>
+<td><strong>300초 (5분)</strong></td>
+</tr>
+<tr>
+<td>TTL 만료 후 동작</td>
+<td>세션 자동 무효화</td>
+</tr>
+<tr>
+<td>재다운로드 시</td>
+<td>권한 재검증 → 사전 검증 → 세션 재발급</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42">4.2 세션 만료 후 재발급 흐름<a class="headerlink" href="#42" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>세션 만료 후 동일 요청자가 다시 다운로드를 시도하는 경우:
+
+  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+  │  권한 검증   │────→│  사전 검증   │────→│  세션 발급   │────→│  스트리밍    │
+  │             │     │             │     │             │     │             │
+  │ 접근 권한   │     │ 파일 상태   │     │ 새 TTL 부여  │     │ Range/GET   │
+  │ 재평가     │     │ 다운로드    │     │ 바인딩 생성  │     │ 요청 처리   │
+  │             │     │ 가능 여부   │     │             │     │             │
+  └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+        │                    │
+        ▼                    ▼
+   권한 박탈 상태면       파일 삭제/비활성이면
+   여기서 차단됨          여기서 차단됨
+</code></pre></div>
+<p>이 시점에서 권한이 이미 박탈되었거나 공유 링크가 폐기된 상태라면 세션 재발급이 거부된다.</p>
+<hr/>
+<h2 id="5-ttl">5. TTL 정책 확정<a class="headerlink" href="#5-ttl" title="Permanent link">¶</a></h2>
+<h3 id="51">5.1 세션 운영 규칙<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>규칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>단명 토큰 운영</td>
+<td>세션 TTL은 최대 5분으로 제한한다</td>
+</tr>
+<tr>
+<td>바인딩 필수</td>
+<td>세션은 파일 ID와 요청자 식별자에 바인딩한다</td>
+</tr>
+<tr>
+<td>TTL 내 재요청 허용</td>
+<td>GET, Range, resume 요청은 동일 세션으로 허용한다</td>
+</tr>
+<tr>
+<td>만료 후 재검증 필수</td>
+<td>세션 만료 후에는 반드시 권한·상태 재검증을 거쳐 새 세션을 발급받아야 한다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-ttl">5.2 TTL 내 허용·불허 요청<a class="headerlink" href="#52-ttl" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>TTL 유효 기간 내:
+  ✅ 허용                          ❌ 불허
+  ─────────────────────────        ─────────────────────────
+  동일 URL GET 재요청               multi-range 요청
+  Range 헤더 이어받기               병렬 커넥션 분할 다운로드
+  네트워크 재시도                    다른 파일 ID 접근
+  부분 콘텐츠 (206) 응답            다른 요청자로의 세션 전용
+</code></pre></div>
+<hr/>
+<h2 id="6">6. 보안 사고 대응 시 강제 만료<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<h3 id="61">6.1 현재 정책<a class="headerlink" href="#61" title="Permanent link">¶</a></h3>
+<p>현재 보안 사고 대응 절차에는 <strong>기존 다운로드 세션을 강제로 만료시키는 별도 단계는 포함하지 않는다.</strong></p>
+<p>다음과 같은 중앙 강제 조치는 기본 기능으로 제공하지 않는다.</p>
+<table>
+<thead>
+<tr>
+<th>미지원 기능</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용자 세션 일괄 무효화</td>
+<td>특정 사용자에게 발급된 모든 다운로드 세션 즉시 차단</td>
+</tr>
+<tr>
+<td>공유 링크 세션 일괄 차단</td>
+<td>특정 공유 링크로 발급된 모든 다운로드 세션 즉시 차단</td>
+</tr>
+<tr>
+<td>파일 세션 전체 강제 만료</td>
+<td>특정 파일에 대한 모든 활성 다운로드 세션 즉시 차단</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62">6.2 보안 사고 발생 시 대응 흐름<a class="headerlink" href="#62" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>보안 사고 발생
+      │
+      ▼
+┌──────────────────────┐
+│  운영자 즉시 조치     │
+│                      │
+│  • 공유 링크 폐기     │
+│  • 사용자 권한 회수   │
+│  • 다운로드 정책 변경 │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────────────────────────────────┐
+│  이미 발급된 활성 세션                              │
+│                                                    │
+│  → 즉시 차단 불가                                  │
+│  → TTL 잔여 시간 동안 유효 (최대 5분)               │
+│  → 자연 만료에 의존                                 │
+│                                                    │
+│  ⚠ 이 구간이 현재 정책의 명확한 한계이다             │
+└──────────┬───────────────────────────────────────-─┘
+           │
+           ▼
+┌──────────────────────┐
+│  세션 자연 만료 이후   │
+│                      │
+│  • 재요청 시 권한 재검증 발생  │
+│  • 이미 박탈된 권한으로 차단   │
+│  • 새 세션 발급 거부           │
+└──────────────────────┘
+</code></pre></div>
+<h3 id="63">6.3 한계 인식<a class="headerlink" href="#63" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>⚠ 현재 정책의 명확한 한계</strong></p>
+<p>보안 사고 발생 시에도 이미 발급된 다운로드 세션은 TTL 종료 전까지 유효할 수 있다.
+운영자는 링크 폐기나 권한 회수만 수행하고, 세션 자체는 자연 만료에 의존하게 된다.</p>
+<p>세션 메타데이터를 Redis/DB에 선택적으로 저장할 수 있으나, 강제 revoke 절차는 현재 정의되어 있지 않다.</p>
+</blockquote>
+<hr/>
+<h2 id="7">7. 운영 원칙 요약<a class="headerlink" href="#7" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────────────────┐
+│                     다운로드 세션 Revoke 정책 요약                     │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  1. 다운로드 세션은 발급 시점 권한을 기준으로 TTL 동안 유효하다.        │
+│                                                                      │
+│  2. 세션 발급 후 권한 박탈이나 공유 링크 폐기가 발생해도               │
+│     즉시 revoke는 지원하지 않는다.                                    │
+│                                                                      │
+│  3. 즉시 revoke 미지원에 대한 보완책으로                               │
+│     세션 TTL은 최대 5분으로 제한한다.                                  │
+│                                                                      │
+│  4. 세션 만료 후 재다운로드 시에는                                     │
+│     권한 및 파일 상태를 다시 검증한다.                                  │
+│                                                                      │
+│  5. 현재 보안 사고 대응 절차에는                                       │
+│     활성 다운로드 세션 강제 만료 단계가 포함되지 않는다.                 │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr/>
+<h2 id="a">부록 A. 정책 결정 매트릭스<a class="headerlink" href="#a" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>결정 항목</th>
+<th>선택지</th>
+<th>채택 여부</th>
+<th>근거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>즉시 revoke 지원</td>
+<td>매 요청마다 세션 유효성 중앙 조회</td>
+<td><strong>미채택</strong></td>
+<td>조회 부하, 브라우저 호환성 충돌</td>
+</tr>
+<tr>
+<td>단명 세션 + 자연 만료</td>
+<td>TTL ≤ 5분, 만료 후 재검증</td>
+<td><strong>채택</strong></td>
+<td>단순성, 브라우저 호환, 노출 시간 제한</td>
+</tr>
+<tr>
+<td>보안 사고 시 강제 만료</td>
+<td>별도 revoke 엔드포인트 / 배치</td>
+<td><strong>미채택</strong></td>
+<td>현재 미정의, 향후 검토 가능</td>
+</tr>
+<tr>
+<td>세션 바인딩</td>
+<td>파일 ID + 요청자 식별자</td>
+<td><strong>채택</strong></td>
+<td>재생 공격 완화</td>
+</tr>
+</tbody>
+</table>
+<h2 id="b">부록 B. 용어 정의<a class="headerlink" href="#b" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>정의</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>다운로드 세션</td>
+<td>파일 다운로드를 위해 발급되는 단명 스트리밍 토큰</td>
+</tr>
+<tr>
+<td>TTL (Time To Live)</td>
+<td>세션 발급 시점부터 자동 만료까지의 유효 시간</td>
+</tr>
+<tr>
+<td>Revoke</td>
+<td>만료 전 세션을 강제로 무효화하는 행위</td>
+</tr>
+<tr>
+<td>세션 바인딩</td>
+<td>세션을 특정 파일 ID 및 요청자 식별자에 종속시키는 것</td>
+</tr>
+<tr>
+<td>사전 검증</td>
+<td>세션 발급 전 파일 상태·다운로드 가능 여부를 확인하는 단계</td>
+</tr>
+<tr>
+<td>Range 요청</td>
+<td>HTTP Range 헤더를 사용한 부분 콘텐츠 요청 (이어받기 등)</td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

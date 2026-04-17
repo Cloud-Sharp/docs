@@ -1,0 +1,1590 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/" rel="prev"/>
+<link href="../Usecases/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처 - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#1">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 문서 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 기존 파일 공간과 공유 폴더의 한계
+      
+    </span>
+</a>
+<nav aria-label="2. 기존 파일 공간과 공유 폴더의 한계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 개인 파일 공간의 한계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 공유 폴더의 한계
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-space">
+<span class="md-ellipsis">
+      
+        3. Space가 기존 구조의 어떤 문제를 해소하는가
+      
+    </span>
+</a>
+<nav aria-label="3. Space가 기존 구조의 어떤 문제를 해소하는가" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 개인 소유 구조의 한계를 해소한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 협업 규칙을 공간 단위로 정리한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33">
+<span class="md-ellipsis">
+      
+        3.3 외부 공유와 내부 협업을 분리한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34-space-quota">
+<span class="md-ellipsis">
+      
+        3.4 Space 단위 Quota와 정책을 제공한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#35">
+<span class="md-ellipsis">
+      
+        3.5 개인용과 팀용을 하나의 개념으로 통합한다
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-space">
+<span class="md-ellipsis">
+      
+        4. Space의 확장된 가치: 여러 서비스의 공간을 통합 관리할 수 있다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 프론트엔드와 백엔드를 완전히 분리해야 하는 이유
+      
+    </span>
+</a>
+<nav aria-label="5. 프론트엔드와 백엔드를 완전히 분리해야 하는 이유" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 서버 이전이 쉬워진다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 성격이 다른 요청을 분리 확장할 수 있다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 멀티 클라이언트 대응이 쉬워진다
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 사용자 입장에서의 통합 관리도 쉬워진다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-space">
+<span class="md-ellipsis">
+      
+        7. 서버 전환 중심 Space 확장 전략
+      
+    </span>
+</a>
+<nav aria-label="7. 서버 전환 중심 Space 확장 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 목표
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72-mvp">
+<span class="md-ellipsis">
+      
+        7.2 MVP에서의 사용자 경험
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-mvp">
+<span class="md-ellipsis">
+      
+        8. 서버 전환 중심 MVP 구조도
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 서버 전환 중심 동작 방식
+      
+    </span>
+</a>
+<nav aria-label="9. 서버 전환 중심 동작 방식" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 서버 목록 진입
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92-space">
+<span class="md-ellipsis">
+      
+        9.2 서버 선택 후 Space 탐색
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93">
+<span class="md-ellipsis">
+      
+        9.3 검색 범위도 서버 단위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#94">
+<span class="md-ellipsis">
+      
+        9.4 서버 이동을 가볍게 만든다
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 권장 배포 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 이 구조의 기대 효과
+      
+    </span>
+</a>
+<nav aria-label="11. 이 구조의 기대 효과" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#111-mvp">
+<span class="md-ellipsis">
+      
+        11.1 MVP 관점
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#112">
+<span class="md-ellipsis">
+      
+        11.2 사용자 경험 관점
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#113">
+<span class="md-ellipsis">
+      
+        11.3 운영 관점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        12. 결론
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12_1">
+<span class="md-ellipsis">
+      
+        12. 결론
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 문서 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 기존 파일 공간과 공유 폴더의 한계
+      
+    </span>
+</a>
+<nav aria-label="2. 기존 파일 공간과 공유 폴더의 한계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 개인 파일 공간의 한계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 공유 폴더의 한계
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-space">
+<span class="md-ellipsis">
+      
+        3. Space가 기존 구조의 어떤 문제를 해소하는가
+      
+    </span>
+</a>
+<nav aria-label="3. Space가 기존 구조의 어떤 문제를 해소하는가" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 개인 소유 구조의 한계를 해소한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 협업 규칙을 공간 단위로 정리한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33">
+<span class="md-ellipsis">
+      
+        3.3 외부 공유와 내부 협업을 분리한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34-space-quota">
+<span class="md-ellipsis">
+      
+        3.4 Space 단위 Quota와 정책을 제공한다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#35">
+<span class="md-ellipsis">
+      
+        3.5 개인용과 팀용을 하나의 개념으로 통합한다
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-space">
+<span class="md-ellipsis">
+      
+        4. Space의 확장된 가치: 여러 서비스의 공간을 통합 관리할 수 있다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 프론트엔드와 백엔드를 완전히 분리해야 하는 이유
+      
+    </span>
+</a>
+<nav aria-label="5. 프론트엔드와 백엔드를 완전히 분리해야 하는 이유" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 서버 이전이 쉬워진다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 성격이 다른 요청을 분리 확장할 수 있다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 멀티 클라이언트 대응이 쉬워진다
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 사용자 입장에서의 통합 관리도 쉬워진다
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-space">
+<span class="md-ellipsis">
+      
+        7. 서버 전환 중심 Space 확장 전략
+      
+    </span>
+</a>
+<nav aria-label="7. 서버 전환 중심 Space 확장 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 목표
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72-mvp">
+<span class="md-ellipsis">
+      
+        7.2 MVP에서의 사용자 경험
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-mvp">
+<span class="md-ellipsis">
+      
+        8. 서버 전환 중심 MVP 구조도
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 서버 전환 중심 동작 방식
+      
+    </span>
+</a>
+<nav aria-label="9. 서버 전환 중심 동작 방식" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 서버 목록 진입
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92-space">
+<span class="md-ellipsis">
+      
+        9.2 서버 선택 후 Space 탐색
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93">
+<span class="md-ellipsis">
+      
+        9.3 검색 범위도 서버 단위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#94">
+<span class="md-ellipsis">
+      
+        9.4 서버 이동을 가볍게 만든다
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 권장 배포 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 이 구조의 기대 효과
+      
+    </span>
+</a>
+<nav aria-label="11. 이 구조의 기대 효과" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#111-mvp">
+<span class="md-ellipsis">
+      
+        11.1 MVP 관점
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#112">
+<span class="md-ellipsis">
+      
+        11.2 사용자 경험 관점
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#113">
+<span class="md-ellipsis">
+      
+        11.3 운영 관점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        12. 결론
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12_1">
+<span class="md-ellipsis">
+      
+        12. 결론
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1>Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처</h1>
+<h2 id="1">1. 문서 목적<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<p>기존 파일 서비스는 대체로 두 가지 축으로 구성된다.</p>
+<p>첫째는 <strong>개인 파일 공간</strong>이다.
+사용자는 자신의 드라이브나 저장소를 가지고, 파일은 기본적으로 "내 것"으로 관리된다.</p>
+<p>둘째는 <strong>공유 폴더</strong>다.
+개인 파일 공간이나 NAS, 혹은 특정 스토리지 안의 일부 폴더를 다른 사람과 같이 쓰도록 열어주는 방식이다.</p>
+<p>이 방식은 단순하고 익숙하지만, 협업 규모가 커지고 저장 공간이 여러 서비스에 흩어질수록 한계가 드러난다.
+Cloud#의 Space는 이를 해결하기 위해, 파일 저장과 협업의 기준 단위를 <strong>개인 계정이나 공유 폴더가 아니라 독립된 Space 자체</strong>로 재정의한다. 문서에서도 Space는 사용자 개인 저장소가 아니라 <strong>Space 중심의 완전 분리형 저장 공간</strong>으로 설명되며, 파일 업로드/다운로드/공유의 기준 역시 User가 아니라 Space라고 정의된다.</p>
+<p>이 문서는 다음을 하나의 흐름으로 설명한다.</p>
+<ul>
+<li>기존 파일 공간과 공유 폴더가 가진 한계</li>
+<li>Space가 제공하는 구조적 해법</li>
+<li>프론트/백엔드 완전 분리의 필요성</li>
+<li>여러 클라우드의 Space를 사용자 관점에서 통합 탐색하는 구조</li>
+</ul>
+<hr/>
+<h2 id="2">2. 기존 파일 공간과 공유 폴더의 한계<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<p>기존 파일 서비스의 가장 큰 특징은, 저장의 기준이 <strong>개인</strong> 혹은 <strong>폴더</strong>라는 점이다.</p>
+<h3 id="21">2.1 개인 파일 공간의 한계<a class="headerlink" href="#21" title="Permanent link">¶</a></h3>
+<p>개인 파일 공간은 혼자 쓰기엔 편하지만, 협업으로 확장될 때 문제가 생긴다.</p>
+<ul>
+<li>팀 자료가 특정 개인 계정에 종속될 수 있다</li>
+<li>소유자가 바뀌거나 탈퇴하면 관리가 복잡해진다</li>
+<li>협업 공간임에도 실제 기준은 개인 저장소다</li>
+<li>프로젝트 단위로 권한, 용량, 정책을 관리하기 어렵다</li>
+</ul>
+<p>즉, 개인 파일 공간은 저장의 출발점으로는 좋지만, <strong>지속적인 협업 공간의 최상위 단위</strong>로는 애매하다.</p>
+<h3 id="22">2.2 공유 폴더의 한계<a class="headerlink" href="#22" title="Permanent link">¶</a></h3>
+<p>공유 폴더는 기존 개인 파일 공간의 한계를 보완하려는 방식이지만, 본질적으로는 여전히 <strong>누군가의 공간 일부를 남에게 열어주는 구조</strong>다.</p>
+<p>이 방식은 다음 한계를 가진다.</p>
+<ul>
+<li>소유 구조가 개인 중심이라 협업 공간의 독립성이 약하다</li>
+<li>내부 협업과 외부 전달이 모두 "공유"로 섞여 보인다</li>
+<li>권한이 파일/폴더마다 누적되면 복잡해진다</li>
+<li>팀 단위 Quota, 과금, 정책 관리가 애매하다</li>
+<li>서비스가 많아질수록 어디에 뭐가 있는지 찾기 어려워진다</li>
+</ul>
+<p>즉, 공유 폴더는 편한 기능이지만, <strong>독립된 협업 공간</strong>을 표현하기엔 구조적으로 부족하다.</p>
+<hr/>
+<h2 id="3-space">3. Space가 기존 구조의 어떤 문제를 해소하는가<a class="headerlink" href="#3-space" title="Permanent link">¶</a></h2>
+<p>Cloud#의 Space는 기존 개인 파일 공간과 공유 폴더가 가진 애매함을 줄이기 위해 설계된 개념이다. 문서에서도 Space는 하나의 독립된 파일 공간이며, Space와 Space는 서로 완전히 독립되고, 하나의 Space는 자체적인 파일/폴더 구조, 멤버, Role, Quota, 공유 링크 정책을 가진다고 설명한다.</p>
+<h3 id="31">3.1 개인 소유 구조의 한계를 해소한다<a class="headerlink" href="#31" title="Permanent link">¶</a></h3>
+<p>기존 공유 폴더가 "누군가의 폴더를 같이 쓰는 구조"라면, Space는 처음부터 "이 Space의 파일"을 중심으로 동작한다.
+즉, 파일은 특정 개인보다 <strong>Space 소속</strong>이 더 중요해진다. 문서에서도 파일은 User 소유 개념보다 <strong>Space 소속 개념이 더 중요하다</strong>고 명시한다.</p>
+<p>이 구조는 다음을 가능하게 한다.</p>
+<ul>
+<li>팀 자료가 개인에게 종속되지 않음</li>
+<li>프로젝트 공간을 독립된 단위로 운영 가능</li>
+<li>소유자 변경, 멤버 변경, 권한 위임이 더 자연스러움</li>
+</ul>
+<h3 id="32">3.2 협업 규칙을 공간 단위로 정리한다<a class="headerlink" href="#32" title="Permanent link">¶</a></h3>
+<p>Space는 단순 공유가 아니라 <strong>멤버십과 Role</strong>을 중심으로 협업 구조를 만든다.
+문서에서도 Space Member와 Role이 핵심 개념으로 정의되어 있고, 권한은 파일 하나하나보다 <strong>Space Membership + Role</strong>로 판단한다고 설명한다.</p>
+<p>즉, 기존 공유 폴더가 "같이 쓰긴 하는데 누가 뭘 할 수 있는지 애매한 상태"가 되기 쉬웠다면, Space는:</p>
+<ul>
+<li>Owner</li>
+<li>Admin</li>
+<li>Member</li>
+<li>Viewer</li>
+</ul>
+<p>같은 구조로 공간 단위 권한을 더 명확히 표현할 수 있다.</p>
+<h3 id="33">3.3 외부 공유와 내부 협업을 분리한다<a class="headerlink" href="#33" title="Permanent link">¶</a></h3>
+<p>문서에서도 Cloud#는 공유를 두 가지로 나눈다.</p>
+<ul>
+<li><strong>Share Link</strong> : 외부 공개/전달</li>
+<li><strong>Membership</strong> : 내부 협업/지속 접근</li>
+</ul>
+<p>즉, "파일 하나를 외부에 보내는 것"과 "같이 일할 사람을 멤버로 초대하는 것"을 구분한다. 이 분리는 기존 공유 폴더 구조에서 자주 섞이던 흐름을 명확히 정리해준다.</p>
+<h3 id="34-space-quota">3.4 Space 단위 Quota와 정책을 제공한다<a class="headerlink" href="#34-space-quota" title="Permanent link">¶</a></h3>
+<p>문서에서도 Quota는 개인 단위가 아니라 <strong>Space 단위로만 부여</strong>한다고 되어 있다.
+이 구조는 다음 장점을 갖는다.</p>
+<ul>
+<li>팀/프로젝트 단위 용량 관리 가능</li>
+<li>사용자별 사용량 계산의 복잡성 감소</li>
+<li>Space 단위 과금/플랜 설계 용이</li>
+<li>정책의 기준점이 명확해짐</li>
+</ul>
+<h3 id="35">3.5 개인용과 팀용을 하나의 개념으로 통합한다<a class="headerlink" href="#35" title="Permanent link">¶</a></h3>
+<p>Space는 반드시 여러 명이 쓰는 협업방이 아니다.
+혼자 쓰면 <strong>개인 전용 Space</strong>, 사람을 초대하면 <strong>팀 Space</strong>, 링크를 만들면 <strong>외부 공유 Space</strong>가 된다.</p>
+<p>즉,</p>
+<ul>
+<li>개인 파일 공간</li>
+<li>공유 폴더</li>
+<li>팀 드라이브</li>
+</ul>
+<p>를 따로따로 이해하지 않아도, 하나의 <strong>독립된 Space</strong> 개념으로 묶을 수 있다.</p>
+<hr/>
+<h2 id="4-space">4. Space의 확장된 가치: 여러 서비스의 공간을 통합 관리할 수 있다<a class="headerlink" href="#4-space" title="Permanent link">¶</a></h2>
+<p>Space 개념이 강한 이유는 단순히 공유 폴더를 대체하는 데서 끝나지 않는다.
+Space는 파일의 최상위 관리 단위를 <strong>서비스 내부의 폴더</strong>가 아니라 <strong>독립된 공간</strong>으로 끌어올리기 때문에, 서로 다른 클라우드나 스토리지에 있는 공간도 사용자 관점에서 <strong>같은 형식으로 다룰 수 있는 가능성</strong>을 만든다.</p>
+<p>예를 들어 사용자는 다음처럼 인식할 수 있다.</p>
+<ul>
+<li>A Cloud / 개인 문서 Space</li>
+<li>A Cloud / 디자인 Space</li>
+<li>B Cloud / 프로젝트 Space</li>
+<li>사내 스토리지 / 팀 자료 Space</li>
+</ul>
+<p>즉, 더 이상 "어느 서비스의 어느 폴더였더라?"가 아니라
+<strong>"어느 Space였더라?"</strong>로 기억하게 된다.</p>
+<p>이건 서비스가 늘어날수록 더 큰 가치가 된다.</p>
+<hr/>
+<h2 id="5">5. 프론트엔드와 백엔드를 완전히 분리해야 하는 이유<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<p>Cloud#가 Space 기반 서비스로 커질수록, 단순 웹앱이 아니라 다음과 같은 다양한 진입점을 가질 가능성이 크다.</p>
+<ul>
+<li>웹 클라이언트</li>
+<li>모바일 앱</li>
+<li>데스크톱 앱</li>
+<li>외부 공유 링크 페이지</li>
+<li>추후 WebDAV 같은 외부 프로토콜</li>
+</ul>
+<p>이 상황에서 프론트와 백엔드가 강하게 결합되어 있으면 구조가 빠르게 경직된다.
+반면 완전 분리 구조를 쓰면 다음 장점이 생긴다.</p>
+<h3 id="51">5.1 서버 이전이 쉬워진다<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<ul>
+<li>웹은 정적 파일만 배포하면 된다</li>
+<li>API 서버는 별도 이전이 가능하다</li>
+<li>업로드 서버만 따로 교체할 수 있다</li>
+<li>파일 저장소만 별도 전환할 수 있다</li>
+</ul>
+<p>즉, 이전 단위가 작아진다.</p>
+<h3 id="52">5.2 성격이 다른 요청을 분리 확장할 수 있다<a class="headerlink" href="#52" title="Permanent link">¶</a></h3>
+<p>Space 서비스는 한 종류의 요청만 처리하지 않는다.</p>
+<ul>
+<li>로그인/인증</li>
+<li>Space 생성/관리</li>
+<li>파일 탐색</li>
+<li>정렬/검색</li>
+<li>공유 링크 접근</li>
+<li>업로드</li>
+<li>다운로드/미리보기</li>
+<li>비동기 후처리</li>
+</ul>
+<p>이들은 자원 사용 패턴이 다르므로, 분리 구조가 훨씬 유리하다.</p>
+<h3 id="53">5.3 멀티 클라이언트 대응이 쉬워진다<a class="headerlink" href="#53" title="Permanent link">¶</a></h3>
+<p>Space, SpaceMember, ShareLink, UploadSession, FileItem 같은 개념을 API 중심으로 두면, 웹과 모바일과 데스크톱이 같은 핵심 규칙을 공유할 수 있다. 문서의 주요 엔티티 정의와도 잘 맞는다.</p>
+<hr/>
+<h2 id="6">6. 사용자 입장에서의 통합 관리도 쉬워진다<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<p>Space를 공통 단위로 잡으면, 백엔드 운영뿐 아니라 <strong>사용자 경험 자체도 통합</strong>할 수 있다.</p>
+<p>기존에는 사용자가 서비스마다 따로 들어가야 했다.</p>
+<ul>
+<li>A 클라우드 로그인</li>
+<li>A 클라우드의 내 파일/공유 폴더 탐색</li>
+<li>B 서비스 로그인</li>
+<li>B 서비스의 프로젝트 폴더 탐색</li>
+<li>NAS 공유 디렉터리 접속</li>
+</ul>
+<p>반면 Space 중심 구조에서는, 사용자에게 <strong>"내가 접근 가능한 모든 Space 목록"</strong> 을 하나의 화면으로 보여줄 수 있다.</p>
+<p>예를 들면:</p>
+<ul>
+<li>최근 사용한 Space</li>
+<li>즐겨찾기한 Space</li>
+<li>내가 속한 Space</li>
+<li>외부 공유받은 Space</li>
+<li>서비스별 Space 필터</li>
+<li>역할별 Space 필터</li>
+</ul>
+<p>즉, 서비스 중심 탐색이 아니라 <strong>공간 중심 탐색</strong>이 된다.</p>
+<hr/>
+<h2 id="7-space">7. 서버 전환 중심 Space 확장 전략<a class="headerlink" href="#7-space" title="Permanent link">¶</a></h2>
+<h3 id="71">7.1 목표<a class="headerlink" href="#71" title="Permanent link">¶</a></h3>
+<p>초기 MVP의 목표는, 여러 클라우드나 여러 self-host 서버의 Space를 완전히 통합 탐색하는 것이 아니라<br/>
+사용자가 <strong>여러 서버 사이를 쉽게 이동하면서 각 서버의 Space를 자연스럽게 이용할 수 있게 하는 것</strong> 이다.</p>
+<p>즉, 처음부터 모든 서버를 하나의 검색/메타데이터/권한 체계로 묶기보다,<br/>
+각 서버는 독립적으로 운영하고 프론트엔드가 이를 <strong>하나의 진입 경험</strong> 으로 연결하는 방식을 우선한다.</p>
+<p>핵심 원칙은 아래와 같다.</p>
+<ul>
+<li>각 서버는 독립적으로 운영한다</li>
+<li>프론트엔드는 공통된 UI/UX를 제공한다</li>
+<li>사용자는 서버를 쉽게 선택하고 전환할 수 있다</li>
+<li>Space 탐색은 서버 단위로 수행한다</li>
+<li>완전한 통합 검색과 통합 권한 체계는 추후 확장 과제로 둔다</li>
+</ul>
+<p>이 접근은 self-host 환경에서 특히 유리하다.<br/>
+중앙 집중형 통합 계층 없이도 시작할 수 있고, 서버 수가 적은 초기 단계에서 구현 복잡도를 크게 낮출 수 있기 때문이다.</p>
+<h3 id="72-mvp">7.2 MVP에서의 사용자 경험<a class="headerlink" href="#72-mvp" title="Permanent link">¶</a></h3>
+<p>MVP에서 중요한 것은 “모든 Space를 하나의 목록으로 합치는 것” 이 아니라,<br/>
+사용자가 <strong>지금 어느 서버에 들어와 있는지 명확히 이해하고, 다른 서버로 빠르게 이동할 수 있게 하는 것</strong> 이다.</p>
+<p>예를 들면:</p>
+<ul>
+<li>상단 바에서 현재 서버 표시</li>
+<li>서버 선택 드롭다운 제공</li>
+<li>최근 접속 서버 목록 제공</li>
+<li>즐겨찾기 서버 제공</li>
+<li>서버 전환 시 해당 서버의 Space 목록으로 즉시 이동</li>
+</ul>
+<p>즉, MVP의 핵심은 <strong>통합 탐색</strong> 이 아니라 <strong>통합 진입 경험</strong> 이다.</p>
+<hr/>
+<h2 id="8-mvp">8. 서버 전환 중심 MVP 구조도<a class="headerlink" href="#8-mvp" title="Permanent link">¶</a></h2>
+<p>이 구조에서 중요한 점은,<br/>
+클라이언트가 여러 서버를 <strong>같은 방식으로 접근할 수 있게 만들되</strong>,<br/>
+서버 내부는 서로 완전히 독립적으로 유지한다는 것이다.</p>
+<p>즉, 서버를 하나의 거대한 시스템으로 묶는 것이 아니라<br/>
+<strong>같은 제품 경험을 가진 여러 독립 노드</strong> 로 보는 것이 MVP에 적합하다.</p>
+<hr/>
+<h2 id="9">9. 서버 전환 중심 동작 방식<a class="headerlink" href="#9" title="Permanent link">¶</a></h2>
+<h3 id="91">9.1 서버 목록 진입<a class="headerlink" href="#91" title="Permanent link">¶</a></h3>
+<p>사용자는 앱에 들어오면 먼저 자신이 접근 가능한 서버 목록을 본다.</p>
+<p>예:</p>
+<ul>
+<li>개인 서버</li>
+<li>팀 서버</li>
+<li>회사 내부 서버</li>
+<li>NAS 연동 서버</li>
+</ul>
+<p>이 목록은 전역 통합 Space 목록이 아니라,<br/>
+<strong>접속 가능한 서버 목록</strong> 이다.</p>
+<h3 id="92-space">9.2 서버 선택 후 Space 탐색<a class="headerlink" href="#92-space" title="Permanent link">¶</a></h3>
+<p>사용자가 특정 서버를 선택하면, 그 순간부터 탐색은 해당 서버 내부에서만 이루어진다.</p>
+<p>예:</p>
+<ul>
+<li>Server A 선택 → Server A의 Space 목록 표시</li>
+<li>Server B 선택 → Server B의 Space 목록 표시</li>
+<li>NAS Gateway 선택 → NAS 기반 Space 목록 표시</li>
+</ul>
+<p>즉, MVP에서는 “전체 서버를 한 번에 탐색” 하지 않고<br/>
+<strong>선택된 서버 안에서만 Space를 탐색</strong> 한다.</p>
+<h3 id="93">9.3 검색 범위도 서버 단위<a class="headerlink" href="#93" title="Permanent link">¶</a></h3>
+<p>초기 버전에서는 검색도 서버 단위로 한정하는 것이 현실적이다.</p>
+<p>예:</p>
+<ul>
+<li>Server A 안에서 “기획안” 검색</li>
+<li>Server B 안에서 “디자인” 검색</li>
+</ul>
+<p>이렇게 하면 중앙 검색 인덱스나 메타데이터 통합 계층 없이도<br/>
+충분히 일관된 사용자 경험을 제공할 수 있다.</p>
+<p>전역 검색은 추후 확장 기능으로 둘 수 있다.</p>
+<h3 id="94">9.4 서버 이동을 가볍게 만든다<a class="headerlink" href="#94" title="Permanent link">¶</a></h3>
+<p>MVP에서 중요한 것은 통합 검색보다도 <strong>서버 이동 비용을 낮추는 것</strong> 이다.</p>
+<p>이를 위해 다음 요소가 유용하다.</p>
+<ul>
+<li>상단 서버 선택 메뉴</li>
+<li>최근 접속 서버 바로가기</li>
+<li>즐겨찾기 서버 고정</li>
+<li>서버별 색상/아이콘 구분</li>
+<li>현재 접속 중인 서버명 명확 표시</li>
+</ul>
+<p>즉, 사용자가 “지금 어디에 있는지” 와 “어디로 이동할 수 있는지” 를 쉽게 이해하도록 만드는 것이 핵심이다.</p>
+<hr/>
+<h2 id="10">10. 권장 배포 구조<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<p>self-host MVP 기준의 권장 구조는 아래와 같다.</p>
+<p>이 구조의 핵심은 다음과 같다.</p>
+<ul>
+<li>프론트는 공통 UI를 유지한다</li>
+<li>각 서버는 자기 DB와 스토리지를 가진다</li>
+<li>업로드/미리보기/검색도 서버 내부에서 처리한다</li>
+<li>중앙 통합 백엔드는 두지 않는다</li>
+<li>서버를 추가할 때도 독립 노드를 하나 더 붙이는 방식으로 확장한다</li>
+</ul>
+<p>즉, self-host 환경에 맞게 <strong>작고 독립적인 서버를 여러 개 운영하는 구조</strong> 다.</p>
+<hr/>
+<h2 id="11">11. 이 구조의 기대 효과<a class="headerlink" href="#11" title="Permanent link">¶</a></h2>
+<h3 id="111-mvp">11.1 MVP 관점<a class="headerlink" href="#111-mvp" title="Permanent link">¶</a></h3>
+<ul>
+<li>초기 구현 범위를 크게 줄일 수 있다</li>
+<li>중앙 통합 검색/권한 번역/메타 집계 없이 시작 가능하다</li>
+<li>self-host 환경에 맞게 서버별 독립 운영이 가능하다</li>
+<li>장애가 발생해도 특정 서버 단위로 격리하기 쉽다</li>
+</ul>
+<h3 id="112">11.2 사용자 경험 관점<a class="headerlink" href="#112" title="Permanent link">¶</a></h3>
+<ul>
+<li>여러 서버를 하나의 제품 경험 안에서 접근할 수 있다</li>
+<li>서버 이동이 쉬워진다</li>
+<li>“어느 서비스에 들어가야 하지?” 보다 “어느 서버로 갈까?” 수준으로 단순화된다</li>
+<li>서버별로 같은 UI를 쓰기 때문에 학습 비용이 낮다</li>
+</ul>
+<h3 id="113">11.3 운영 관점<a class="headerlink" href="#113" title="Permanent link">¶</a></h3>
+<ul>
+<li>각 서버를 별도로 배포하고 이전할 수 있다</li>
+<li>서버마다 다른 저장소 정책을 적용할 수 있다</li>
+<li>고객별, 조직별, 용도별로 서버를 분리하기 쉽다</li>
+<li>향후 특정 서버에만 별도 기능을 실험적으로 붙이기 쉽다</li>
+</ul>
+<hr/>
+<h2 id="12">12. 결론<a class="headerlink" href="#12" title="Permanent link">¶</a></h2>
+<p>초기 self-host MVP에서는,<br/>
+여러 클라우드와 스토리지를 하나의 통합 탐색 계층으로 묶는 것보다<br/>
+<strong>각 서버를 독립적으로 운영하면서 사용자가 쉽게 전환할 수 있게 하는 구조</strong> 가 더 현실적이다.</p>
+<p>이 방식은 다음 장점을 가진다.</p>
+<ul>
+<li>구현 복잡도가 낮다</li>
+<li>self-host 환경에 잘 맞는다</li>
+<li>프론트/백엔드 완전 분리 구조를 유지할 수 있다</li>
+<li>서버 단위 확장과 운영이 쉽다</li>
+<li>이후 필요할 때 통합 검색이나 통합 메타데이터 계층으로 확장할 여지를 남긴다</li>
+</ul>
+<p>즉, MVP에서는<br/>
+<strong>“통합 탐색 허브” 보다 “서버 전환이 쉬운 공통 Space 경험”</strong> 이 더 적합하다.</p>
+<p>장기적으로는 여기에 다음 기능을 점진적으로 추가할 수 있다.</p>
+<ul>
+<li>서버별 최근 Space 집계</li>
+<li>여러 서버 즐겨찾기 모아보기</li>
+<li>제한적 통합 검색</li>
+<li>선택 서버 묶음 보기</li>
+<li>이후의 완전한 멀티 서버 탐색</li>
+</ul>
+<p>하지만 첫 단계에서는,<br/>
+<strong>탐색 통합보다 서버 전환 단순화가 더 큰 가치</strong> 를 만든다.</p>
+<h2 id="12_1">12. 결론<a class="headerlink" href="#12_1" title="Permanent link">¶</a></h2>
+<p>Cloud#의 Space는 단순한 공유 폴더가 아니라,
+<strong>개인 파일 공간과 협업 공간을 모두 포괄하는 독립된 파일 공간 단위</strong>다. 문서에서도 Space는 개인 저장소가 아닌, 독립된 공간이자 권한과 Quota, 파일 구조, 공유 정책의 기준 단위로 정의되어 있다.</p>
+<p>이 개념은 단순히 기존 파일 서비스의 불편을 줄이는 데서 끝나지 않는다.</p>
+<ul>
+<li>개인 소유 기반 공유 구조의 한계를 줄이고</li>
+<li>협업 규칙을 더 명확하게 만들며</li>
+<li>내부 협업과 외부 공유를 분리하고</li>
+<li>정책과 용량의 기준점을 Space로 통합한다</li>
+</ul>
+<p>여기에 프론트/백엔드 완전 분리 구조를 결합하면,</p>
+<ul>
+<li>서버 이전이 쉬워지고</li>
+<li>장기적으로는 여러 클라우드와 스토리지의 Space를 하나의 경험으로 묶는 <strong>멀티 클라우드 통합 탐색 허브</strong>로까지 확장할 수 있다.</li>
+</ul>
+<p>즉, Space는 단순한 저장 단위가 아니라,
+<strong>미래의 멀티 클라우드 파일 탐색과 협업을 위한 공통 추상화 계층</strong>이 될 수 있다.</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

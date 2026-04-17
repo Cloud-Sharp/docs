@@ -1,0 +1,1556 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>Cloud# 서비스 제안서 - 개발 문서</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cloud">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Cloud# 서비스 제안서
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        목차
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 프로젝트 개요
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 문제 정의
+      
+    </span>
+</a>
+<nav aria-label="2. 문제 정의" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-nextcloud">
+<span class="md-ellipsis">
+      
+        2.1 Nextcloud 계열의 한계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22-s3">
+<span class="md-ellipsis">
+      
+        2.2 S3 저장소의 한계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23">
+<span class="md-ellipsis">
+      
+        2.3 시장 공백
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 해결 방향
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 핵심 가치 제안 및 차별점
+      
+    </span>
+</a>
+<nav aria-label="4. 핵심 가치 제안 및 차별점" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 핵심 가치 제안
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 경쟁 서비스 대비 차별점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 타겟 사용자
+      
+    </span>
+</a>
+<nav aria-label="5. 타겟 사용자" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51-1">
+<span class="md-ellipsis">
+      
+        5.1 1차 타겟
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-2">
+<span class="md-ellipsis">
+      
+        5.2 2차 타겟
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 사용자 니즈
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 기능 로드맵
+      
+    </span>
+</a>
+<nav aria-label="6. 기능 로드맵" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#phase-1-mvp-48">
+<span class="md-ellipsis">
+      
+        Phase 1 — MVP (4~8주)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#phase-2-36">
+<span class="md-ellipsis">
+      
+        Phase 2 — 확장 기능 (3~6주)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#phase-3">
+<span class="md-ellipsis">
+      
+        Phase 3 — 커뮤니티 플랫폼 (추후)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 기술 아키텍처
+      
+    </span>
+</a>
+<nav aria-label="7. 기술 아키텍처" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        기술 선택 근거
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 데이터 모델
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 비기능 요구사항
+      
+    </span>
+</a>
+<nav aria-label="9. 비기능 요구사항" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 성능
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92">
+<span class="md-ellipsis">
+      
+        9.2 안정성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93">
+<span class="md-ellipsis">
+      
+        9.3 보안
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#94">
+<span class="md-ellipsis">
+      
+        9.4 확장성
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 개발 일정
+      
+    </span>
+</a>
+<nav aria-label="10. 개발 일정" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3">
+<span class="md-ellipsis">
+      
+        개발 우선순위
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-kpi">
+<span class="md-ellipsis">
+      
+        11. 성공 지표 (KPI)
+      
+    </span>
+</a>
+<nav aria-label="11. 성공 지표 (KPI)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mvp">
+<span class="md-ellipsis">
+      
+        MVP 단계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ux">
+<span class="md-ellipsis">
+      
+        UX 중심
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        12. 리스크 및 대응 전략
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        13. 기대 효과
+      
+    </span>
+</a>
+<nav aria-label="13. 기대 효과" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4">
+<span class="md-ellipsis">
+      
+        사용자 측면
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_5">
+<span class="md-ellipsis">
+      
+        개발·운영 측면
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cloud">Cloud# 서비스 제안서<a class="headerlink" href="#cloud" title="Permanent link">¶</a></h1>
+<h2 id="_1">목차<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<ol>
+<li>프로젝트 개요</li>
+<li>문제 정의</li>
+<li>해결 방향</li>
+<li>핵심 가치 제안 및 차별점</li>
+<li>타겟 사용자</li>
+<li>기능 로드맵</li>
+<li>기술 아키텍처</li>
+<li>데이터 모델</li>
+<li>비기능 요구사항</li>
+<li>개발 일정</li>
+<li>성공 지표 (KPI)</li>
+<li>리스크 및 대응 전략</li>
+<li>기대 효과</li>
+</ol>
+<hr/>
+<h2 id="1">1. 프로젝트 개요<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>서비스명</strong></td>
+<td>Cloud#</td>
+</tr>
+<tr>
+<td><strong>한 줄 소개</strong></td>
+<td>느린 웹 기반 파일 관리의 UX를 개선하고, 1차는 Local FS로 단순하게 시작하되 향후 S3로 확장 가능한 파일 호스팅 서비스</td>
+</tr>
+<tr>
+<td><strong>Backend</strong></td>
+<td>ASP.NET Core</td>
+</tr>
+<tr>
+<td><strong>Frontend</strong></td>
+<td>Blazor (Server 또는 WASM + API 조합 검토)</td>
+</tr>
+<tr>
+<td><strong>업로드 방식</strong></td>
+<td>tus 프로토콜 (재개 가능한 대용량 업로드)</td>
+</tr>
+<tr>
+<td><strong>저장소</strong></td>
+<td>Local FS (1차), 추후 S3 호환 Object Storage로 확장</td>
+</tr>
+<tr>
+<td><strong>개발 방식</strong></td>
+<td>단계별 로드맵 — MVP → 확장 기능 → 커뮤니티 플랫폼</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2">2. 문제 정의<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<p>기존 파일 관리 솔루션은 두 가지 방향에서 한계를 드러냅니다.</p>
+<h3 id="21-nextcloud">2.1 Nextcloud 계열의 한계<a class="headerlink" href="#21-nextcloud" title="Permanent link">¶</a></h3>
+<ul>
+<li>php 기반의 <strong>체감 반응성 저하</strong> — 탐색, 공유 설정, 미리보기, 페이지 전환에서 답답함 발생</li>
+<li>구형 기술 스택 기반으로 <strong>성능 최적화 및 유지보수 비용 증가</strong></li>
+<li>무거운 기능 구조로 인해 기본적인 파일 관리 경험조차 느리게 느껴짐</li>
+</ul>
+<h3 id="22-s3">2.2 S3 저장소의 한계<a class="headerlink" href="#22-s3" title="Permanent link">¶</a></h3>
+<ul>
+<li>성능과 안정성은 우수하나 <strong>파일 관리 UX 기능 부족</strong></li>
+<li>폴더 구조, 공유 링크, 미리보기, 파일 정리 기능이 불친절하거나 부재</li>
+<li><strong>비개발자/일반 사용자에게 높은 진입 장벽</strong> 존재</li>
+</ul>
+<h3 id="23">2.3 시장 공백<a class="headerlink" href="#23" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>flowchart TB
+    A["Nextcloud&lt;br/&gt;기능은 풍부&lt;br/&gt;UX가 느림"]
+    B["S3 저장소&lt;br/&gt;성능은 우수&lt;br/&gt;UX가 불친절"]
+    C["Cloud#&lt;br/&gt;빠르고 · 쉽고 · 안정적"]
+
+    A --&gt; C
+    B --&gt; C</code></pre>
+<hr/>
+<h2 id="3">3. 해결 방향<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<p><strong>"Nextcloud의 기능성 + S3의 성능/확장성 + 현대적인 웹 UX"</strong></p>
+<table>
+<thead>
+<tr>
+<th>기능성</th>
+<th>성능·확장성</th>
+<th>현대적 UX</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nextcloud 수준의 파일 관리</td>
+<td>S3/Object Storage 기반 인프라</td>
+<td>Blazor + 빠른 API 응답</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="4">4. 핵심 가치 제안 및 차별점<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41">4.1 핵심 가치 제안<a class="headerlink" href="#41" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>가치</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⚡ <strong>빠르다</strong></td>
+<td>클릭·탐색·미리보기 반응 속도 개선</td>
+</tr>
+<tr>
+<td>🎯 <strong>쉽다</strong></td>
+<td>폴더·공유·정리 기능의 직관적 UX</td>
+</tr>
+<tr>
+<td>🔒 <strong>안정적이다</strong></td>
+<td>tus 기반 대용량 업로드 중단 후 재개 가능</td>
+</tr>
+<tr>
+<td>📈 <strong>확장 가능하다</strong></td>
+<td>S3 기반으로 저장소 교체·증설 용이</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42">4.2 경쟁 서비스 대비 차별점<a class="headerlink" href="#42" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>Nextcloud</th>
+<th>S3 직접 사용</th>
+<th><strong>Cloud#</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI 반응 속도</td>
+<td>느림</td>
+<td>제한적</td>
+<td><strong>빠름 (최우선 목표)</strong></td>
+</tr>
+<tr>
+<td>대용량 업로드 안정성</td>
+<td>보통</td>
+<td>지원</td>
+<td><strong>tus 기반 완전 지원</strong></td>
+</tr>
+<tr>
+<td>일반 사용자 친화성</td>
+<td>보통</td>
+<td>낮음</td>
+<td><strong>높음 (직관적 UX)</strong></td>
+</tr>
+<tr>
+<td>저장소 확장성</td>
+<td>제한적</td>
+<td>우수</td>
+<td><strong>우수 (S3 호환)</strong></td>
+</tr>
+<tr>
+<td>WebDAV 지원</td>
+<td>지원</td>
+<td>미지원</td>
+<td><strong>2차 개발 예정</strong></td>
+</tr>
+<tr>
+<td>커뮤니티/협업 기능</td>
+<td>제한적</td>
+<td>미지원</td>
+<td><strong>3차 개발 예정</strong></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="5">5. 타겟 사용자<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<h3 id="51-1">5.1 1차 타겟<a class="headerlink" href="#51-1" title="Permanent link">¶</a></h3>
+<ul>
+<li>개인 개발자 / 홈서버 운영자</li>
+<li>소규모 팀 (스터디, 프로젝트 팀, 동아리)</li>
+<li>NAS/클라우드 대체 솔루션을 탐색 중인 사용자</li>
+</ul>
+<h3 id="52-2">5.2 2차 타겟<a class="headerlink" href="#52-2" title="Permanent link">¶</a></h3>
+<ul>
+<li>크리에이터/디자이너 — 파일 공유·미리보기 수요 높음</li>
+<li>내부 자료 공유가 필요한 팀/조직</li>
+<li>WebDAV 기반 마운트를 원하는 파워유저</li>
+</ul>
+<h3 id="53">5.3 사용자 니즈<a class="headerlink" href="#53" title="Permanent link">¶</a></h3>
+<ul>
+<li>빠른 업로드·다운로드</li>
+<li>쉬운 폴더·파일 정리</li>
+<li>링크 공유 및 권한 제어</li>
+<li>브라우저에서의 미리보기</li>
+<li>OS 탐색기에서 직접 접근 (WebDAV)</li>
+</ul>
+<hr/>
+<h2 id="6">6. 기능 로드맵<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<h3 id="phase-1-mvp-48">Phase 1 — MVP (4~8주)<a class="headerlink" href="#phase-1-mvp-48" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>목표: 실사용 가능한 최소 제품 완성</p>
+</blockquote>
+<p><strong>회원/인증</strong></p>
+<ul>
+<li>회원가입, 로그인/로그아웃</li>
+<li>JWT Bearer 토큰 기반 인증</li>
+<li>비밀번호 재설정 (이메일 기반)</li>
+</ul>
+<p><strong>파일 관리</strong></p>
+<ul>
+<li>파일 업로드 — tus 기반, 재개 가능</li>
+<li>파일 다운로드 (Range 지원)</li>
+<li>폴더 생성·이동·이름 변경·삭제</li>
+<li>파일 이름 변경·이동·삭제</li>
+<li>파일 목록 조회 (정렬/검색 기본)</li>
+<li>휴지통 (소프트 삭제)</li>
+</ul>
+<p><strong>공유</strong></p>
+<ul>
+<li>공유 링크 생성</li>
+<li>만료일·비밀번호 설정</li>
+<li>읽기 전용 공유</li>
+<li>링크 비활성화</li>
+</ul>
+<p><strong>미리보기</strong></p>
+<ul>
+<li>이미지 미리보기</li>
+<li>텍스트/코드 파일 미리보기</li>
+<li>PDF 미리보기 (브라우저 내장 뷰어)</li>
+</ul>
+<p><strong>관리자/운영</strong></p>
+<ul>
+<li>사용자별 저장 용량 제한 (Quota)</li>
+<li>파일 업로드 크기 제한</li>
+<li>관리자용 사용자·용량 현황 조회</li>
+</ul>
+<hr/>
+<h3 id="phase-2-36">Phase 2 — 확장 기능 (3~6주)<a class="headerlink" href="#phase-2-36" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>목표: 파워유저·운영자 사용성 강화</p>
+</blockquote>
+<p><strong>WebDAV 지원</strong></p>
+<ul>
+<li>OS 탐색기/Finder에서 네트워크 드라이브처럼 접근</li>
+<li>사용자별 권한 반영</li>
+<li>Windows/macOS 우선 지원</li>
+</ul>
+<p><strong>외부 다운로드/수집</strong> </p>
+<ul>
+<li>URL 기반 파일 가져오기 (Remote Fetch)</li>
+<li>서버 측 다운로드 큐 처리 및 진행률 표시</li>
+</ul>
+<p><strong>고급 파일 관리</strong></p>
+<ul>
+<li>태그·즐겨찾기</li>
+<li>최근 파일</li>
+<li>버전 관리 (간단 버전)</li>
+<li>중복 파일 탐지 (해시 기반)</li>
+</ul>
+<p><strong>운영 기능</strong></p>
+<ul>
+<li>감사 로그 (업로드·삭제·공유 생성)</li>
+<li>관리자 권한 정책 (RBAC)</li>
+<li>알림 — 공유 링크 만료, 용량 초과 등</li>
+</ul>
+<hr/>
+<h3 id="phase-3">Phase 3 — 커뮤니티 플랫폼 (추후)<a class="headerlink" href="#phase-3" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>목표: 파일 공유 중심 커뮤니티 플랫폼으로 확장</p>
+</blockquote>
+<p><strong>공유 스페이스</strong></p>
+<ul>
+<li>주제/팀 단위 공간 생성</li>
+<li>공간별 권한 (관리자/멤버/읽기전용)</li>
+<li>공간별 저장소·용량 할당</li>
+</ul>
+<p><strong>커뮤니티/채팅</strong></p>
+<ul>
+<li>파일 중심 채팅·피드</li>
+<li>파일 업로드 후 즉시 공유·대화</li>
+<li>링크·미디어·문서 프리뷰</li>
+<li>파일·메시지 통합 검색</li>
+</ul>
+<p><strong>장기 확장</strong></p>
+<ul>
+<li>봇/자동화 업로드</li>
+<li>팀 워크플로우 연동</li>
+<li>실시간 협업 편집기 연동</li>
+</ul>
+<hr/>
+<h2 id="7">7. 기술 아키텍처<a class="headerlink" href="#7" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>flowchart TB
+    Client["클라이언트&lt;br/&gt;Blazor UI + tus client"]
+
+    API["API 서버&lt;br/&gt;ASP.NET Core — 인증/인가, 메타데이터,&lt;br/&gt;공유 링크, WebDAV(2차), 관리자 API"]
+
+    Upload["업로드 서비스&lt;br/&gt;tus 세션 관리&lt;br/&gt;청크 병합&lt;br/&gt;이벤트 발행"]
+
+    DB["메타데이터 DB&lt;br/&gt;PostgreSQL / MySQL&lt;br/&gt;사용자·폴더·파일·공유&lt;br/&gt;링크·감사로그 관리"]
+
+    Storage["Local FS (1차)&lt;br/&gt;스토리지 추상화 유지&lt;br/&gt;추후 S3 호환 저장소로 확장"]
+
+    Worker["비동기 작업자 (선택)&lt;br/&gt;썸네일 생성 · 미리보기 변환&lt;br/&gt;바이러스 스캔 · 원격 URL 다운로드"]
+
+    Client --&gt; API
+    API --&gt; Upload
+    API --&gt; DB
+    Upload --&gt; Storage
+    Storage --&gt; Worker</code></pre>
+<h3 id="_2">기술 선택 근거<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>기술</th>
+<th>선택 이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ASP.NET Core</td>
+<td>높은 성능, WebDAV/S3 SDK 지원, 풍부한 생태계</td>
+</tr>
+<tr>
+<td>Blazor</td>
+<td>C# 풀스택으로 컨텍스트 전환 최소화</td>
+</tr>
+<tr>
+<td>tus 프로토콜</td>
+<td>표준화된 재개 가능 업로드 — 네트워크 중단에 강인</td>
+</tr>
+<tr>
+<td>스토리지 추상화 + Local FS</td>
+<td>1차 구현은 단순하게 가져가되, 추후 S3 호환 저장소로 확장 가능</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="8">8. 데이터 모델<a class="headerlink" href="#8" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>엔티티</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>User</code></td>
+<td>사용자 계정 — 인증 정보, quota 집계 캐시</td>
+</tr>
+<tr>
+<td><code>Folder</code></td>
+<td>사용자별 폴더 트리 메타데이터</td>
+</tr>
+<tr>
+<td><code>FileItem</code></td>
+<td>최종 저장 완료된 파일 메타데이터 및 접근 상태</td>
+</tr>
+<tr>
+<td><code>UploadSession</code></td>
+<td>tus 업로드 전송 상태와 finalize 메타데이터</td>
+</tr>
+<tr>
+<td><code>FileReservation</code></td>
+<td>파일명·폴더·quota 선점</td>
+</tr>
+<tr>
+<td><code>ShareLink</code></td>
+<td>외부 공유 링크 정책 단위</td>
+</tr>
+<tr>
+<td><code>ShareLinkItem</code></td>
+<td>공유 링크와 파일 연결</td>
+</tr>
+<tr>
+<td><code>DownloadSession</code></td>
+<td>실제 파일 스트리밍용 단명 세션 토큰</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="9">9. 비기능 요구사항<a class="headerlink" href="#9" title="Permanent link">¶</a></h2>
+<h3 id="91">9.1 성능<a class="headerlink" href="#91" title="Permanent link">¶</a></h3>
+<ul>
+<li>목록 조회·폴더 이동 UI 빠른 응답 — <strong>체감 속도 최우선</strong></li>
+<li>대용량 업로드 안정성 보장 (재개 가능)</li>
+<li>썸네일·미리보기 캐싱으로 반복 요청 최적화</li>
+</ul>
+<h3 id="92">9.2 안정성<a class="headerlink" href="#92" title="Permanent link">¶</a></h3>
+<ul>
+<li>업로드 중단·재시도 처리</li>
+<li>저장소 장애 대응 (재시도/에러 처리)</li>
+<li>파일 메타데이터와 저장 객체 정합성 검증 배치</li>
+</ul>
+<h3 id="93">9.3 보안<a class="headerlink" href="#93" title="Permanent link">¶</a></h3>
+<ul>
+<li><code>Authorization</code> 헤더의 JWT Bearer 토큰 기반 인증</li>
+<li>공유 링크 권한·만료·비밀번호 보호</li>
+<li>악성 파일 업로드 대응 (백신 스캔 연계)</li>
+<li>감사 로그 / 접근 로그</li>
+<li>HTTPS 전제</li>
+</ul>
+<h3 id="94">9.4 확장성<a class="headerlink" href="#94" title="Permanent link">¶</a></h3>
+<ul>
+<li>저장소 백엔드 교체 가능 (MinIO ↔ AWS S3 등)</li>
+<li>모듈형 설계 — WebDAV·커뮤니티 기능 추가 용이</li>
+<li>API/도메인 분리로 수평 확장 대응</li>
+</ul>
+<hr/>
+<h2 id="10">10. 개발 일정<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>기간</th>
+<th>주요 내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 0</strong> — 기획/설계</td>
+<td>1~2주</td>
+<td>요구사항 확정, IA/화면 흐름 설계, DB·저장소 구조 설계, PoC (tus + Local FS + 미리보기)</td>
+</tr>
+<tr>
+<td><strong>Phase 1</strong> — MVP</td>
+<td>4~8주</td>
+<td>인증/회원, 파일/폴더 CRUD, tus 업로드·다운로드, 공유 링크, 미리보기 기본</td>
+</tr>
+<tr>
+<td><strong>Phase 2</strong> — 확장 기능</td>
+<td>3~6주</td>
+<td>WebDAV, URL 가져오기, 관리자 기능 강화, 감사 로그·알림</td>
+</tr>
+<tr>
+<td><strong>Phase 3</strong> — 커뮤니티</td>
+<td>추후 협의</td>
+<td>공유 스페이스, 채팅·피드, 공간 권한·통합 검색</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>실제 일정은 인원수·숙련도·디자인 리소스에 따라 조정 필요</p>
+</blockquote>
+<h3 id="_3">개발 우선순위<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>우선순위</th>
+<th>항목</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Must</strong></td>
+<td>인증/회원, 파일/폴더 메타데이터, tus 업로드, 다운로드, 공유 링크, 이미지/PDF/텍스트 미리보기, Quota 설정</td>
+</tr>
+<tr>
+<td><strong>Should</strong></td>
+<td>휴지통, 즐겨찾기/최근 파일, 관리자 대시보드, 썸네일 캐싱 고도화</td>
+</tr>
+<tr>
+<td><strong>Could</strong></td>
+<td>WebDAV, URL 가져오기, 파일 버전 관리, 커뮤니티/채팅, 고급 검색/태그</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="11-kpi">11. 성공 지표 (KPI)<a class="headerlink" href="#11-kpi" title="Permanent link">¶</a></h2>
+<h3 id="mvp">MVP 단계<a class="headerlink" href="#mvp" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>업로드 성공률</td>
+<td>목표: 99%+</td>
+</tr>
+<tr>
+<td>업로드 재개 성공률</td>
+<td>중단 후 재개 성공 비율</td>
+</tr>
+<tr>
+<td>파일 목록 조회 응답시간</td>
+<td>목표: 200ms 이하</td>
+</tr>
+<tr>
+<td>미리보기 생성 성공률</td>
+<td>이미지·PDF·텍스트 기준</td>
+</tr>
+<tr>
+<td>공유 링크 사용률</td>
+<td>생성 대비 다운로드 전환율</td>
+</tr>
+<tr>
+<td>DAU/WAU</td>
+<td>초기 사용자 활성도</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ux">UX 중심<a class="headerlink" href="#ux" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTFU</td>
+<td>첫 파일 업로드까지 걸리는 시간</td>
+</tr>
+<tr>
+<td>공유 링크 생성 클릭 수</td>
+<td>생성까지 평균 클릭 수 최소화</td>
+</tr>
+<tr>
+<td>사용자 만족도</td>
+<td>체감 속도·사용성 설문</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="12">12. 리스크 및 대응 전략<a class="headerlink" href="#12" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>리스크</th>
+<th>원인</th>
+<th>대응 전략</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>빠른 UX 달성 실패</strong></td>
+<td>서버 렌더링 지연, DB 쿼리 비효율</td>
+<td>목록·탐색 API 최적화, 캐시 적용, 미리보기 비동기 생성, 성능 지표 관리</td>
+</tr>
+<tr>
+<td><strong>대용량 업로드 안정성</strong></td>
+<td>네트워크 중단, 청크 정합성 문제</td>
+<td>tus 채택, 업로드 세션 상태 관리, 재시도 정책·체크섬 검증</td>
+</tr>
+<tr>
+<td><strong>WebDAV 호환성</strong></td>
+<td>OS별 클라이언트 동작 차이</td>
+<td>2차 기능으로 분리, Windows/macOS 우선, 점진적 확장</td>
+</tr>
+<tr>
+<td><strong>저작권·불법 사용</strong></td>
+<td>외부 다운로드 기능 악용 가능성</td>
+<td>사용자 소유/허가 콘텐츠 한정, 이용약관 명시, 신고·차단·로그 정책 마련</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="13">13. 기대 효과<a class="headerlink" href="#13" title="Permanent link">¶</a></h2>
+<h3 id="_4">사용자 측면<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
+<ul>
+<li>기존 솔루션 대비 <strong>빠른 파일 관리 경험</strong> 제공</li>
+<li>단순 저장소를 넘어선 <strong>실사용 중심 파일 작업 공간</strong></li>
+<li>대용량 업로드·공유·미리보기의 편의성 향상</li>
+</ul>
+<h3 id="_5">개발·운영 측면<a class="headerlink" href="#_5" title="Permanent link">¶</a></h3>
+<ul>
+<li>현대 기술 스택 기반 <strong>유지보수성 향상</strong></li>
+<li>저장소와 메타데이터 분리로 <strong>확장성 확보</strong></li>
+<li>단계적 기능 확장 — 파일 호스팅 → 팀 공유 → 커뮤니티 플랫폼</li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

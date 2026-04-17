@@ -1,0 +1,1541 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/" rel="prev"/>
+<link href="../quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/" rel="next"/>
+<link href="../../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CAS 기반 Finalize 설계안 정리 - 개발 문서</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cas-finalize">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CAS 기반 Finalize 설계안 정리
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 설계 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 엔티티 관계 및 상태 머신
+      
+    </span>
+</a>
+<nav aria-label="2. 엔티티 관계 및 상태 머신" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 엔티티 관계도
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22-uploadsession">
+<span class="md-ellipsis">
+      
+        2.2 UploadSession 상태 머신
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23-filereservation">
+<span class="md-ellipsis">
+      
+        2.3 FileReservation 상태 머신
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-finalize">
+<span class="md-ellipsis">
+      
+        3. Finalize 전체 처리 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 시퀀스 다이어그램
+      
+    </span>
+</a>
+<nav aria-label="4. 시퀀스 다이어그램" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 정상 처리 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 중복 요청 차단 흐름
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 단계별 상세
+      
+    </span>
+</a>
+<nav aria-label="5. 단계별 상세" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51-cas-step-1">
+<span class="md-ellipsis">
+      
+        5.1 CAS 점유 (Step 1)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-step-2">
+<span class="md-ellipsis">
+      
+        5.2 임시 파일 최종 검증 (Step 2)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53-step-3">
+<span class="md-ellipsis">
+      
+        5.3 파일 이동 (Step 3) — 트랜잭션 밖
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-db-step-4">
+<span class="md-ellipsis">
+      
+        5.4 DB 확정 트랜잭션 (Step 4)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 실패 처리
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-recovery-worker">
+<span class="md-ellipsis">
+      
+        7. Recovery Worker
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 클라이언트 응답 설계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 설계 장점 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 한눈에 보는 전체 파이프라인
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 설계 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 엔티티 관계 및 상태 머신
+      
+    </span>
+</a>
+<nav aria-label="2. 엔티티 관계 및 상태 머신" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 엔티티 관계도
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22-uploadsession">
+<span class="md-ellipsis">
+      
+        2.2 UploadSession 상태 머신
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23-filereservation">
+<span class="md-ellipsis">
+      
+        2.3 FileReservation 상태 머신
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-finalize">
+<span class="md-ellipsis">
+      
+        3. Finalize 전체 처리 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 시퀀스 다이어그램
+      
+    </span>
+</a>
+<nav aria-label="4. 시퀀스 다이어그램" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 정상 처리 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 중복 요청 차단 흐름
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 단계별 상세
+      
+    </span>
+</a>
+<nav aria-label="5. 단계별 상세" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51-cas-step-1">
+<span class="md-ellipsis">
+      
+        5.1 CAS 점유 (Step 1)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-step-2">
+<span class="md-ellipsis">
+      
+        5.2 임시 파일 최종 검증 (Step 2)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53-step-3">
+<span class="md-ellipsis">
+      
+        5.3 파일 이동 (Step 3) — 트랜잭션 밖
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-db-step-4">
+<span class="md-ellipsis">
+      
+        5.4 DB 확정 트랜잭션 (Step 4)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 실패 처리
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-recovery-worker">
+<span class="md-ellipsis">
+      
+        7. Recovery Worker
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 클라이언트 응답 설계
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 설계 장점 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 한눈에 보는 전체 파이프라인
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cas-finalize">CAS 기반 Finalize 설계안 정리<a class="headerlink" href="#cas-finalize" title="Permanent link">¶</a></h1>
+<h2 id="1">1. 설계 목적<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<blockquote>
+<p><strong>핵심 목표</strong>: 업로드 완료 후 저장 확정(finalize)을 <strong>단 한 번만, 중복 없이</strong> 수행하고,
+장애 발생 시에도 <strong>복구 가능한 상태 기반 처리</strong>를 보장한다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>설계 원칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CAS 기반 점유</strong></td>
+<td><code>UploadSession.status</code>의 원자적 상태 전이로 finalize 소유권 확보</td>
+</tr>
+<tr>
+<td><strong>트랜잭션 경계 분리</strong></td>
+<td>파일 I/O는 트랜잭션 밖, 메타데이터 반영만 짧은 트랜잭션</td>
+</tr>
+<tr>
+<td><strong>외부 락 미사용</strong></td>
+<td>분산 락·장시간 DB 락 없이 상태 머신만으로 동시성 제어</td>
+</tr>
+<tr>
+<td><strong>자동 복구</strong></td>
+<td>Recovery Worker가 중간 상태에 머문 세션을 자동 보정</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2">2. 엔티티 관계 및 상태 머신<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<h3 id="21">2.1 엔티티 관계도<a class="headerlink" href="#21" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>erDiagram
+    Space ||--o{ UploadSession : "범위"
+    Space ||--o{ FileReservation : "quota 범위"
+    Space ||--o{ FileItem : "소유"
+    UploadSession ||--|| FileReservation : "1:1 예약"
+    UploadSession ||--o| FileItem : "완료 시 생성"
+    FileReservation ||--o| FileItem : "소모 시 연결"
+    Space {
+        bigint id PK
+        bigint storage_used_bytes
+        bigint storage_reserved_bytes
+        bigint storage_allowed_bytes
+        timestamp updated_at
+    }
+    UploadSession {
+        bigint id PK
+        varchar status
+        bigint requester_user_id FK
+        bigint space_id FK
+        bigint target_folder_id FK
+        varchar original_filename
+        bigint expected_size_bytes
+        bigint received_size_bytes
+        varchar temp_storage_key
+        varchar storage_key
+        varchar checksum_sha256
+        varchar tus_upload_id
+        bigint file_item_id FK
+        timestamp finalizing_started_at
+        timestamp finalized_at
+        int finalize_attempts
+        varchar last_error_code
+        text last_error_message
+        timestamp created_at
+        timestamp updated_at
+    }
+    FileReservation {
+        bigint id PK
+        bigint upload_session_id FK
+        bigint space_id FK
+        bigint target_folder_id FK
+        bigint file_item_id FK
+        varchar status
+        varchar reserved_name
+        bigint reserved_bytes
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    FileItem {
+        bigint id PK
+        bigint space_id FK
+        bigint created_by_user_id FK
+        bigint folder_id FK
+        varchar display_name
+        varchar mime_type
+        bigint size_bytes
+        varchar checksum_sha256
+        varchar storage_key
+        timestamp created_at
+        timestamp updated_at
+    }</code></pre>
+<h3 id="22-uploadsession">2.2 UploadSession 상태 머신<a class="headerlink" href="#22-uploadsession" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>stateDiagram-v2
+    [*] --&gt; UPLOADING : 세션 생성 &amp; tus 전송 시작
+
+    UPLOADING --&gt; FINALIZING : CAS 점유 성공&lt;br/&gt;(단 하나의 프로세스만)
+    UPLOADING --&gt; FAILED : 전송 중 오류
+
+    FINALIZING --&gt; COMPLETED : 검증 + 이동 + DB 확정 성공
+    FINALIZING --&gt; FAILED : 검증 실패 / 이동 실패 / DB 실패
+
+    note right of FINALIZING
+        Recovery Worker 감시 대상
+        10분 이상 체류 시 재평가
+    end note
+
+    COMPLETED --&gt; [*]
+    FAILED --&gt; [*]</code></pre>
+<h3 id="23-filereservation">2.3 FileReservation 상태 머신<a class="headerlink" href="#23-filereservation" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>stateDiagram-v2
+    [*] --&gt; RESERVED : 업로드 세션 생성 시 자원 선점
+
+    RESERVED --&gt; ACTIVE : tus 전송 진행 중
+    ACTIVE --&gt; CONSUMED : finalize DB 확정 트랜잭션
+    ACTIVE --&gt; FAILED : finalize 실패 시
+    RESERVED --&gt; FAILED : 전송 실패 / 만료
+
+    CONSUMED --&gt; [*]
+    FAILED --&gt; [*]</code></pre>
+<hr/>
+<h2 id="3-finalize">3. Finalize 전체 처리 흐름<a class="headerlink" href="#3-finalize" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>flowchart TD
+    A[tus 업로드 완료 감지] --&gt; B{CAS 점유 시도&lt;br/&gt;UPLOADING → FINALIZING}
+
+    B --&gt;|affected_rows = 1&lt;br/&gt;점유 성공| C[대상 정보 조회&lt;br/&gt;Session + Reservation]
+    B --&gt;|affected_rows = 0&lt;br/&gt;점유 실패| Z1[이미 다른 프로세스가 처리 중&lt;br/&gt;현재 프로세스 종료]
+
+    C --&gt; D[임시 파일 최종 검증]
+
+    D --&gt;|검증 통과| E[최종 저장 경로 결정&lt;br/&gt;&amp; 파일 이동]
+    D --&gt;|검증 실패| F1[실패 처리]
+
+    E --&gt;|이동 성공| G[DB 확정 트랜잭션]
+    E --&gt;|이동 실패| F2[실패 처리]
+
+    G --&gt;|커밋 성공| H[✅ COMPLETED]
+    G --&gt;|커밋 실패| F3[실패 처리]
+
+    F1 --&gt; F[FAILED 상태 기록&lt;br/&gt;임시 파일 정리]
+    F2 --&gt; F
+    F3 --&gt; F
+
+    style B fill:#fff3cd,stroke:#ffc107
+    style G fill:#d4edda,stroke:#28a745
+    style H fill:#28a745,color:#fff
+    style F fill:#f8d7da,stroke:#dc3545
+    style Z1 fill:#e2e3e5,stroke:#6c757d</code></pre>
+<hr/>
+<h2 id="4">4. 시퀀스 다이어그램<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41">4.1 정상 처리 흐름<a class="headerlink" href="#41" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>sequenceDiagram
+    participant C as Client
+    participant S as Server
+    participant DB as Database
+    participant FS as File Storage
+
+    C-&gt;&gt;S: tus PATCH (마지막 청크)
+    S--&gt;&gt;C: 204 전송 완료
+
+    Note over S: finalize 시작
+
+    S-&gt;&gt;DB: CAS UPDATE status&lt;br/&gt;UPLOADING → FINALIZING
+    DB--&gt;&gt;S: affected_rows = 1 (점유 성공)
+
+    S-&gt;&gt;DB: Session + Reservation 조회
+    DB--&gt;&gt;S: 세션 정보 반환
+
+    Note over S: 트랜잭션 밖 처리
+
+    S-&gt;&gt;FS: 임시 파일 검증&lt;br/&gt;(크기, 해시, MIME, 정책)
+    FS--&gt;&gt;S: 검증 통과
+
+    S-&gt;&gt;FS: 임시 파일 → 최종 경로 이동
+    FS--&gt;&gt;S: 이동 성공
+
+    Note over S,DB: 짧은 DB 트랜잭션
+
+    S-&gt;&gt;DB: BEGIN
+    S-&gt;&gt;DB: INSERT FileItem
+    S-&gt;&gt;DB: UPDATE Space (사용량 반영)
+    S-&gt;&gt;DB: UPDATE FileReservation → CONSUMED
+    S-&gt;&gt;DB: UPDATE UploadSession → COMPLETED
+    S-&gt;&gt;DB: COMMIT
+    DB--&gt;&gt;S: 커밋 성공
+
+    C-&gt;&gt;S: GET /uploads/{sessionId}
+    S--&gt;&gt;C: status=COMPLETED, fileItemId, metadata</code></pre>
+<h3 id="42">4.2 중복 요청 차단 흐름<a class="headerlink" href="#42" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>sequenceDiagram
+    participant W1 as Worker A
+    participant W2 as Worker B
+    participant DB as Database
+
+    Note over W1,W2: 동시에 finalize 시도
+
+    W1-&gt;&gt;DB: CAS UPDATE&lt;br/&gt;UPLOADING → FINALIZING
+    W2-&gt;&gt;DB: CAS UPDATE&lt;br/&gt;UPLOADING → FINALIZING
+
+    DB--&gt;&gt;W1: affected_rows = 1 ✅
+    DB--&gt;&gt;W2: affected_rows = 0 ❌
+
+    Note over W1: finalize 수행 진행
+    Note over W2: 즉시 종료 (중복 방지)
+
+    W1-&gt;&gt;DB: DB 확정 트랜잭션
+    DB--&gt;&gt;W1: COMPLETED</code></pre>
+<hr/>
+<h2 id="5">5. 단계별 상세<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<h3 id="51-cas-step-1">5.1 CAS 점유 (Step 1)<a class="headerlink" href="#51-cas-step-1" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="n">upload_session</span>
+<span class="k">SET</span><span class="w">    </span><span class="n">status</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="s1">'FINALIZING'</span><span class="p">,</span>
+<span class="w">       </span><span class="n">finalizing_started_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span>
+<span class="w">       </span><span class="n">finalize_attempts</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">finalize_attempts</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">       </span><span class="n">updated_at</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">id</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">session_id</span>
+<span class="w">  </span><span class="k">AND</span><span class="w">  </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'UPLOADING'</span><span class="p">;</span>
+<span class="c1">-- affected_rows = 1 → 점유 성공</span>
+<span class="c1">-- affected_rows = 0 → 점유 실패 (이미 처리 중)</span>
+</code></pre></div>
+<h3 id="52-step-2">5.2 임시 파일 최종 검증 (Step 2)<a class="headerlink" href="#52-step-2" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>검증 항목</th>
+<th>설명</th>
+<th>실패 코드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>파일 존재 여부</td>
+<td>임시 경로에 파일이 실제로 있는지</td>
+<td><code>FILE_NOT_FOUND</code></td>
+</tr>
+<tr>
+<td>크기 일치</td>
+<td><code>received_size == expected_size</code></td>
+<td><code>SIZE_MISMATCH</code></td>
+</tr>
+<tr>
+<td>체크섬</td>
+<td>SHA-256 해시 비교</td>
+<td><code>CHECKSUM_MISMATCH</code></td>
+</tr>
+<tr>
+<td>MIME 판별</td>
+<td>서버 기준 magic bytes 검사</td>
+<td><code>MIME_BLOCKED</code></td>
+</tr>
+<tr>
+<td>Quota 최종 확인</td>
+<td>Space quota 불변조건 유지 여부 검사</td>
+<td><code>QUOTA_EXCEEDED</code></td>
+</tr>
+<tr>
+<td>위험 파일 정책</td>
+<td>확장자·내용 기반 차단 규칙</td>
+<td><code>POLICY_VIOLATION</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-step-3">5.3 파일 이동 (Step 3) — 트랜잭션 밖<a class="headerlink" href="#53-step-3" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>flowchart LR
+    A[임시 저장소&lt;br/&gt;temp_storage_key] --&gt;|동일 FS: rename| B[최종 저장소&lt;br/&gt;storage_key]
+    A --&gt;|다른 저장소: copy + verify| B
+    B --&gt; C[원본 임시 파일 삭제]</code></pre>
+<h3 id="54-db-step-4">5.4 DB 확정 트랜잭션 (Step 4)<a class="headerlink" href="#54-db-step-4" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">BEGIN</span><span class="p">;</span>
+
+<span class="c1">-- 1) FileItem 생성</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">file_item</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">space_id</span><span class="p">,</span><span class="w"> </span><span class="n">created_by_user_id</span><span class="p">,</span><span class="w"> </span><span class="n">folder_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">display_name</span><span class="p">,</span><span class="w"> </span><span class="n">mime_type</span><span class="p">,</span><span class="w"> </span><span class="n">size_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">checksum_sha256</span><span class="p">,</span><span class="w"> </span><span class="n">storage_key</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="n">updated_at</span>
+<span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">:</span><span class="n">space_id</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="n">requester_user_id</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="n">target_folder_id</span><span class="p">,</span>
+<span class="w">    </span><span class="p">:</span><span class="n">display_name</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="n">mime_type</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="n">size_bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="p">:</span><span class="n">checksum_sha256</span><span class="p">,</span><span class="w"> </span><span class="p">:</span><span class="n">storage_key</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="p">)</span><span class="w"> </span><span class="n">RETURNING</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="p">:</span><span class="n">file_item_id</span><span class="p">;</span>
+
+<span class="c1">-- 2) 사용량 반영</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="k">space</span>
+<span class="k">SET</span><span class="w">    </span><span class="n">storage_used_bytes</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">storage_used_bytes</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">:</span><span class="n">size_bytes</span><span class="p">,</span>
+<span class="w">       </span><span class="n">storage_reserved_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">storage_reserved_bytes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">:</span><span class="n">size_bytes</span><span class="p">,</span>
+<span class="w">       </span><span class="n">updated_at</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">space_id</span><span class="p">;</span>
+
+<span class="c1">-- 3) 예약 소비</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">file_reservation</span>
+<span class="k">SET</span><span class="w">    </span><span class="n">status</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s1">'CONSUMED'</span><span class="p">,</span>
+<span class="w">       </span><span class="n">file_item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">file_item_id</span><span class="p">,</span>
+<span class="w">       </span><span class="n">updated_at</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">reservation_id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'ACTIVE'</span><span class="p">;</span>
+
+<span class="c1">-- 4) 세션 완료</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">upload_session</span>
+<span class="k">SET</span><span class="w">    </span><span class="n">status</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s1">'COMPLETED'</span><span class="p">,</span>
+<span class="w">       </span><span class="n">finalized_at</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span>
+<span class="w">       </span><span class="n">storage_key</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">storage_key</span><span class="p">,</span>
+<span class="w">       </span><span class="n">checksum_sha256</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">checksum_sha256</span><span class="p">,</span>
+<span class="w">       </span><span class="n">file_item_id</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">file_item_id</span><span class="p">,</span>
+<span class="w">       </span><span class="n">updated_at</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">session_id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'FINALIZING'</span><span class="p">;</span>
+
+<span class="k">COMMIT</span><span class="p">;</span>
+</code></pre></div>
+<blockquote>
+<p>본 문서는 ERD와 동일하게 <code>UploadSession.file_item_id</code>, <code>FileReservation.file_item_id</code> 연결을 기준으로 finalize를 설명한다.
+동일 세션의 중복 finalize는 <code>UPLOADING → FINALIZING</code> CAS 점유, <code>file_reservation.upload_session_id</code>의 1:1 제약, <code>UploadSession.status = 'FINALIZING'</code> 조건 업데이트로 차단한다.</p>
+</blockquote>
+<hr/>
+<h2 id="6">6. 실패 처리<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>flowchart TD
+    E[실패 발생] --&gt; F{실패 유형}
+
+    F --&gt;|검증 실패| G1[SIZE_MISMATCH&lt;br/&gt;MIME_BLOCKED&lt;br/&gt;QUOTA_EXCEEDED&lt;br/&gt;CHECKSUM_MISMATCH]
+    F --&gt;|파일 이동 실패| G2[MOVE_FAILED]
+    F --&gt;|DB 커밋 실패| G3[DB_ERROR]
+    F --&gt;|타임아웃| G4[FINALIZE_TIMEOUT]
+
+    G1 --&gt; H[실패 트랜잭션]
+    G2 --&gt; H
+    G3 --&gt; H
+    G4 --&gt; H
+
+    H --&gt; I["BEGIN&lt;br/&gt;FileReservation → FAILED&lt;br/&gt;UploadSession → FAILED&lt;br/&gt;(error_code, error_message 기록)&lt;br/&gt;COMMIT"]
+    I --&gt; J[임시 파일 정리 시도]
+    J --&gt; K[이미 이동된 파일이 있으면 롤백 삭제]
+
+    style E fill:#f8d7da,stroke:#dc3545</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">BEGIN</span><span class="p">;</span>
+
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">file_reservation</span>
+<span class="k">SET</span><span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'FAILED'</span><span class="p">,</span><span class="w"> </span><span class="n">updated_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">reservation_id</span>
+<span class="w">  </span><span class="k">AND</span><span class="w">  </span><span class="n">status</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'ACTIVE'</span><span class="p">,</span><span class="w"> </span><span class="s1">'RESERVED'</span><span class="p">);</span>
+
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">upload_session</span>
+<span class="k">SET</span><span class="w">    </span><span class="n">status</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="s1">'FAILED'</span><span class="p">,</span>
+<span class="w">       </span><span class="n">last_error_code</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">error_code</span><span class="p">,</span>
+<span class="w">       </span><span class="n">last_error_message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">error_message</span><span class="p">,</span>
+<span class="w">       </span><span class="n">updated_at</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">session_id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'FINALIZING'</span><span class="p">;</span>
+
+<span class="k">COMMIT</span><span class="p">;</span>
+</code></pre></div>
+<hr/>
+<h2 id="7-recovery-worker">7. Recovery Worker<a class="headerlink" href="#7-recovery-worker" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>flowchart TD
+    A[⏰ 주기적 실행&lt;br/&gt;e.g. 매 5분] --&gt; B["FINALIZING 상태 &amp;&lt;br/&gt;finalizing_started_at &lt; now() - 10min&lt;br/&gt;세션 조회"]
+
+    B --&gt; C{대상 세션 존재?}
+    C --&gt;|없음| A
+
+    C --&gt;|있음| D{FileItem 존재?}
+
+    D --&gt;|YES| E["이미 완료된 상태&lt;br/&gt;→ COMPLETED로 보정"]
+    D --&gt;|NO| F{임시 파일 존재?}
+
+    F --&gt;|NO| G["복구 불가&lt;br/&gt;→ FAILED로 보정"]
+    F --&gt;|YES| H{재시도 횟수 &lt; 최대?}
+
+    H --&gt;|YES| I["finalize 재시도&lt;br/&gt;(검증 → 이동 → DB 확정)"]
+    H --&gt;|NO| J["최대 재시도 초과&lt;br/&gt;→ FAILED + 알림"]
+
+    style A fill:#e7f3ff,stroke:#0d6efd
+    style E fill:#d4edda,stroke:#28a745
+    style G fill:#f8d7da,stroke:#dc3545
+    style J fill:#f8d7da,stroke:#dc3545</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Recovery 대상 조회</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">finalize_attempts</span>
+<span class="k">FROM</span><span class="w">   </span><span class="n">upload_session</span>
+<span class="k">WHERE</span><span class="w">  </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'FINALIZING'</span>
+<span class="w">  </span><span class="k">AND</span><span class="w">  </span><span class="n">finalizing_started_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="s1">'10 minutes'</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">finalizing_started_at</span>
+<span class="k">LIMIT</span><span class="w">  </span><span class="mi">100</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>판단 조건</th>
+<th>조치</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FileItem</code> 이미 존재</td>
+<td>→ <code>COMPLETED</code>로 보정</td>
+</tr>
+<tr>
+<td>임시 파일도 최종 파일도 없음</td>
+<td>→ <code>FAILED</code>로 보정</td>
+</tr>
+<tr>
+<td>임시 파일 존재 &amp; 재시도 가능</td>
+<td>→ finalize 재시도</td>
+</tr>
+<tr>
+<td>최대 재시도 초과</td>
+<td>→ <code>FAILED</code> + 운영 알림</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="8">8. 클라이언트 응답 설계<a class="headerlink" href="#8" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    Note over C,S: 방식 1: 상태 조회 폴링
+
+    C-&gt;&gt;S: GET /uploads/{sessionId}
+    S--&gt;&gt;C: { status: "FINALIZING" }
+
+    C-&gt;&gt;S: GET /uploads/{sessionId}
+    S--&gt;&gt;C: { status: "COMPLETED",&lt;br/&gt;fileItemId: 42,&lt;br/&gt;displayName: "report.pdf",&lt;br/&gt;sizeBytes: 1048576 }
+
+    Note over C,S: 방식 2: SSE/WebSocket 실시간 수신
+
+    S--&gt;&gt;C: event: finalize_complete&lt;br/&gt;{ fileItemId: 42, status: "COMPLETED" }</code></pre>
+<p><strong>상태 조회 응답 구조</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"sessionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc-123"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"COMPLETED"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"fileItem"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"report.pdf"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"mimeType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"application/pdf"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"sizeBytes"</span><span class="p">:</span><span class="w"> </span><span class="mi">1048576</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"storageKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"files/2024/01/abc123.pdf"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-01-15T10:30:00Z"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"postProcessing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"thumbnail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PENDING"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"virusScan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"IN_PROGRESS"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="9">9. 설계 장점 요약<a class="headerlink" href="#9" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>mindmap
+  root((CAS 기반&lt;br/&gt;Finalize))
+    단순성
+      외부 분산 락 불필요
+      기존 상태 머신 재활용
+      추가 인프라 없음
+    안전성
+      원자적 CAS로 중복 실행 방지
+      UNIQUE 제약으로 중복 FileItem 차단
+      트랜잭션 경계 명확 분리
+    복구성
+      Recovery Worker 자동 보정
+      finalize_attempts로 재시도 제어
+      상태 기반 판단 가능
+    확장성
+      후처리 큐와 자연스럽게 연결
+      비동기 결과 응답 구조
+      파일 이동과 DB 반영 독립</code></pre>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>기존 구조 정합성</strong></td>
+<td><code>UploadSession</code> 상태 머신을 그대로 실행 제어로 활용</td>
+</tr>
+<tr>
+<td><strong>장시간 락 회피</strong></td>
+<td>파일 이동 같은 느린 I/O 중에도 DB 락을 잡지 않음</td>
+</tr>
+<tr>
+<td><strong>트랜잭션 경계 분리</strong></td>
+<td>파일 I/O ↔ DB 반영의 책임 영역 명확</td>
+</tr>
+<tr>
+<td><strong>자동 복구</strong></td>
+<td>Recovery Worker로 중간 실패 상태 자동 정리</td>
+</tr>
+<tr>
+<td><strong>중복 방지 이중 안전장치</strong></td>
+<td>CAS 상태 전이 + DB UNIQUE 제약</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="10">10. 한눈에 보는 전체 파이프라인<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>flowchart LR
+    subgraph 전송 단계
+        A[세션 생성&lt;br/&gt;UPLOADING] --&gt;|tus PATCH| B[청크 수신]
+        B --&gt;|반복| B
+        B --&gt;|전송 완료| C[finalize 트리거]
+    end
+
+    subgraph Finalize 단계
+        C --&gt; D["CAS 점유&lt;br/&gt;UPLOADING→FINALIZING"]
+        D --&gt; E[파일 검증&lt;br/&gt;트랜잭션 밖]
+        E --&gt; F[파일 이동&lt;br/&gt;트랜잭션 밖]
+        F --&gt; G["DB 확정 트랜잭션&lt;br/&gt;FileItem + 사용량 + COMPLETED"]
+    end
+
+    subgraph 후처리
+        G --&gt; H[썸네일 생성]
+        G --&gt; I[바이러스 스캔]
+        G --&gt; J[검색 인덱싱]
+        G --&gt; K[감사 로그]
+    end
+
+    subgraph 복구
+        L["Recovery Worker&lt;br/&gt;⏰ 주기 실행"] -.-&gt;|10min 초과&lt;br/&gt;FINALIZING 감시| D
+    end
+
+    style D fill:#fff3cd,stroke:#ffc107
+    style G fill:#d4edda,stroke:#28a745
+    style L fill:#e7f3ff,stroke:#0d6efd</code></pre>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>
