@@ -1,0 +1,173 @@
+.md-typeset .redoc-fullscreen-host,
+.redoc-fullscreen-overlay {
+  --redoc-fullscreen-border: color-mix(
+    in srgb,
+    var(--md-default-fg-color--lighter, rgba(0, 0, 0, 0.16)) 56%,
+    transparent 44%
+  );
+  --redoc-fullscreen-surface: var(--md-default-bg-color);
+  --redoc-fullscreen-surface-muted: color-mix(
+    in srgb,
+    var(--md-default-bg-color) 96%,
+    var(--md-default-fg-color) 4%
+  );
+  --redoc-fullscreen-backdrop: rgba(15, 23, 42, 0.45);
+}
+
+.md-typeset .redoc-fullscreen-host {
+  margin: 0;
+}
+
+.md-typeset .redoc-fullscreen-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.5rem;
+}
+
+.md-typeset .redoc-fullscreen-button,
+.redoc-fullscreen-overlay__close {
+  appearance: none;
+  border: 1px solid var(--redoc-fullscreen-border);
+  border-radius: 999px;
+  background: var(--redoc-fullscreen-surface-muted);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.45rem 0.78rem;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.md-typeset .redoc-fullscreen-button:hover,
+.redoc-fullscreen-overlay__close:hover {
+  background: color-mix(
+    in srgb,
+    var(--redoc-fullscreen-surface-muted) 88%,
+    var(--md-primary-fg-color) 12%
+  );
+  border-color: var(--md-primary-fg-color);
+}
+
+.md-typeset .redoc-fullscreen-button:active,
+.redoc-fullscreen-overlay__close:active {
+  transform: translateY(1px);
+}
+
+.md-typeset .redoc-fullscreen-button:focus-visible,
+.redoc-fullscreen-overlay__close:focus-visible {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 2px;
+}
+
+.md-typeset .redoc-fullscreen-shell {
+  min-height: calc(100vh - 13rem);
+  width: 100%;
+}
+
+.md-typeset .redoc-fullscreen-shell :is(redoc, .redoc, .redoc-container, iframe) {
+  display: block;
+  width: 100%;
+}
+
+.md-typeset .redoc-fullscreen-shell :is(redoc, .redoc, .redoc-container) {
+  min-height: inherit;
+}
+
+body.redoc-fullscreen-open {
+  overflow: hidden;
+}
+
+.redoc-fullscreen-overlay[hidden] {
+  display: none;
+}
+
+.redoc-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.redoc-fullscreen-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--redoc-fullscreen-backdrop);
+}
+
+.redoc-fullscreen-overlay__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 96rem);
+  height: min(100%, calc(100vh - 1.5rem));
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--redoc-fullscreen-border);
+  border-radius: 0.75rem;
+  background: var(--redoc-fullscreen-surface);
+  box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.2);
+  overflow: hidden;
+}
+
+.redoc-fullscreen-overlay__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.85rem 1rem 0;
+}
+
+.redoc-fullscreen-overlay__viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 1rem 1rem;
+  overscroll-behavior: contain;
+}
+
+.redoc-fullscreen-overlay__viewport .redoc-fullscreen-shell {
+  min-height: calc(100vh - 7rem);
+  height: 100%;
+  width: 100%;
+}
+
+.redoc-fullscreen-overlay__viewport :is(redoc, .redoc, .redoc-container, iframe) {
+  width: 100%;
+  height: 100%;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .redoc-fullscreen-host,
+[data-md-color-scheme="slate"] .redoc-fullscreen-overlay {
+  --redoc-fullscreen-border: rgba(173, 192, 207, 0.28);
+  --redoc-fullscreen-surface: #111922;
+  --redoc-fullscreen-surface-muted: #18222c;
+  --redoc-fullscreen-backdrop: rgba(2, 7, 12, 0.62);
+}
+
+@media screen and (max-width: 44.9375em) {
+  .md-typeset .redoc-fullscreen-shell {
+    min-height: calc(100vh - 10rem);
+  }
+
+  .redoc-fullscreen-overlay {
+    padding: 0.5rem;
+  }
+
+  .redoc-fullscreen-overlay__dialog {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.6rem;
+  }
+
+  .redoc-fullscreen-overlay__toolbar {
+    padding: 0.75rem 0.8rem 0;
+  }
+
+  .redoc-fullscreen-overlay__viewport {
+    padding: 0 0.8rem 0.8rem;
+  }
+
+  .redoc-fullscreen-overlay__viewport .redoc-fullscreen-shell {
+    min-height: calc(100vh - 5rem);
+  }
+}

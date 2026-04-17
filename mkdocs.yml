@@ -80,6 +80,7 @@ plugins:
 
 extra_css:
   - stylesheets/mermaid.css
+  - stylesheets/redoc-fullscreen.css
   - stylesheets/table-fullscreen.css
 
 extra_javascript:
@@ -87,5 +88,6 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js
   - javascripts/mermaid.mjs
+  - javascripts/redoc-fullscreen.js
   - javascripts/table-fullscreen.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
