@@ -29,6 +29,7 @@ nav:
   - Home: index.md
   - 기획: 기획/
   - 설계: 설계/
+  - API(초안): 설계/api-redoc.md
 
 # Extensions
 markdown_extensions:
@@ -57,7 +58,8 @@ markdown_extensions:
       permalink: true
 
 plugins:
-  - redoc-tag
+  - redoc-tag:
+      height: 100vh
   - search
   - literate-nav
   - panzoom:
