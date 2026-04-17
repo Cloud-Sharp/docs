@@ -20,12 +20,24 @@
 
 ```mermaid
 erDiagram
+    Space ||--o{ UploadSession : "범위"
+    Space ||--o{ FileReservation : "quota 범위"
+    Space ||--o{ FileItem : "소유"
     UploadSession ||--|| FileReservation : "1:1 예약"
     UploadSession ||--o| FileItem : "완료 시 생성"
+    FileReservation ||--o| FileItem : "소모 시 연결"
+    Space {
+        bigint id PK
+        bigint storage_used_bytes
+        bigint storage_reserved_bytes
+        bigint storage_allowed_bytes
+        timestamp updated_at
+    }
     UploadSession {
         bigint id PK
         varchar status
-        bigint owner_user_id FK
+        bigint requester_user_id FK
+        bigint space_id FK
         bigint target_folder_id FK
         varchar original_filename
         bigint expected_size_bytes
@@ -34,6 +46,7 @@ erDiagram
         varchar storage_key
         varchar checksum_sha256
         varchar tus_upload_id
+        bigint file_item_id FK
         timestamp finalizing_started_at
         timestamp finalized_at
         int finalize_attempts
@@ -45,9 +58,11 @@ erDiagram
     FileReservation {
         bigint id PK
         bigint upload_session_id FK
+        bigint space_id FK
+        bigint target_folder_id FK
+        bigint file_item_id FK
         varchar status
-        bigint folder_id FK
-        varchar display_name
+        varchar reserved_name
         bigint reserved_bytes
         timestamp expires_at
         timestamp created_at
@@ -55,8 +70,8 @@ erDiagram
     }
     FileItem {
         bigint id PK
-        bigint upload_session_id UK
-        bigint owner_user_id FK
+        bigint space_id FK
+        bigint created_by_user_id FK
         bigint folder_id FK
         varchar display_name
         varchar mime_type
@@ -66,14 +81,6 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    Users {
-        bigint id PK
-        bigint storage_used_bytes
-        bigint storage_reserved_bytes
-        timestamp updated_at
-    }
-    Users ||--o{ UploadSession : "소유"
-    Users ||--o{ FileItem : "소유"
 ```
 
 ### 2.2 UploadSession 상태 머신
@@ -181,7 +188,7 @@ sequenceDiagram
 
     S->>DB: BEGIN
     S->>DB: INSERT FileItem
-    S->>DB: UPDATE Users (사용량 반영)
+    S->>DB: UPDATE Space (사용량 반영)
     S->>DB: UPDATE FileReservation → CONSUMED
     S->>DB: UPDATE UploadSession → COMPLETED
     S->>DB: COMMIT
@@ -240,7 +247,7 @@ WHERE  id     = :session_id
 | 크기 일치 | `received_size == expected_size` | `SIZE_MISMATCH` |
 | 체크섬 | SHA-256 해시 비교 | `CHECKSUM_MISMATCH` |
 | MIME 판별 | 서버 기준 magic bytes 검사 | `MIME_BLOCKED` |
-| Quota 최종 확인 | 사용량 + 파일 크기 ≤ 한도 | `QUOTA_EXCEEDED` |
+| Quota 최종 확인 | Space quota 불변조건 유지 여부 검사 | `QUOTA_EXCEEDED` |
 | 위험 파일 정책 | 확장자·내용 기반 차단 규칙 | `POLICY_VIOLATION` |
 
 ### 5.3 파일 이동 (Step 3) — 트랜잭션 밖
@@ -259,25 +266,27 @@ BEGIN;
 
 -- 1) FileItem 생성
 INSERT INTO file_item (
-    upload_session_id, owner_user_id, folder_id,
+    space_id, created_by_user_id, folder_id,
     display_name, mime_type, size_bytes,
     checksum_sha256, storage_key, created_at, updated_at
 ) VALUES (
-    :session_id, :owner_user_id, :target_folder_id,
+    :space_id, :requester_user_id, :target_folder_id,
     :display_name, :mime_type, :size_bytes,
     :checksum_sha256, :storage_key, now(), now()
-);
+) RETURNING id INTO :file_item_id;
 
 -- 2) 사용량 반영
-UPDATE users
+UPDATE space
 SET    storage_used_bytes     = storage_used_bytes + :size_bytes,
        storage_reserved_bytes = storage_reserved_bytes - :size_bytes,
        updated_at             = now()
-WHERE  id = :owner_user_id;
+WHERE  id = :space_id;
 
 -- 3) 예약 소비
 UPDATE file_reservation
-SET    status = 'CONSUMED', updated_at = now()
+SET    status       = 'CONSUMED',
+       file_item_id = :file_item_id,
+       updated_at   = now()
 WHERE  id = :reservation_id AND status = 'ACTIVE';
 
 -- 4) 세션 완료
@@ -286,14 +295,15 @@ SET    status          = 'COMPLETED',
        finalized_at    = now(),
        storage_key     = :storage_key,
        checksum_sha256 = :checksum_sha256,
+       file_item_id    = :file_item_id,
        updated_at      = now()
 WHERE  id = :session_id AND status = 'FINALIZING';
 
 COMMIT;
 ```
 
-> **`file_item.upload_session_id`에 UNIQUE 제약**을 걸어
-> 동일 세션에서 FileItem이 2개 생성되는 것을 DB 레벨에서 차단한다.
+> 본 문서는 ERD와 동일하게 `UploadSession.file_item_id`, `FileReservation.file_item_id` 연결을 기준으로 finalize를 설명한다.
+> 동일 세션의 중복 finalize는 `UPLOADING → FINALIZING` CAS 점유, `file_reservation.upload_session_id`의 1:1 제약, `UploadSession.status = 'FINALIZING'` 조건 업데이트로 차단한다.
 
 ---
 
