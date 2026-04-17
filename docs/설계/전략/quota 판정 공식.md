@@ -179,37 +179,22 @@ reserved = Σ 활성 FileReservation 크기
 
 ## 부록: 전체 흐름 요약
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    업로드 시작 요청                        │
-└────────────────────────┬────────────────────────────────┘
-                         ▼
-              ┌─────────────────────┐
-              │  allowed = NULL ?   │
-              └──┬───────────────┬──┘
-            Yes  │               │  No
-                 │               ▼
-                 │    expected_size ≤ available ?
-                 │         │              │
-                 │        Yes             No → 거절
-                 ▼         ▼
-        ┌──────────────────────────────┐
-        │  TX: reserved += expected    │
-        │      FileReservation 생성     │
-        └──────────────┬───────────────┘
-                       ▼
-               [ 업로드 진행 ]
-                       ▼
-        ┌──────────────────────────────┐
-        │  Finalize 직전 Quota 재검사   │
-        └──────┬───────────────┬───────┘
-             Pass            Fail → 실패 처리
-               ▼                    (reserved 해제)
-        ┌──────────────────────────────┐
-        │  TX: FileItem 생성            │
-        │      used += final_size      │
-        │      reserved -= reserved    │
-        │      Reservation → CONSUMED  │
-        │      Session → COMPLETED     │
-        └──────────────────────────────┘
+```mermaid
+flowchart TD
+    A([업로드 시작 요청]) --> B{allowed = NULL ?}
+
+    B -- Yes --> D
+    B -- No --> C{"expected_size ≤ available ?"}
+
+    C -- Yes --> D
+    C -- No --> E([❌ 거절])
+
+    D["🔒 TX\nreserved += expected\nFileReservation 생성"]
+    D --> F([⬆️ 업로드 진행])
+
+    F --> G{"Finalize 직전\nQuota 재검사"}
+
+    G -- Pass --> H["✅ TX\nFileItem 생성\nused += final_size\nreserved -= reserved\nReservation → CONSUMED\nSession → COMPLETED"]
+
+    G -- Fail --> I["❌ 실패 처리\n(reserved 해제)"]
 ```
