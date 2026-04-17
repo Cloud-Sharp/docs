@@ -8,8 +8,20 @@
   const HOST_SELECTOR = "[data-redoc-fullscreen]";
   const SHELL_SELECTOR = "[data-redoc-fullscreen-shell]";
   const TRIGGER_SELECTOR = "[data-redoc-fullscreen-trigger]";
+  const SCREEN_HEIGHT_VAR = "--redoc-fullscreen-screen-height";
 
   let overlayElements = null;
+
+  function syncViewportHeight() {
+    if (!document || !document.documentElement || !window) {
+      return;
+    }
+
+    const height = window.innerHeight || document.documentElement.clientHeight;
+    if (height) {
+      document.documentElement.style.setProperty(SCREEN_HEIGHT_VAR, height + "px");
+    }
+  }
 
   function ensureOverlay() {
     if (overlayElements) {
@@ -152,6 +164,7 @@
   }
 
   function init() {
+    syncViewportHeight();
     initHosts(document);
   }
 
@@ -160,9 +173,13 @@
       if (overlayElements) {
         overlayElements.closeOverlay();
       }
+      syncViewportHeight();
       initHosts(document);
     });
   }
+
+  window.addEventListener("resize", syncViewportHeight);
+  window.addEventListener("orientationchange", syncViewportHeight);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
