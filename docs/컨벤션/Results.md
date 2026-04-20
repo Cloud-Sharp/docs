@@ -1,4 +1,4 @@
-# # CloudSharp FluentResults 가이드
+# CloudSharp FluentResults 가이드
 
 ---
 
