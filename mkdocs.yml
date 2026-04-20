@@ -29,6 +29,7 @@ nav:
   - Home: index.md
   - 기획: 기획/
   - 설계: 설계/
+  - 컨벤션: 컨벤션/
   - API(초안): 설계/api-redoc.md
 
 # Extensions
