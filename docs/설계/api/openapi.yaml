@@ -51,7 +51,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: opaque
   parameters:
     spaceId:
       name: spaceId
@@ -249,6 +249,8 @@ components:
       properties:
         accessToken:
           type: string
+          description: Redis UserSession에 대응되는 opaque session token
+          example: cs_sess_8eM3S1Qj6c7Yg4nM5gV1y7uQvC8sYxk9lW0aB2cD3eF
         tokenType:
           type: string
           example: Bearer

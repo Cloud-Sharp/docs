@@ -10,7 +10,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 |---|---|
 | 내부 인증 API base path | `/api/v1` |
 | 외부 공개 API base path | `/public/v1` |
-| 인증 방식 | `Authorization: Bearer {JWT}` |
+| 인증 방식 | `Authorization: Bearer {opaque_session_token}` |
 | 기본 데이터 형식 | `application/json` |
 | 파일 다운로드 응답 | `application/octet-stream` 또는 서버 판별 MIME |
 | API 리소스 ID | 외부 API에서는 모두 **opaque string** 으로 취급 |
@@ -28,7 +28,8 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 | `MEMBER` | O | O | O | O | X | X | X |
 | `VIEWER` | O | X | X | X | X | X | X |
 
-- 내부 API는 명시되지 않은 경우 모두 JWT 인증이 필요하다.
+- 내부 API는 명시되지 않은 경우 모두 opaque session Bearer 인증이 필요하다.
+- 사용자 세션 토큰은 Redis에 저장된 `UserSession`을 기준으로 검증하며, Space 권한은 요청마다 최신 `SpaceMember`/`Role`을 조회해 판단한다.
 - 외부 공유 API는 `shareToken`과 필요한 경우 비밀번호로 접근한다.
 - 외부 공개 경로에서는 권한 없음과 리소스 없음, 비활성화, 격리 상태를 가능한 한 `404 Not Found`로 마스킹한다.
 
@@ -127,7 +128,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 | Method | Path | 설명 | 관련 SFR |
 |---|---|---|---|
 | `POST` | `/api/v1/auth/register` | 계정 생성 | `SFR-001` |
-| `POST` | `/api/v1/auth/login` | JWT 발급 | `SFR-002` |
+| `POST` | `/api/v1/auth/login` | 사용자 세션 토큰 발급 | `SFR-002` |
 | `POST` | `/api/v1/auth/logout` | 현재 토큰 무효화 | `SFR-003` |
 | `GET` | `/api/v1/me` | 내 프로필 조회 | `SFR-005` |
 
@@ -139,6 +140,8 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 | `LoginRequest` | `loginId`, `password` |
 | `AuthResponse` | `accessToken`, `tokenType`, `expiresInSeconds`, `user` |
 | `UserProfile` | `id`, `email`, `username?`, `displayName`, `systemRole`, `createdAt` |
+
+`AuthResponse.accessToken`은 권한 claim을 담은 self-contained token이 아니라 opaque session token이다. 토큰 원문은 클라이언트에 한 번만 반환하고, 서버는 Redis에 `token_hash` 기반 세션만 저장한다.
 
 ### 4.2 Space 및 quota
 

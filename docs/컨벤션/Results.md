@@ -30,7 +30,7 @@ CloudSharp.Infrastructure ──────┘
 |----------|------|
 | `CloudSharp.Core` | 도메인 모델, 유스케이스, 포트 인터페이스 |
 | `CloudSharp.Api` | HTTP 요청/응답 변환, 엔드포인트, 미들웨어 |
-| `CloudSharp.Infrastructure` | DB, Redis, Local FS, JWT, tusd, ffmpeg, AI adapter 구현 |
+| `CloudSharp.Infrastructure` | DB, Redis, Local FS, opaque session auth, tusd, ffmpeg, AI adapter 구현 |
 
 ---
 
