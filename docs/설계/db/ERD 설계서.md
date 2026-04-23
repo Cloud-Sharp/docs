@@ -54,6 +54,7 @@ erDiagram
         BIGINT id PK
         VARCHAR email UK
         VARCHAR password_hash
+        VARCHAR user_name "max 100"
         VARCHAR display_name
         ENUM system_role "ADMIN | USER"
         TIMESTAMP created_at
@@ -305,6 +306,7 @@ erDiagram
 |`id`|BIGINT|NOT NULL|PK|
 |`email`|VARCHAR|NOT NULL|로그인 식별자, UNIQUE|
 |`password_hash`|VARCHAR|NOT NULL|해시된 비밀번호|
+|`user_name`|VARCHAR(100)|NULL|사용자 이름|
 |`display_name`|VARCHAR|NULL|사용자 표시 이름|
 |`system_role`|ENUM|NOT NULL|`ADMIN \| USER`|
 |`created_at`|TIMESTAMP|NOT NULL|생성 일시|
