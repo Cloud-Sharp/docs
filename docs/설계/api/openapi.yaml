@@ -364,7 +364,10 @@ components:
       type: object
       properties:
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         storageAllowedBytes:
           type: integer
           nullable: true
@@ -397,7 +400,10 @@ components:
         id:
           type: string
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         inviteeUserId:
           type: string
           nullable: true
@@ -529,7 +535,10 @@ components:
         id:
           type: string
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         parentFolderId:
           type: string
           nullable: true
@@ -589,7 +598,10 @@ components:
       type: object
       properties:
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         folderId:
           type: string
         items:
@@ -641,7 +653,10 @@ components:
         id:
           type: string
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         folderId:
           type: string
         displayName:
@@ -712,7 +727,10 @@ components:
       type: object
       properties:
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 요청 body에 전달하는 Space 식별자. bigint
+          example: 123
         targetFolderId:
           type: string
         originalName:
@@ -736,7 +754,10 @@ components:
         id:
           type: string
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         targetFolderId:
           type: string
         originalName:
@@ -851,7 +872,10 @@ components:
         publicUrl:
           type: string
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         targetType:
           type: string
           enum:
@@ -909,7 +933,10 @@ components:
       type: object
       properties:
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 요청 body에 전달하는 Space 식별자. bigint
+          example: 123
         targetType:
           type: string
           enum:
@@ -1055,7 +1082,10 @@ components:
       type: object
       properties:
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
         name:
           type: string
         status:
@@ -1107,7 +1137,10 @@ components:
           type: string
           format: date-time
         spaceId:
-          type: string
+          type: integer
+          format: int64
+          description: 이벤트 payload에 포함되는 Space 식별자. bigint
+          example: 123
         uploadSessionId:
           type: string
         fileItemId:

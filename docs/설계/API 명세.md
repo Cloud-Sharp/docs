@@ -13,7 +13,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 | 인증 방식 | `Authorization: Bearer {opaque_session_token}` |
 | 기본 데이터 형식 | `application/json` |
 | 파일 다운로드 응답 | `application/octet-stream` 또는 서버 판별 MIME |
-| API 리소스 ID | 응답의 `id`, `spaceId`, `fileId` 등은 모두 **opaque string** 으로 취급하며 bigint로 파싱하지 않음 |
+| API 리소스 ID | 응답의 `id`, `fileId` 등은 외부 계약 기준 문자열로 취급 |
 | Space URL 식별자 | `/api/v1/spaces/{spaceSlug}` 의 `spaceSlug` 는 UUID 형식 slug |
 | 시간 표기 | UTC 기준 ISO 8601 문자열 |
 | 업로드 전송 프로토콜 | tus 1.0.0 |
@@ -161,6 +161,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 - `storageAllowedBytes = null` 이면 무제한 Space 이다.
 - Space 단건 및 하위 리소스 URL은 `{spaceSlug}` 를 사용하며, 값은 UUID 형식 slug이다.
 - Space 응답의 `id` 는 DB bigint가 아니라 외부 노출용 opaque string이다.
+- 응답 payload의 `spaceId` 는 DB `Space.id` 를 그대로 반영하는 bigint 값이다.
 - `slug` 필드는 URL path 접근에 사용하는 UUID 값을 반환한다.
 - `GET /quota` 응답에는 `storageUsedBytes`, `storageReservedBytes`, `availableBytes`, `usageRate`를 포함한다.
 - `PATCH /quota`는 현재 `used + reserved` 보다 작은 값으로 낮출 수 없다.
@@ -284,7 +285,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 
 **관리자 조회 응답 핵심 필드**
 
-- `spaceId`
+- `spaceId`: bigint
 - `name`
 - `status`
 - `ownerUserId`
@@ -301,7 +302,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
   "eventId": "evt_01JXYZ...",
   "eventType": "file.upload.completed",
   "occurredAt": "2026-04-17T12:00:00Z",
-  "spaceId": "spc_123",
+  "spaceId": 123,
   "uploadSessionId": "upl_123",
   "fileItemId": "fil_123",
   "storageKey": "files/2026/04/17/abc.pdf",
