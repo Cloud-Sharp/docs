@@ -276,9 +276,10 @@ components:
       type: object
       properties:
         id:
-          type: string
-          description: Space 리소스 식별자. bigint가 아닌 opaque string
-          example: spc_01JV7V1QG6Q3A9M8R4T6K2N1YB
+          type: integer
+          format: int64
+          description: Space 리소스 식별자. bigint
+          example: 123
         name:
           type: string
         description:
@@ -326,7 +327,10 @@ components:
               description: URL path 접근에 사용하는 Space slug
               example: 550e8400-e29b-41d4-a716-446655440000
             ownerUserId:
-              type: string
+              type: integer
+              format: int64
+              description: Space 소유자 사용자 식별자. bigint
+              example: 456
     SpaceListResponse:
       type: object
       properties:
@@ -1091,7 +1095,10 @@ components:
         status:
           type: string
         ownerUserId:
-          type: string
+          type: integer
+          format: int64
+          description: Space 소유자 사용자 식별자. bigint
+          example: 456
         memberCount:
           type: integer
         storageAllowedBytes:

@@ -160,7 +160,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 
 - `storageAllowedBytes = null` 이면 무제한 Space 이다.
 - Space 단건 및 하위 리소스 URL은 `{spaceSlug}` 를 사용하며, 값은 UUID 형식 slug이다.
-- Space 응답의 `id` 는 DB bigint가 아니라 외부 노출용 opaque string이다.
+- Space 응답의 `id` 는 DB `Space.id` 를 그대로 반영하는 bigint 값이다.
 - 응답 payload의 `spaceId` 는 DB `Space.id` 를 그대로 반영하는 bigint 값이다.
 - `slug` 필드는 URL path 접근에 사용하는 UUID 값을 반환한다.
 - `GET /quota` 응답에는 `storageUsedBytes`, `storageReservedBytes`, `availableBytes`, `usageRate`를 포함한다.
@@ -288,7 +288,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 - `spaceId`: bigint
 - `name`
 - `status`
-- `ownerUserId`
+- `ownerUserId`: bigint
 - `memberCount`
 - `storageAllowedBytes`
 - `storageUsedBytes`
