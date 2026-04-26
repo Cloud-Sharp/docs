@@ -1,0 +1,2686 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../Usecases%20Output/" rel="prev"/>
+<link href="../%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CloudSharp FluentValidation 가이드 - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cloudsharp-fluentvalidation">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CloudSharp FluentValidation 가이드
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentValidation 가이드
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentValidation 가이드
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 목적과 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 역할 분리
+      
+    </span>
+</a>
+<nav aria-label="2. 역할 분리" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-fluentvalidation-vs-fluentresults-vs">
+<span class="md-ellipsis">
+      
+        2.1 FluentValidation vs FluentResults vs 도메인 코드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 계층별 사용 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23">
+<span class="md-ellipsis">
+      
+        2.3 흐름 예시: 업로드 초기화
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 패키지 배치
+      
+    </span>
+</a>
+<nav aria-label="3. 패키지 배치" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 프로젝트별 패키지
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 사용하지 않는 패키지
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 폴더 구조
+      
+    </span>
+</a>
+<nav aria-label="4. 폴더 구조" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41-api">
+<span class="md-ellipsis">
+      
+        4.1 API 계층
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42-core">
+<span class="md-ellipsis">
+      
+        4.2 Core 계층
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 배치 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-validator">
+<span class="md-ellipsis">
+      
+        5. Validator 작성 규칙
+      
+    </span>
+</a>
+<nav aria-label="5. Validator 작성 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 기본 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 필수 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 금지 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-validator">
+<span class="md-ellipsis">
+      
+        5.4 Validator가 하지 않는 일 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-di">
+<span class="md-ellipsis">
+      
+        6. DI 등록
+      
+    </span>
+</a>
+<nav aria-label="6. DI 등록" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61">
+<span class="md-ellipsis">
+      
+        6.1 등록 방식
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62-lifetime">
+<span class="md-ellipsis">
+      
+        6.2 Lifetime 규칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-minimal-api">
+<span class="md-ellipsis">
+      
+        7. Minimal API에서 수동 검증
+      
+    </span>
+</a>
+<nav aria-label="7. Minimal API에서 수동 검증" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 기본 패턴
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72-validation">
+<span class="md-ellipsis">
+      
+        7.2 수동 validation을 사용하는 이유
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 응답 변환
+      
+    </span>
+</a>
+<nav aria-label="8. 응답 변환" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81-validationresult-http">
+<span class="md-ellipsis">
+      
+        8.1 ValidationResult → HTTP 응답
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-validationresult-fluentresults">
+<span class="md-ellipsis">
+      
+        8.2 ValidationResult → FluentResults
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-usecase">
+<span class="md-ellipsis">
+      
+        8.3 UseCase 내부 변환 패턴
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-command-validator">
+<span class="md-ellipsis">
+      
+        9. Command Validator 작성 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 비동기 검증 규칙
+      
+    </span>
+</a>
+<nav aria-label="10. 비동기 검증 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#101">
+<span class="md-ellipsis">
+      
+        10.1 사용 조건
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#102">
+<span class="md-ellipsis">
+      
+        10.2 허용 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#103">
+<span class="md-ellipsis">
+      
+        10.3 위치 판단 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 컬렉션과 중첩 객체 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-ruleset">
+<span class="md-ellipsis">
+      
+        12. RuleSet 사용 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        13. 에러 코드 체계
+      
+    </span>
+</a>
+<nav aria-label="13. 에러 코드 체계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#131">
+<span class="md-ellipsis">
+      
+        13.1 네이밍 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#132">
+<span class="md-ellipsis">
+      
+        13.2 영역별 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14">
+<span class="md-ellipsis">
+      
+        14. 테스트 규칙
+      
+    </span>
+</a>
+<nav aria-label="14. 테스트 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#141">
+<span class="md-ellipsis">
+      
+        14.1 테스트 위치
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#142-validator">
+<span class="md-ellipsis">
+      
+        14.2 Validator 단위 테스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#143-api">
+<span class="md-ellipsis">
+      
+        14.3 API 통합 테스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#144">
+<span class="md-ellipsis">
+      
+        14.4 테스트 커버리지 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15">
+<span class="md-ellipsis">
+      
+        15. 도입 순서
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#16">
+<span class="md-ellipsis">
+      
+        16. 금지 사항
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#17">
+<span class="md-ellipsis">
+      
+        17. 아키텍처 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        참고 자료
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 목적과 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 역할 분리
+      
+    </span>
+</a>
+<nav aria-label="2. 역할 분리" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-fluentvalidation-vs-fluentresults-vs">
+<span class="md-ellipsis">
+      
+        2.1 FluentValidation vs FluentResults vs 도메인 코드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 계층별 사용 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#23">
+<span class="md-ellipsis">
+      
+        2.3 흐름 예시: 업로드 초기화
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 패키지 배치
+      
+    </span>
+</a>
+<nav aria-label="3. 패키지 배치" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 프로젝트별 패키지
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 사용하지 않는 패키지
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 폴더 구조
+      
+    </span>
+</a>
+<nav aria-label="4. 폴더 구조" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41-api">
+<span class="md-ellipsis">
+      
+        4.1 API 계층
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42-core">
+<span class="md-ellipsis">
+      
+        4.2 Core 계층
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 배치 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-validator">
+<span class="md-ellipsis">
+      
+        5. Validator 작성 규칙
+      
+    </span>
+</a>
+<nav aria-label="5. Validator 작성 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 기본 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 필수 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 금지 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-validator">
+<span class="md-ellipsis">
+      
+        5.4 Validator가 하지 않는 일 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-di">
+<span class="md-ellipsis">
+      
+        6. DI 등록
+      
+    </span>
+</a>
+<nav aria-label="6. DI 등록" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61">
+<span class="md-ellipsis">
+      
+        6.1 등록 방식
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62-lifetime">
+<span class="md-ellipsis">
+      
+        6.2 Lifetime 규칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-minimal-api">
+<span class="md-ellipsis">
+      
+        7. Minimal API에서 수동 검증
+      
+    </span>
+</a>
+<nav aria-label="7. Minimal API에서 수동 검증" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 기본 패턴
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72-validation">
+<span class="md-ellipsis">
+      
+        7.2 수동 validation을 사용하는 이유
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 응답 변환
+      
+    </span>
+</a>
+<nav aria-label="8. 응답 변환" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81-validationresult-http">
+<span class="md-ellipsis">
+      
+        8.1 ValidationResult → HTTP 응답
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-validationresult-fluentresults">
+<span class="md-ellipsis">
+      
+        8.2 ValidationResult → FluentResults
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-usecase">
+<span class="md-ellipsis">
+      
+        8.3 UseCase 내부 변환 패턴
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-command-validator">
+<span class="md-ellipsis">
+      
+        9. Command Validator 작성 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 비동기 검증 규칙
+      
+    </span>
+</a>
+<nav aria-label="10. 비동기 검증 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#101">
+<span class="md-ellipsis">
+      
+        10.1 사용 조건
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#102">
+<span class="md-ellipsis">
+      
+        10.2 허용 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#103">
+<span class="md-ellipsis">
+      
+        10.3 위치 판단 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 컬렉션과 중첩 객체 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-ruleset">
+<span class="md-ellipsis">
+      
+        12. RuleSet 사용 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        13. 에러 코드 체계
+      
+    </span>
+</a>
+<nav aria-label="13. 에러 코드 체계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#131">
+<span class="md-ellipsis">
+      
+        13.1 네이밍 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#132">
+<span class="md-ellipsis">
+      
+        13.2 영역별 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14">
+<span class="md-ellipsis">
+      
+        14. 테스트 규칙
+      
+    </span>
+</a>
+<nav aria-label="14. 테스트 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#141">
+<span class="md-ellipsis">
+      
+        14.1 테스트 위치
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#142-validator">
+<span class="md-ellipsis">
+      
+        14.2 Validator 단위 테스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#143-api">
+<span class="md-ellipsis">
+      
+        14.3 API 통합 테스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#144">
+<span class="md-ellipsis">
+      
+        14.4 테스트 커버리지 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15">
+<span class="md-ellipsis">
+      
+        15. 도입 순서
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#16">
+<span class="md-ellipsis">
+      
+        16. 금지 사항
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#17">
+<span class="md-ellipsis">
+      
+        17. 아키텍처 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        참고 자료
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cloudsharp-fluentvalidation">CloudSharp FluentValidation 가이드<a class="headerlink" href="#cloudsharp-fluentvalidation" title="Permanent link">¶</a></h1>
+<blockquote>
+<p>FluentValidation을 사용한 입력 검증의 위치, 작성 방식, 응답 변환, 테스트 규칙을 정의한다.</p>
+</blockquote>
+<hr/>
+<h2 id="1">1. 목적과 범위<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<p>이 문서는 CloudSharp 백엔드에서 FluentValidation을 사용할 때 따르는 규칙을 정의한다.</p>
+<p><strong>핵심 원칙:</strong></p>
+<p>FluentValidation은 입력을 걸러내고, FluentResults는 비즈니스 실패를 표현한다.</p>
+<hr/>
+<h2 id="2">2. 역할 분리<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<h3 id="21-fluentvalidation-vs-fluentresults-vs">2.1 FluentValidation vs FluentResults vs 도메인 코드<a class="headerlink" href="#21-fluentvalidation-vs-fluentresults-vs" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>관심사</th>
+<th>담당 도구</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>필수값, 길이, 형식, 범위</td>
+<td>FluentValidation</td>
+<td>이메일 형식, 파일 크기 양수, Space 이름 길이</td>
+</tr>
+<tr>
+<td>도메인 상태, 권한, 존재 여부</td>
+<td>FluentResults</td>
+<td>Space 없음, 권한 없음, quota 초과</td>
+</tr>
+<tr>
+<td>엔티티 불변식</td>
+<td>도메인 코드 + FluentResults</td>
+<td><code>FolderPath.Create</code>, <code>UploadSession.Finalize</code></td>
+</tr>
+<tr>
+<td>HTTP 응답 변환</td>
+<td>API mapper</td>
+<td><code>ValidationProblem</code>, <code>ProblemDetails</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 계층별 사용 범위<a class="headerlink" href="#22" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>계층</th>
+<th>FluentValidation 역할</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CloudSharp.Api/Endpoints</code></td>
+<td>HTTP request DTO 검증</td>
+<td>body, query, path 조합의 입력 모양 검증</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Core/UseCases</code></td>
+<td>command/query 사전 조건 검증</td>
+<td>API, MCP Console, worker가 공유하는 입력 규칙</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Core/Domain</code></td>
+<td>사용하지 않는다</td>
+<td>도메인 불변식은 엔티티, 값 객체, 정책이 직접 보장한다</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Infrastructure</code></td>
+<td>거의 사용하지 않는다</td>
+<td>외부 adapter 설정 검증 정도만 선택적으로 허용한다</td>
+</tr>
+<tr>
+<td><code>tests/*</code></td>
+<td>validator 단위 테스트</td>
+<td><code>FluentValidation.TestHelper</code>를 사용한다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23">2.3 흐름 예시: 업로드 초기화<a class="headerlink" href="#23" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>HTTP Request
+    ↓
+FluentValidation
+    - FileName 필수
+    - SizeBytes &gt; 0
+    - ContentType 길이 제한
+    ↓
+UseCase
+    ↓
+FluentResults
+    - Space 없음
+    - 업로드 권한 없음
+    - Space quota 초과
+</code></pre></div>
+<hr/>
+<h2 id="3">3. 패키지 배치<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<h3 id="31">3.1 프로젝트별 패키지<a class="headerlink" href="#31" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>add<span class="w"> </span>src/CloudSharp.Api<span class="w"> </span>package<span class="w"> </span>FluentValidation
+dotnet<span class="w"> </span>add<span class="w"> </span>src/CloudSharp.Api<span class="w"> </span>package<span class="w"> </span>FluentValidation.DependencyInjectionExtensions
+dotnet<span class="w"> </span>add<span class="w"> </span>src/CloudSharp.Core<span class="w"> </span>package<span class="w"> </span>FluentValidation
+dotnet<span class="w"> </span>add<span class="w"> </span>tests/CloudSharp.Core.Tests<span class="w"> </span>package<span class="w"> </span>FluentValidation
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>프로젝트</th>
+<th>패키지</th>
+<th>목적</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CloudSharp.Api</code></td>
+<td><code>FluentValidation</code></td>
+<td>request DTO validator 작성</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api</code></td>
+<td><code>FluentValidation.DependencyInjectionExtensions</code></td>
+<td>validator assembly scan 등록</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Core</code></td>
+<td><code>FluentValidation</code></td>
+<td>command/query validator 작성</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Core.Tests</code></td>
+<td><code>FluentValidation</code></td>
+<td>validator test helper 사용</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api.IntegrationTests</code></td>
+<td>선택</td>
+<td>API validation 응답 검증</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32">3.2 사용하지 않는 패키지<a class="headerlink" href="#32" title="Permanent link">¶</a></h3>
+<p><code>FluentValidation.AspNetCore</code> 기반 자동 MVC validation은 사용하지 않는다. Minimal API 기반 수동 validation을 기본으로 한다.</p>
+<hr/>
+<h2 id="4">4. 폴더 구조<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41-api">4.1 API 계층<a class="headerlink" href="#41-api" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Api/
+├── Endpoints/
+│   ├── Auth/
+│   │   ├── LoginRequest.cs
+│   │   └── LoginRequestValidator.cs
+│   ├── Spaces/
+│   │   ├── CreateSpaceRequest.cs
+│   │   └── CreateSpaceRequestValidator.cs
+│   └── Uploads/
+│       ├── InitializeUploadRequest.cs
+│       └── InitializeUploadRequestValidator.cs
+└── Endpoints/
+    └── ValidationResultMapper.cs
+</code></pre></div>
+<h3 id="42-core">4.2 Core 계층<a class="headerlink" href="#42-core" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Core/
+├── Common/
+│   └── Validation/
+│       └── FluentValidationResultMapper.cs
+└── UseCases/
+    ├── Spaces/
+    │   ├── CreateSpaceCommand.cs
+    │   ├── CreateSpaceCommandValidator.cs
+    │   └── CreateSpaceUseCase.cs
+    └── Uploads/
+        ├── InitializeUploadCommand.cs
+        ├── InitializeUploadCommandValidator.cs
+        └── InitializeUploadUseCase.cs
+</code></pre></div>
+<h3 id="43">4.3 배치 기준<a class="headerlink" href="#43" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Validator 위치</th>
+<th>사용 조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Api/Endpoints/{Feature}/</code></td>
+<td>HTTP 요청 모양에만 종속된 검증</td>
+</tr>
+<tr>
+<td><code>Core/UseCases/{Feature}/</code></td>
+<td>API 외 MCP Console, background job에서도 재사용해야 하는 검증</td>
+</tr>
+<tr>
+<td><code>Core/Domain/</code></td>
+<td>두지 않는다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="5-validator">5. Validator 작성 규칙<a class="headerlink" href="#5-validator" title="Permanent link">¶</a></h2>
+<h3 id="51">5.1 기본 구조<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<p>validator는 <code>AbstractValidator&lt;T&gt;</code>를 상속하고 생성자에서 <code>RuleFor</code>로 규칙을 작성한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="nf">CreateSpaceRequest</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">long?</span><span class="w"> </span><span class="n">StorageAllowedBytes</span><span class="p">);</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CreateSpaceRequestValidator</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">AbstractValidator</span><span class="o">&lt;</span><span class="n">CreateSpaceRequest</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">CreateSpaceRequestValidator</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">MaximumLength</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_NAME_INVALID"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">GreaterThan</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">When</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_QUOTA_INVALID"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="52">5.2 필수 규칙<a class="headerlink" href="#52" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>규칙</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>WithErrorCode(...)</code>를 모든 규칙 체인에 붙인다</td>
+<td>API 응답, 로그, 프론트엔드 처리 표준화</td>
+</tr>
+<tr>
+<td>메시지는 사용자에게 보여도 되는 수준으로 작성한다</td>
+<td>내부 예외, 스택 정보 노출 방지</td>
+</tr>
+<tr>
+<td>validator 클래스는 <code>sealed</code>로 선언한다</td>
+<td>상속 의도가 없는 경우 명시</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53">5.3 금지 규칙<a class="headerlink" href="#53" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>금지 사항</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DB 조회가 필요한 권한, 상태, quota 검증을 validator에 넣지 않는다</td>
+<td>UseCase가 판단한다</td>
+</tr>
+<tr>
+<td>도메인 상태 전이 판단을 validator에 넣지 않는다</td>
+<td>도메인 모델이 보장한다</td>
+</tr>
+<tr>
+<td>request DTO validator와 command validator에 같은 규칙을 중복 작성하지 않는다</td>
+<td>중복이면 command validator로 내린다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-validator">5.4 Validator가 하지 않는 일 예시<a class="headerlink" href="#54-validator" title="Permanent link">¶</a></h3>
+<p>업로드 초기화 command validator 기준:</p>
+<table>
+<thead>
+<tr>
+<th>하지 않는 일</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Space 존재 여부 조회</td>
+<td>UseCase가 repository로 판단한다</td>
+</tr>
+<tr>
+<td>권한 확인</td>
+<td><code>SpaceMember</code>/role 정책으로 판단한다</td>
+</tr>
+<tr>
+<td>quota 계산</td>
+<td><code>Quotas</code> 도메인 정책으로 판단한다</td>
+</tr>
+<tr>
+<td>파일명 중복 확인</td>
+<td>reservation/usecase 흐름에서 판단한다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="6-di">6. DI 등록<a class="headerlink" href="#6-di" title="Permanent link">¶</a></h2>
+<h3 id="61">6.1 등록 방식<a class="headerlink" href="#61" title="Permanent link">¶</a></h3>
+<p><code>FluentValidation.DependencyInjectionExtensions</code>의 assembly scan을 사용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">CloudSharp.Core.UseCases.Uploads</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation</span><span class="p">;</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WebApplication</span><span class="p">.</span><span class="n">CreateBuilder</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+
+<span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddOpenApi</span><span class="p">();</span>
+
+<span class="c1">// Api 프로젝트의 validator 등록</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddValidatorsFromAssemblyContaining</span><span class="o">&lt;</span><span class="n">CreateSpaceRequestValidator</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="c1">// Core 프로젝트의 validator 등록</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddValidatorsFromAssemblyContaining</span><span class="o">&lt;</span><span class="n">InitializeUploadCommandValidator</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="n">Build</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="62-lifetime">6.2 Lifetime 규칙<a class="headerlink" href="#62-lifetime" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Lifetime</th>
+<th>사용 여부</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Transient</code></td>
+<td>기본 권장</td>
+<td>scoped dependency 혼입 위험이 낮다</td>
+</tr>
+<tr>
+<td><code>Scoped</code></td>
+<td>허용</td>
+<td>request 단위 dependency가 필요할 때 사용한다</td>
+</tr>
+<tr>
+<td><code>Singleton</code></td>
+<td>사용하지 않는다</td>
+<td>scoped/transient dependency를 주입하면 문제가 생긴다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="7-minimal-api">7. Minimal API에서 수동 검증<a class="headerlink" href="#7-minimal-api" title="Permanent link">¶</a></h2>
+<h3 id="71">7.1 기본 패턴<a class="headerlink" href="#71" title="Permanent link">¶</a></h3>
+<p>endpoint 안에서 <code>IValidator&lt;T&gt;</code>를 DI로 받아 <code>ValidateAsync</code>를 직접 호출한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">SpaceEndpoints</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">IEndpointRouteBuilder</span><span class="w"> </span><span class="nf">MapSpaceEndpoints</span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="n">IEndpointRouteBuilder</span><span class="w"> </span><span class="n">app</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app</span><span class="p">.</span><span class="n">MapGroup</span><span class="p">(</span><span class="s">"/spaces"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">group</span><span class="p">.</span><span class="n">MapPost</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span><span class="w"> </span><span class="n">CreateSpace</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">app</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">IResult</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CreateSpace</span><span class="p">(</span>
+<span class="w">        </span><span class="n">CreateSpaceRequest</span><span class="w"> </span><span class="n">request</span><span class="p">,</span>
+<span class="w">        </span><span class="n">IValidator</span><span class="o">&lt;</span><span class="n">CreateSpaceRequest</span><span class="o">&gt;</span><span class="w"> </span><span class="n">validator</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CreateSpaceUseCase</span><span class="w"> </span><span class="n">useCase</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">validationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">validator</span><span class="p">.</span><span class="n">ValidateAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">validationResult</span><span class="p">.</span><span class="n">IsValid</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">validationResult</span><span class="p">.</span><span class="n">ToValidationProblem</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CreateSpaceCommand</span><span class="p">(</span>
+<span class="w">            </span><span class="n">request</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">request</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">useCase</span><span class="p">.</span><span class="n">Handle</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">ToHttpResult</span><span class="p">(</span><span class="n">Results</span><span class="p">.</span><span class="n">Ok</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="72-validation">7.2 수동 validation을 사용하는 이유<a class="headerlink" href="#72-validation" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>이유</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimal API와 맞는다</td>
+<td>endpoint 흐름에서 validation 위치가 보인다</td>
+</tr>
+<tr>
+<td>async rule을 지원한다</td>
+<td><code>MustAsync</code>, <code>CustomAsync</code>를 안전하게 호출한다</td>
+</tr>
+<tr>
+<td>FluentResults 연결이 쉽다</td>
+<td>validation 실패와 usecase 실패를 같은 응답 정책으로 정리한다</td>
+</tr>
+<tr>
+<td>디버깅이 쉽다</td>
+<td>어떤 validator가 언제 실행되는지 명확하다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="8">8. 응답 변환<a class="headerlink" href="#8" title="Permanent link">¶</a></h2>
+<h3 id="81-validationresult-http">8.1 ValidationResult → HTTP 응답<a class="headerlink" href="#81-validationresult-http" title="Permanent link">¶</a></h3>
+<p>API 계층에 공통 mapper를 둔다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation.Results</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ValidationResultMapper</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">IResult</span><span class="w"> </span><span class="nf">ToValidationProblem</span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="n">ValidationResult</span><span class="w"> </span><span class="n">result</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Results</span><span class="p">.</span><span class="n">ValidationProblem</span><span class="p">(</span>
+<span class="w">            </span><span class="n">errors</span><span class="p">:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">ToDictionary</span><span class="p">(),</span>
+<span class="w">            </span><span class="n">statusCode</span><span class="p">:</span><span class="w"> </span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status400BadRequest</span><span class="p">,</span>
+<span class="w">            </span><span class="n">title</span><span class="p">:</span><span class="w"> </span><span class="s">"입력값 검증에 실패했습니다."</span><span class="p">,</span>
+<span class="w">            </span><span class="n">extensions</span><span class="p">:</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object?</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="na">["errorCodes"]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">Errors</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">GroupBy</span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">PropertyName</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">ToDictionary</span><span class="p">(</span>
+<span class="w">                        </span><span class="k">group</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">group</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span>
+<span class="w">                        </span><span class="k">group</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">group</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">ErrorCode</span><span class="p">).</span><span class="n">ToArray</span><span class="p">())</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>응답 형식:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"입력값 검증에 실패했습니다."</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Name"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"'Name' must not be empty."</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"errorCodes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Name"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"SPACE_NAME_INVALID"</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="82-validationresult-fluentresults">8.2 ValidationResult → FluentResults<a class="headerlink" href="#82-validationresult-fluentresults" title="Permanent link">¶</a></h3>
+<p>Core 계층에 변환 mapper를 둔다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentResults</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation.Results</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Core.Common.Validation</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">FluentValidationResultMapper</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="nf">ToResult</span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="n">ValidationResult</span><span class="w"> </span><span class="n">validationResult</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">validationResult</span><span class="p">.</span><span class="n">IsValid</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">validationResult</span><span class="p">.</span><span class="n">Errors</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">failure</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="n">failure</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"ErrorCode"</span><span class="p">,</span><span class="w"> </span><span class="n">failure</span><span class="p">.</span><span class="n">ErrorCode</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"PropertyName"</span><span class="p">,</span><span class="w"> </span><span class="n">failure</span><span class="p">.</span><span class="n">PropertyName</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"AttemptedValue"</span><span class="p">,</span><span class="w"> </span><span class="n">failure</span><span class="p">.</span><span class="n">AttemptedValue</span><span class="p">));</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="n">errors</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="83-usecase">8.3 UseCase 내부 변환 패턴<a class="headerlink" href="#83-usecase" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">InitializeUploadUseCase</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">IValidator</span><span class="o">&lt;</span><span class="n">InitializeUploadCommand</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_validator</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">InitializeUploadUseCase</span><span class="p">(</span><span class="n">IValidator</span><span class="o">&lt;</span><span class="n">InitializeUploadCommand</span><span class="o">&gt;</span><span class="w"> </span><span class="n">validator</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_validator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">validator</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">InitializeUploadResponse</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">Handle</span><span class="p">(</span>
+<span class="w">        </span><span class="n">InitializeUploadCommand</span><span class="w"> </span><span class="n">command</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">validationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_validator</span><span class="p">.</span><span class="n">ValidateAsync</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">validationResult</span><span class="p">.</span><span class="n">IsValid</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">validationResult</span><span class="p">.</span><span class="n">ToResult</span><span class="p">().</span><span class="n">ToResult</span><span class="o">&lt;</span><span class="n">InitializeUploadResponse</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nf">Execute</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>반환형 변환 helper:</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Result</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ToResult</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="n">result</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">IsSuccess</span>
+<span class="w">        </span><span class="o">?</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="k">default</span><span class="o">!</span><span class="p">)</span>
+<span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Errors</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>default!</code> 성공값이 의미 없는 상황에서만 이 helper를 사용한다. validation 성공 후 실제 값을 만드는 흐름에서는 사용하지 않는다.</p>
+<hr/>
+<h2 id="9-command-validator">9. Command Validator 작성 예시<a class="headerlink" href="#9-command-validator" title="Permanent link">¶</a></h2>
+<p>API 외 MCP Console에서도 호출되는 command는 <code>Core/UseCases/{Feature}/</code>에 validator를 둔다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Core.UseCases.Uploads</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="nf">InitializeUploadCommand</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Guid</span><span class="w"> </span><span class="n">SpaceId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Guid</span><span class="w"> </span><span class="n">TargetFolderId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Guid</span><span class="w"> </span><span class="n">RequesterUserId</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">FileName</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">SizeBytes</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">ContentType</span><span class="p">);</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">InitializeUploadCommandValidator</span>
+<span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="n">AbstractValidator</span><span class="o">&lt;</span><span class="n">InitializeUploadCommand</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">InitializeUploadCommandValidator</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">SpaceId</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_ID_REQUIRED"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">TargetFolderId</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"TARGET_FOLDER_ID_REQUIRED"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">RequesterUserId</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"REQUESTER_USER_ID_REQUIRED"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">FileName</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">MaximumLength</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"UPLOAD_FILE_NAME_INVALID"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">SizeBytes</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">GreaterThan</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">LessThanOrEqualTo</span><span class="p">(</span><span class="mi">10L</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"UPLOAD_SIZE_INVALID"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">ContentType</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">MaximumLength</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"UPLOAD_CONTENT_TYPE_INVALID"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="10">10. 비동기 검증 규칙<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<h3 id="101">10.1 사용 조건<a class="headerlink" href="#101" title="Permanent link">¶</a></h3>
+<p>async rule(<code>MustAsync</code>, <code>CustomAsync</code>, <code>WhenAsync</code>)은 제한적으로 사용한다. async rule이 포함된 validator는 반드시 <code>ValidateAsync</code>로 호출한다.</p>
+<h3 id="102">10.2 허용 예시<a class="headerlink" href="#102" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Email</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">MustAsync</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">        </span><span class="o">!</span><span class="k">await</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="n">ExistsByEmailAsync</span><span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">))</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WithMessage</span><span class="p">(</span><span class="s">"이미 사용 중인 이메일입니다."</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"USER_DUPLICATE_EMAIL"</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="103">10.3 위치 판단 기준<a class="headerlink" href="#103" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>판단 기준</th>
+<th>권장 위치</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>단순 입력 형식</td>
+<td>validator</td>
+</tr>
+<tr>
+<td>중복 여부가 API/MCP 공통 사전 조건</td>
+<td>command validator 허용</td>
+</tr>
+<tr>
+<td>권한, 상태, quota처럼 유스케이스 흐름 일부</td>
+<td>UseCase + FluentResults</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="11">11. 컬렉션과 중첩 객체 검증<a class="headerlink" href="#11" title="Permanent link">¶</a></h2>
+<p>bulk 작업이나 목록 입력에는 <code>RuleForEach</code>와 <code>SetValidator</code>를 사용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="nf">InviteMembersRequest</span><span class="p">(</span>
+<span class="w">    </span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">InviteMemberRequestItem</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Members</span><span class="p">);</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="nf">InviteMemberRequestItem</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">Email</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">Role</span><span class="p">);</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">InviteMembersRequestValidator</span>
+<span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="n">AbstractValidator</span><span class="o">&lt;</span><span class="n">InviteMembersRequest</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">InviteMembersRequestValidator</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Members</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Must</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"INVITE_MEMBER_COUNT_INVALID"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleForEach</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Members</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">SetValidator</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">InviteMemberRequestItemValidator</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">InviteMemberRequestItemValidator</span>
+<span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="n">AbstractValidator</span><span class="o">&lt;</span><span class="n">InviteMemberRequestItem</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">InviteMemberRequestItemValidator</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Email</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">EmailAddress</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"INVITE_EMAIL_INVALID"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Role</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Must</span><span class="p">(</span><span class="n">role</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">role</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="s">"Owner"</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="s">"Admin"</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="s">"Member"</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="s">"Viewer"</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"INVITE_ROLE_INVALID"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="12-ruleset">12. RuleSet 사용 기준<a class="headerlink" href="#12-ruleset" title="Permanent link">¶</a></h2>
+<p>RuleSet은 같은 DTO/command를 상황별로 다르게 검증해야 할 때만 사용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UpdateSpaceRequestValidator</span>
+<span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="n">AbstractValidator</span><span class="o">&lt;</span><span class="n">UpdateSpaceRequest</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">UpdateSpaceRequestValidator</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RuleSet</span><span class="p">(</span><span class="s">"Rename"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">                </span><span class="p">.</span><span class="n">MaximumLength</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_NAME_INVALID"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">});</span>
+
+<span class="w">        </span><span class="n">RuleSet</span><span class="p">(</span><span class="s">"Quota"</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">GreaterThan</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_QUOTA_INVALID"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>RuleSet 남용을 피한다. command를 분리하는 편이 더 명확한 경우가 많다.</p>
+<div class="highlight"><pre><span></span><code>RenameSpaceCommand      ← 별도 validator
+ChangeSpaceQuotaCommand ← 별도 validator
+</code></pre></div>
+<hr/>
+<h2 id="13">13. 에러 코드 체계<a class="headerlink" href="#13" title="Permanent link">¶</a></h2>
+<h3 id="131">13.1 네이밍 규칙<a class="headerlink" href="#131" title="Permanent link">¶</a></h3>
+<p>FluentResults의 <code>ErrorCode</code>와 같은 네이밍 규칙을 사용한다.</p>
+<table>
+<thead>
+<tr>
+<th>규칙</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>도메인 prefix를 사용한다</td>
+<td><code>UPLOAD_</code>, <code>SPACE_</code>, <code>SHARE_LINK_</code></td>
+</tr>
+<tr>
+<td>입력 검증은 <code>_INVALID</code>, <code>_REQUIRED</code>를 사용한다</td>
+<td><code>SPACE_NAME_INVALID</code>, <code>SPACE_ID_REQUIRED</code></td>
+</tr>
+<tr>
+<td>비즈니스 실패는 FluentResults 쪽 코드를 사용한다</td>
+<td><code>SPACE_NOT_FOUND</code>, <code>UPLOAD_QUOTA_EXCEEDED</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="132">13.2 영역별 예시<a class="headerlink" href="#132" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>영역</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auth</td>
+<td><code>AUTH_EMAIL_REQUIRED</code>, <code>AUTH_PASSWORD_INVALID</code></td>
+</tr>
+<tr>
+<td>Spaces</td>
+<td><code>SPACE_NAME_INVALID</code>, <code>SPACE_QUOTA_INVALID</code></td>
+</tr>
+<tr>
+<td>Members</td>
+<td><code>INVITE_EMAIL_INVALID</code>, <code>INVITE_ROLE_INVALID</code></td>
+</tr>
+<tr>
+<td>Folders</td>
+<td><code>FOLDER_NAME_INVALID</code>, <code>FOLDER_PARENT_ID_REQUIRED</code></td>
+</tr>
+<tr>
+<td>Files</td>
+<td><code>FILE_NAME_INVALID</code>, <code>FILE_TARGET_FOLDER_REQUIRED</code></td>
+</tr>
+<tr>
+<td>Uploads</td>
+<td><code>UPLOAD_FILE_NAME_INVALID</code>, <code>UPLOAD_SIZE_INVALID</code></td>
+</tr>
+<tr>
+<td>Downloads</td>
+<td><code>DOWNLOAD_SESSION_ID_REQUIRED</code></td>
+</tr>
+<tr>
+<td>ShareLinks</td>
+<td><code>SHARE_LINK_PASSWORD_INVALID</code>, <code>SHARE_LINK_EXPIRY_INVALID</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="14">14. 테스트 규칙<a class="headerlink" href="#14" title="Permanent link">¶</a></h2>
+<h3 id="141">14.1 테스트 위치<a class="headerlink" href="#141" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>tests/
+├── CloudSharp.Core.Tests/
+│   └── UseCases/
+│       └── Uploads/
+│           └── InitializeUploadCommandValidatorTests.cs
+└── CloudSharp.Api.IntegrationTests/
+    └── Endpoints/
+        └── Spaces/
+            └── CreateSpaceEndpointTests.cs
+</code></pre></div>
+<h3 id="142-validator">14.2 Validator 단위 테스트<a class="headerlink" href="#142-validator" title="Permanent link">¶</a></h3>
+<p><code>FluentValidation.TestHelper</code>의 <code>TestValidate</code>와 <code>ShouldHaveValidationErrorFor</code>를 사용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">CloudSharp.Core.UseCases.Uploads</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">FluentValidation.TestHelper</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Core.Tests.UseCases.Uploads</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">InitializeUploadCommandValidatorTests</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">InitializeUploadCommandValidator</span><span class="w"> </span><span class="n">_validator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">();</span>
+
+<span class="w">    </span><span class="na">[Test]</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Should_Have_Error_When_FileName_Is_Empty</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InitializeUploadCommand</span><span class="p">(</span>
+<span class="w">            </span><span class="n">Guid</span><span class="p">.</span><span class="n">NewGuid</span><span class="p">(),</span>
+<span class="w">            </span><span class="n">Guid</span><span class="p">.</span><span class="n">NewGuid</span><span class="p">(),</span>
+<span class="w">            </span><span class="n">Guid</span><span class="p">.</span><span class="n">NewGuid</span><span class="p">(),</span>
+<span class="w">            </span><span class="s">""</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">1024</span><span class="p">,</span>
+<span class="w">            </span><span class="s">"text/plain"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_validator</span><span class="p">.</span><span class="n">TestValidate</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="n">ShouldHaveValidationErrorFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">FileName</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"UPLOAD_FILE_NAME_INVALID"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="143-api">14.3 API 통합 테스트<a class="headerlink" href="#143-api" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="na">[Test]</span>
+<span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">CreateSpace_Should_Return400_When_Name_Is_Empty</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_client</span><span class="p">.</span><span class="n">PostAsJsonAsync</span><span class="p">(</span><span class="s">"/spaces"</span><span class="p">,</span><span class="w"> </span><span class="k">new</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">,</span>
+<span class="w">        </span><span class="n">storageAllowedBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">BadRequest</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="144">14.4 테스트 커버리지 기준<a class="headerlink" href="#144" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>테스트 종류</th>
+<th>검증 대상</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Validator 단위 테스트</td>
+<td>property별 validation error와 error code</td>
+</tr>
+<tr>
+<td>UseCase 테스트</td>
+<td>validation 실패가 <code>Result.Fail</code>로 변환되는지</td>
+</tr>
+<tr>
+<td>API 통합 테스트</td>
+<td>400 <code>ValidationProblem</code> 응답 형식</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="15">15. 도입 순서<a class="headerlink" href="#15" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>작업</th>
+<th>위치</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>API request validator 작성</td>
+<td><code>CloudSharp.Api/Endpoints/*</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>공통 <code>ValidationResultMapper</code> 작성</td>
+<td><code>CloudSharp.Api/Endpoints/</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>UseCase command validator 도입</td>
+<td><code>CloudSharp.Core/UseCases/*</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>FluentResults 변환 mapper 연결</td>
+<td><code>CloudSharp.Core/Common/Validation/</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>TestHelper로 validator 테스트 추가</td>
+<td><code>tests/*</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="16">16. 금지 사항<a class="headerlink" href="#16" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>도메인 규칙을 validator에만 넣는다</td>
+<td>validator는 입력을 거르는 장치다. 도메인 불변식은 반드시 도메인 모델도 보장한다.</td>
+</tr>
+<tr>
+<td>자동 validation pipeline에 의존한다</td>
+<td>Minimal API와 async validation을 고려하여 <code>ValidateAsync</code>를 명시적으로 호출한다.</td>
+</tr>
+<tr>
+<td>DB 조회를 validator에 과하게 넣는다</td>
+<td>중복 확인 정도는 허용하지만, 권한/상태/quota는 UseCase에 둔다.</td>
+</tr>
+<tr>
+<td><code>WithErrorCode</code>를 생략한다</td>
+<td>error code가 없으면 프론트엔드, 로그, 테스트가 문자열 메시지에 의존하게 된다.</td>
+</tr>
+<tr>
+<td>request DTO validator와 command validator에 같은 규칙을 중복 작성한다</td>
+<td>HTTP 모양 검증은 request validator에, 업무 공통 검증은 command validator에 둔다.</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="17">17. 아키텍처 요약<a class="headerlink" href="#17" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code>HTTP Request
+    ↓
+CloudSharp.Api/Endpoints
+    - Request DTO binding
+    - IValidator&lt;Request&gt;.ValidateAsync
+    - ValidationProblem 변환
+    ↓
+Request → UseCase Command 변환
+    ↓
+CloudSharp.Core/UseCases
+    - IValidator&lt;Command&gt;.ValidateAsync
+    - validation 실패 → FluentResults 변환
+    - 도메인/권한/quota 흐름 실행
+    ↓
+CloudSharp.Core/Domain
+    - 불변식 보장
+    - 상태 전이
+    ↓
+CloudSharp.Infrastructure
+    - DB/Redis/Storage adapter
+</code></pre></div>
+<hr/>
+<h2 id="_1">참고 자료<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://github.com/FluentValidation/FluentValidation">FluentValidation GitHub</a></li>
+<li><a href="https://docs.fluentvalidation.net/en/latest/">FluentValidation Documentation</a></li>
+<li><a href="https://docs.fluentvalidation.net/en/latest/aspnet.html">ASP.NET Core Integration</a></li>
+<li><a href="https://docs.fluentvalidation.net/en/latest/di.html">Dependency Injection</a></li>
+<li><a href="https://docs.fluentvalidation.net/en/latest/async.html">Asynchronous Validation</a></li>
+<li><a href="https://docs.fluentvalidation.net/en/latest/error-codes.html">Custom Error Codes</a></li>
+<li><a href="https://docs.fluentvalidation.net/en/latest/testing.html">Test Extensions</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

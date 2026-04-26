@@ -1,0 +1,2130 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/" rel="prev"/>
+<link href="../%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/" rel="next"/>
+<link href="../../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>다운로드 파이프라인 - 개발 문서</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              다운로드 파이프라인
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        핵심 아키텍처
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        설계 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 전체 흐름도
+      
+    </span>
+</a>
+<nav aria-label="2. 전체 흐름도" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#part-1-14">
+<span class="md-ellipsis">
+      
+        Part 1: 인증 → 세션 발급 (1~4단계)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#part-2-58">
+<span class="md-ellipsis">
+      
+        Part 2: 스트리밍 → 완료 (5~8단계)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 단계별 상세 명세
+      
+    </span>
+</a>
+<nav aria-label="3. 단계별 상세 명세" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31-1">
+<span class="md-ellipsis">
+      
+        3.1 — 1단계: 사용자 인증 / 공유 링크 접근
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32-2">
+<span class="md-ellipsis">
+      
+        3.2 — 2단계: 파일 권한 / 공유 상태 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33-3">
+<span class="md-ellipsis">
+      
+        3.3 — 3단계: 파일 메타데이터 및 다운로드 가능 상태 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34-4">
+<span class="md-ellipsis">
+      
+        3.4 — 4단계: 다운로드 세션 토큰 발급
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#35-5">
+<span class="md-ellipsis">
+      
+        3.5 — 5단계: 세션 토큰으로 파일 스트림 요청
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#36-6-storage_key-resolve">
+<span class="md-ellipsis">
+      
+        3.6 — 6단계: storage_key → 실제 파일 경로 Resolve 및 최종 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#37-7">
+<span class="md-ellipsis">
+      
+        3.7 — 7단계: 파일 스트림 응답
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#38-8">
+<span class="md-ellipsis">
+      
+        3.8 — 8단계: 로그 기록 / 카운트 증가
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 에러 응답 총괄
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 보안 체크리스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 설계 목표 달성 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentValidation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        핵심 아키텍처
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        설계 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 전체 흐름도
+      
+    </span>
+</a>
+<nav aria-label="2. 전체 흐름도" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#part-1-14">
+<span class="md-ellipsis">
+      
+        Part 1: 인증 → 세션 발급 (1~4단계)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#part-2-58">
+<span class="md-ellipsis">
+      
+        Part 2: 스트리밍 → 완료 (5~8단계)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 단계별 상세 명세
+      
+    </span>
+</a>
+<nav aria-label="3. 단계별 상세 명세" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31-1">
+<span class="md-ellipsis">
+      
+        3.1 — 1단계: 사용자 인증 / 공유 링크 접근
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32-2">
+<span class="md-ellipsis">
+      
+        3.2 — 2단계: 파일 권한 / 공유 상태 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33-3">
+<span class="md-ellipsis">
+      
+        3.3 — 3단계: 파일 메타데이터 및 다운로드 가능 상태 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34-4">
+<span class="md-ellipsis">
+      
+        3.4 — 4단계: 다운로드 세션 토큰 발급
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#35-5">
+<span class="md-ellipsis">
+      
+        3.5 — 5단계: 세션 토큰으로 파일 스트림 요청
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#36-6-storage_key-resolve">
+<span class="md-ellipsis">
+      
+        3.6 — 6단계: storage_key → 실제 파일 경로 Resolve 및 최종 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#37-7">
+<span class="md-ellipsis">
+      
+        3.7 — 7단계: 파일 스트림 응답
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#38-8">
+<span class="md-ellipsis">
+      
+        3.8 — 8단계: 로그 기록 / 카운트 증가
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 에러 응답 총괄
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 보안 체크리스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 설계 목표 달성 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1>다운로드 파이프라인</h1>
+<p>본 문서는 <strong>인증 사용자</strong>와 <strong>공유 링크 사용자</strong>를 모두 지원하는 파일 다운로드 시스템의 전체 흐름을 정의한다.</p>
+<h3 id="_1">핵심 아키텍처<a class="headerlink" href="#_1" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>권한 검증 → 다운로드 가능 상태 사전 검증 → 다운로드 세션 발급 → 최종 경로 검증 및 스트리밍
+</code></pre></div>
+<h3 id="_2">설계 원칙<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>원칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zero Information Leak</strong></td>
+<td>외부에 파일 존재 여부를 노출하지 않는다</td>
+</tr>
+<tr>
+<td><strong>Defense in Depth</strong></td>
+<td>모든 단계에서 독립적으로 검증한다</td>
+</tr>
+<tr>
+<td><strong>Browser-Compatible</strong></td>
+<td>브라우저의 다운로드 동작 모델을 수용한다</td>
+</tr>
+<tr>
+<td><strong>Least Privilege</strong></td>
+<td>세션은 최소 수명으로 최소 범위에 바인딩한다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2">2. 전체 흐름도<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<h3 id="part-1-14">Part 1: 인증 → 세션 발급 (1~4단계)<a class="headerlink" href="#part-1-14" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>flowchart TD
+    START([클라이언트 다운로드 요청]) --&gt; A{접근 경로 판별}
+
+    A --&gt;|Authorization 헤더| B[opaque session Bearer 토큰 검증]
+    A --&gt;|share_token 파라미터| C[공유 링크 토큰 검증]
+
+    B --&gt;|유효| D[/"subjectType=user
+    subjectId={userId}"/]
+    B --&gt;|무효/만료| ERR1[❌ 401 Unauthorized]
+
+    C --&gt;|유효| E[/"subjectType=share_link
+    subjectId={shareLinkId}"/]
+    C --&gt;|무효| ERR2[❌ 404 Not Found]
+
+    D --&gt; F{{"2단계: 파일 권한 / 공유 상태 검증"}}
+    E --&gt; F
+
+    F --&gt;|인증 사용자| F1["소유자 여부 확인
+    공유 대상 여부 확인
+    조직/프로젝트/폴더 권한 확인"]
+    F --&gt;|공유 링크| F2["링크 활성화 여부
+    만료 여부
+    비밀번호 검증
+    다운로드 허용 여부"]
+
+    F1 --&gt;|통과| G{{"3단계: 다운로드 가능 상태 사전 검증"}}
+    F2 --&gt;|통과| G
+    F1 --&gt;|실패| ERR3[❌ 404 Not Found]
+    F2 --&gt;|실패| ERR3
+
+    G --&gt; G1["파일 메타데이터 존재 여부
+    storage_key 존재 여부
+    삭제/손상/비활성/격리 상태
+    다운로드 정책 차단 여부
+    스토리지 객체 존재 여부"]
+
+    G1 --&gt;|통과| H{{"4단계: 다운로드 세션 토큰 발급"}}
+    G1 --&gt;|실패| ERR4[❌ 404 Not Found]
+
+    H --&gt; H1["다운로드 세션 토큰 생성
+    TTL ≈ 5분
+    파일ID + 요청자 바인딩
+    opaque token + 해시 저장"]
+
+    H1 --&gt; RESP1[/"✅ 200 OK
+    { downloadUrl, expiresAt }"/]
+
+    style ERR1 fill:#dc3545,color:#fff,stroke:#dc3545
+    style ERR2 fill:#dc3545,color:#fff,stroke:#dc3545
+    style ERR3 fill:#dc3545,color:#fff,stroke:#dc3545
+    style ERR4 fill:#dc3545,color:#fff,stroke:#dc3545
+    style RESP1 fill:#198754,color:#fff,stroke:#198754
+    style START fill:#0d6efd,color:#fff,stroke:#0d6efd</code></pre>
+<h3 id="part-2-58">Part 2: 스트리밍 → 완료 (5~8단계)<a class="headerlink" href="#part-2-58" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>flowchart TD
+    START2([클라이언트 스트림 요청
+    GET /files/stream?sessionToken=...]) --&gt; I{{"5단계: 세션 토큰 검증"}}
+
+    I --&gt; I1{세션 토큰 유효?}
+    I1 --&gt;|만료/위변조| ERR5[❌ 401 Unauthorized]
+    I1 --&gt;|파일 불일치| ERR6[❌ 404 Not Found]
+    I1 --&gt;|유효| J{{"6단계: storage_key → 실제 경로 resolve"}}
+
+    J --&gt; J1["키-경로 맵 조회 → 절대 경로 획득"]
+    J1 --&gt; J2["realpath() 경로 정규화"]
+    J2 --&gt; J3{"정규화 경로가
+    허용 루트 내부?"}
+    J3 --&gt;|아니오| ERR7[❌ 404 Not Found
+    + 보안 경고 로그]
+    J3 --&gt;|예| J4{파일 존재 &amp;
+    open 가능?}
+    J4 --&gt;|아니오| ERR8[❌ 404 Not Found]
+    J4 --&gt;|예| K{{"7단계: 파일 스트림 응답"}}
+
+    K --&gt; K1{Range 헤더?}
+    K1 --&gt;|없음| K2[200 OK
+    전체 파일 응답]
+    K1 --&gt;|있음| K3{범위 유효?}
+    K3 --&gt;|유효| K4[206 Partial Content
+    부분 응답]
+    K3 --&gt;|초과| K5[❌ 416 Range Not Satisfiable]
+
+    K2 --&gt; L{{"8단계: 로그 기록 / 카운트"}}
+    K4 --&gt; L
+
+    L --&gt; L1["download_attempt_count 증가
+    (스트림 시작 시점)"]
+    L1 --&gt; L2{전체 전송 완료?}
+    L2 --&gt;|예| L3["download_completed_count 증가
+    감사 로그 기록"]
+    L2 --&gt;|아니오| L4["중단/실패 로그 기록"]
+
+    L3 --&gt; END1([✅ 다운로드 완료])
+    L4 --&gt; END2([⚠️ 다운로드 미완료])
+
+    style ERR5 fill:#dc3545,color:#fff,stroke:#dc3545
+    style ERR6 fill:#dc3545,color:#fff,stroke:#dc3545
+    style ERR7 fill:#dc3545,color:#fff,stroke:#dc3545
+    style ERR8 fill:#dc3545,color:#fff,stroke:#dc3545
+    style K5 fill:#dc3545,color:#fff,stroke:#dc3545
+    style END1 fill:#198754,color:#fff,stroke:#198754
+    style END2 fill:#ffc107,color:#000,stroke:#ffc107
+    style START2 fill:#0d6efd,color:#fff,stroke:#0d6efd</code></pre>
+<hr/>
+<h2 id="3">3. 단계별 상세 명세<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<h3 id="31-1">3.1 — 1단계: 사용자 인증 / 공유 링크 접근<a class="headerlink" href="#31-1" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 요청자의 신원을 확인하고 내부 컨텍스트로 정규화한다.</p>
+</blockquote>
+<pre class="mermaid-source"><code>flowchart LR
+    subgraph 인증 사용자
+        A1["Authorization: Bearer {opaque_session_token}"] --&gt; A2[/"subjectType = user
+        subjectId = {userId}"/]
+    end
+
+    subgraph 공유 링크 사용자
+        B1["?share_token={token}"] --&gt; B2[/"subjectType = share_link
+        subjectId = {shareLinkId}"/]
+    end</code></pre>
+<table>
+<thead>
+<tr>
+<th>접근 경로</th>
+<th>인증 방식</th>
+<th>정규화 결과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>인증 사용자</td>
+<td><code>Authorization</code> 헤더의 opaque session Bearer 토큰</td>
+<td><code>subjectType=user</code>, <code>subjectId={userId}</code></td>
+</tr>
+<tr>
+<td>공유 링크 사용자</td>
+<td>쿼리 파라미터의 <code>share_token</code></td>
+<td><code>subjectType=share_link</code>, <code>subjectId={shareLinkId}</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>에러 응답:</strong></p>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>응답</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용자 세션 토큰 유효하지 않음 / 만료</td>
+<td><code>401 Unauthorized</code></td>
+<td>인증 실패는 명시적으로 알림</td>
+</tr>
+<tr>
+<td>공유 토큰 유효하지 않음</td>
+<td><code>404 Not Found</code></td>
+<td>리소스 존재 여부 비노출</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="32-2">3.2 — 2단계: 파일 권한 / 공유 상태 검증<a class="headerlink" href="#32-2" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> DB 조회를 통해 요청자가 해당 파일에 접근할 수 있는지 확인한다.</p>
+</blockquote>
+<pre class="mermaid-source"><code>flowchart TD
+    subgraph 인증 사용자 검증
+        U1[파일 소유자 여부] --&gt; U2[공유 대상 여부]
+        U2 --&gt; U3[조직/프로젝트/폴더 단위 접근 권한]
+    end
+
+    subgraph 공유 링크 검증
+        S1[링크 활성화 여부] --&gt; S2[만료 여부]
+        S2 --&gt; S3[비밀번호 검증]
+        S3 --&gt; S4[다운로드 허용 여부]
+    end</code></pre>
+<p><strong>핵심 원칙 — 정보 노출 최소화:</strong></p>
+<p>아래 <strong>모든 경우</strong>를 동일하게 <code>404 Not Found</code>로 처리한다:</p>
+<ul>
+<li>파일이 실제로 존재하지 않음</li>
+<li>요청자에게 접근 권한이 없음</li>
+<li>공유 링크가 파일에 매핑되지 않음</li>
+<li>비활성화된 공유 링크로 접근 시도</li>
+</ul>
+<blockquote>
+<p>💡 외부 클라이언트 관점에서 <strong>"접근 불가"와 "존재하지 않음"을 구분할 수 없다.</strong></p>
+</blockquote>
+<hr/>
+<h3 id="33-3">3.3 — 3단계: 파일 메타데이터 및 다운로드 가능 상태 검증<a class="headerlink" href="#33-3" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 다운로드가 불가능한 파일에 대해 세션을 발급하지 않기 위한 <strong>사전 검증</strong>이다.</p>
+</blockquote>
+<p><strong>검증 항목:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>검증 항목</th>
+<th>실패 시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>파일 메타데이터 존재 여부</td>
+<td><code>404</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>storage_key</code> 존재 여부</td>
+<td><code>404</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>삭제 / 손상 / 비활성 / 격리 상태 여부</td>
+<td><code>404</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>다운로드 정책상 차단 대상 여부</td>
+<td><code>404</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>(선택) 실제 스토리지 객체 존재 여부</td>
+<td><code>404</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>주의:</strong> 이 단계는 사전 검증이다. 세션 발급 후 실제 스트리밍 시점까지 파일 상태가 변할 수 있으므로, <strong>최종 검증은 6단계에서 반드시 다시 수행</strong>한다.</p>
+</blockquote>
+<hr/>
+<h3 id="34-4">3.4 — 4단계: 다운로드 세션 토큰 발급<a class="headerlink" href="#34-4" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 실제 파일 스트리밍에 사용할 일회성 세션 토큰을 발급한다.</p>
+</blockquote>
+<p><strong>세션 토큰 구조:</strong></p>
+<pre class="mermaid-source"><code>flowchart LR
+    subgraph 세션 토큰 페이로드
+        direction TB
+        A["파일 ID"] ~~~ B["요청자 식별자
+        (subjectType + subjectId)"]
+        B ~~~ C["세션 ID (UUID)"]
+        C ~~~ D["만료 시각 (≈5분)"]
+    end
+
+    subgraph 보호
+        E["opaque token"]
+        F["session_token_hash 저장"]
+    end
+
+    세션_토큰_페이로드 --&gt; 보호</code></pre>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTL</td>
+<td>약 5분</td>
+</tr>
+<tr>
+<td>포함 정보</td>
+<td>파일 ID, <code>subjectType</code>, <code>subjectId</code>, 세션 ID, 만료 시각</td>
+</tr>
+<tr>
+<td>보호 방식</td>
+<td>원문 토큰은 한 번만 반환하고, 서버에는 <code>session_token_hash</code>와 세션 메타데이터 저장</td>
+</tr>
+</tbody>
+</table>
+<p><strong>세션이 지원하는 요청 유형:</strong></p>
+<table>
+<thead>
+<tr>
+<th>요청 유형</th>
+<th>지원</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>브라우저의 동일 다운로드 재요청</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>단일 <code>Range</code> 기반 이어받기(resume)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>네트워크 끊김 후 재시도</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>한 HTTP 요청 안의 multi-range (<code>Range: bytes=0-99,200-299</code>)</td>
+<td>❌ 미지원 (<code>416</code> 또는 전체 응답)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>응답 예시:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"downloadUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/files/stream?sessionToken={download_session_token}"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"expiresAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-03-17T12:00:00Z"</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>리스크 분석 및 대응:</strong></p>
+<table>
+<thead>
+<tr>
+<th>리스크</th>
+<th>대응</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTL이 너무 길면 URL 탈취 악용 가능</td>
+<td>TTL 5분 내외로 제한</td>
+</tr>
+<tr>
+<td>TTL이 너무 짧으면 대용량 파일 재요청 실패</td>
+<td>세션 TTL 내 반복 요청 허용</td>
+</tr>
+<tr>
+<td>토큰 유출</td>
+<td>파일 ID + 요청자 식별자에 바인딩, 선택적 IP/UA 바인딩</td>
+</tr>
+</tbody>
+</table>
+<p><strong>추가 보안 정책:</strong></p>
+<ul>
+<li>다운로드 세션은 <strong>발급 시점 권한</strong>을 기준으로 TTL 동안 유효</li>
+<li>Access log 내 토큰 마스킹</li>
+<li><code>Cache-Control: private, no-store</code> 헤더 필수</li>
+</ul>
+<hr/>
+<h3 id="35-5">3.5 — 5단계: 세션 토큰으로 파일 스트림 요청<a class="headerlink" href="#35-5" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 클라이언트가 발급받은 세션 토큰으로 실제 파일 스트림을 요청한다.</p>
+</blockquote>
+<p><strong>요청 예시:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nf">GET</span> <span class="nn">/files/stream?sessionToken={download_session_token}</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Range</span><span class="o">:</span> <span class="l">bytes=0-1048575</span>
+</code></pre></div>
+<p><strong>처리 규칙:</strong></p>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>처리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>세션 토큰 만료 / 위변조</td>
+<td><code>401 Unauthorized</code></td>
+</tr>
+<tr>
+<td>세션이 가리키는 파일과 요청 대상 불일치</td>
+<td><code>404 Not Found</code></td>
+</tr>
+<tr>
+<td>세션 TTL 내 반복 GET / 단일 Range / resume</td>
+<td>✅ 허용</td>
+</tr>
+<tr>
+<td>한 HTTP 요청 안의 multi-range 요청</td>
+<td>❌ 미지원 (<code>416</code> 또는 전체 응답)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>"1회용 토큰 + 즉시 무효화" 방식을 사용하지 않는 이유:</strong></p>
+<pre class="mermaid-source"><code>flowchart LR
+    subgraph "브라우저 다운로드 동작 (실제)"
+        A["초기 GET"] --&gt; B["Range resume"]
+        A --&gt; C["병렬 Range 요청 시도"]
+        A --&gt; D["프록시 중복 요청"]
+        A --&gt; E["네트워크 재시도"]
+    end
+
+    B --&gt;|충돌| F["1회용 토큰 즉시 무효화"]
+    C --&gt;|충돌| F
+    D --&gt;|충돌| F
+    E --&gt;|충돌| F
+
+    style F fill:#dc3545,color:#fff</code></pre>
+<blockquote>
+<p>브라우저는 다운로드 중 동일 URL 재요청, Range resume, 프록시 중복 요청, 일부 환경의 병렬 Range 요청 시도 등을 발생시킬 수 있어 1회용 방식과 충돌한다. 따라서 <strong>세션 자체는 짧게 유지하되</strong>, 동일 URL 재요청과 단일 Range resume, 네트워크 재시도는 수용한다. 한 HTTP 요청 안의 multi-range와 병렬 Range 다운로드는 지원하지 않는다.</p>
+</blockquote>
+<hr/>
+<h3 id="36-6-storage_key-resolve">3.6 — 6단계: <code>storage_key</code> → 실제 파일 경로 Resolve 및 최종 검증<a class="headerlink" href="#36-6-storage_key-resolve" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 스트림을 열기 직전에 실제 파일 경로를 확정하고 최종 보안 검증을 수행한다.</p>
+</blockquote>
+<pre class="mermaid-source"><code>flowchart TD
+    A["storage_key 수신"] --&gt; B["키-경로 맵 조회
+    (DB / 설정)"]
+    B --&gt; C["절대 경로 획득"]
+    C --&gt; D["realpath() 경로 정규화"]
+    D --&gt; E{"정규화된 경로가
+    허용 루트 내부인가?
+    (예: /data/uploads/)"}
+    E --&gt;|❌ 루트 외부| F["즉시 실패 처리
+    404 + 보안 경고 로그"]
+    E --&gt;|✅ 루트 내부| G{"실제 파일
+    존재 여부?"}
+    G --&gt;|❌| H["404 Not Found"]
+    G --&gt;|✅| I{"파일 open
+    가능 여부?"}
+    I --&gt;|❌| J["404 Not Found
+    + 장애 알림"]
+    I --&gt;|✅| K[["✅ 스트리밍 준비 완료"]]
+
+    style F fill:#dc3545,color:#fff
+    style H fill:#dc3545,color:#fff
+    style J fill:#dc3545,color:#fff
+    style K fill:#198754,color:#fff</code></pre>
+<p><strong>보안 요구사항:</strong></p>
+<table>
+<thead>
+<tr>
+<th>방어 대상</th>
+<th>방어 방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>../</code> 경로 우회</td>
+<td><code>realpath()</code> 정규화 후 루트 프리픽스 검증</td>
+</tr>
+<tr>
+<td>심볼릭 링크 우회</td>
+<td><code>realpath()</code>가 심볼릭 링크를 resolve</td>
+</tr>
+<tr>
+<td>상대 경로 주입</td>
+<td>절대 경로만 허용</td>
+</tr>
+<tr>
+<td>Null byte injection</td>
+<td>경로 문자열 내 <code>\0</code> 차단</td>
+</tr>
+</tbody>
+</table>
+<p><strong>에러 처리:</strong></p>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>응답</th>
+<th>내부 처리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>실제 파일 미존재</td>
+<td><code>404 Not Found</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>메타데이터 존재하나 스토리지 파일 누락</td>
+<td><code>404 Not Found</code></td>
+<td>경고 로그 + 장애 알림</td>
+</tr>
+<tr>
+<td>경로가 허용 루트 외부</td>
+<td><code>404 Not Found</code></td>
+<td><strong>보안 경고 로그</strong></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="37-7">3.7 — 7단계: 파일 스트림 응답<a class="headerlink" href="#37-7" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 검증을 통과한 파일을 안전하게 클라이언트에 스트리밍한다.</p>
+</blockquote>
+<p><strong>기본 응답 헤더:</strong></p>
+<table>
+<thead>
+<tr>
+<th>헤더</th>
+<th>값</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>서버 판별 MIME 타입</td>
+<td>클라이언트 값 불신</td>
+</tr>
+<tr>
+<td><code>Content-Disposition</code></td>
+<td><code>attachment; filename="..."; filename*=UTF-8''...</code></td>
+<td>강제 다운로드</td>
+</tr>
+<tr>
+<td><code>Accept-Ranges</code></td>
+<td><code>bytes</code></td>
+<td>Range 지원 명시</td>
+</tr>
+<tr>
+<td><code>Content-Length</code></td>
+<td>전체/부분 응답 크기</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ETag</code></td>
+<td>파일 버전 식별자</td>
+<td>캐시 검증용</td>
+</tr>
+<tr>
+<td><code>Cache-Control</code></td>
+<td><code>private, no-store</code></td>
+<td>프록시 캐싱 방지</td>
+</tr>
+<tr>
+<td><code>Last-Modified</code></td>
+<td>파일 최종 수정 시각</td>
+<td>선택</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Range 처리 매트릭스:</strong></p>
+<pre class="mermaid-source"><code>flowchart TD
+    REQ["스트림 요청 수신"] --&gt; R1{Range 헤더?}
+    R1 --&gt;|없음| R2["200 OK
+    전체 파일 응답"]
+    R1 --&gt;|있음| R3{If-Range 헤더?}
+    R3 --&gt;|없음| R4{범위 유효?}
+    R3 --&gt;|있음| R5{ETag / 날짜 일치?}
+    R5 --&gt;|일치| R4
+    R5 --&gt;|불일치| R6["200 OK
+    전체 파일 재전송"]
+    R4 --&gt;|유효| R7["206 Partial Content
+    부분 응답"]
+    R4 --&gt;|초과| R8["416 Range Not Satisfiable"]
+
+    style R2 fill:#198754,color:#fff
+    style R6 fill:#198754,color:#fff
+    style R7 fill:#0d6efd,color:#fff
+    style R8 fill:#dc3545,color:#fff</code></pre>
+<p><strong>MIME 타입 처리 원칙:</strong></p>
+<table>
+<thead>
+<tr>
+<th>우선순위</th>
+<th>판별 방법</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>서버 측 magic byte 판별</td>
+<td>최우선</td>
+</tr>
+<tr>
+<td>2</td>
+<td>저장된 메타데이터 / 확장자</td>
+<td>보조 참고</td>
+</tr>
+<tr>
+<td>3</td>
+<td>판별 불확실 시</td>
+<td><code>application/octet-stream</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>XSS 가능 타입(<code>text/html</code>, <code>image/svg+xml</code> 등)이라도 <code>Content-Disposition: attachment</code>로 인라인 렌더링을 방지한다.</p>
+</blockquote>
+<p><strong>파일명 처리 원칙:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Disposition: attachment; filename="safe_name.ext"; filename*=UTF-8''original%20name.ext</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>처리 항목</th>
+<th>방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>위험 문자 제거/이스케이프</td>
+<td><code>"</code>, <code>\r</code>, <code>\n</code>, <code>\0</code>, <code>/</code>, <code>\</code></td>
+</tr>
+<tr>
+<td>최대 길이</td>
+<td>제한 적용 (예: 255자)</td>
+</tr>
+<tr>
+<td>비 ASCII 문자</td>
+<td><code>filename*</code>에 RFC 5987 방식 인코딩</td>
+</tr>
+<tr>
+<td>레거시 호환</td>
+<td><code>filename</code>에 ASCII-safe 이름 병기</td>
+</tr>
+</tbody>
+</table>
+<p><strong>성능 / 운영 보호 정책:</strong></p>
+<table>
+<thead>
+<tr>
+<th>정책</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용자별 동시 다운로드 수 제한</td>
+<td>단일 사용자 리소스 독점 방지</td>
+</tr>
+<tr>
+<td>공유 링크별 rate limit</td>
+<td>링크 남용 방지</td>
+</tr>
+<tr>
+<td>전체 서버 동시 스트림 수 제한</td>
+<td>서버 자원 보호</td>
+</tr>
+<tr>
+<td>대용량 파일 전송 속도 제한</td>
+<td>대역폭 보호 (필요 시)</td>
+</tr>
+<tr>
+<td><code>sendfile</code> / <code>X-Accel-Redirect</code> 활용</td>
+<td>커널 레벨 파일 전송으로 성능 최적화</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="38-8">3.8 — 8단계: 로그 기록 / 카운트 증가<a class="headerlink" href="#38-8" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>목적:</strong> 다운로드 활동을 추적하고 운영 분석 데이터를 수집한다.</p>
+</blockquote>
+<p><strong>카운트 증가 정책:</strong></p>
+<ul>
+<li><strong>공유 링크 다운로드에만 적용</strong></li>
+<li>시도 수와 완료 수를 <strong>분리 집계</strong></li>
+</ul>
+<pre class="mermaid-source"><code>flowchart LR
+    A["스트림 요청 시작"] --&gt;|즉시| B["download_attempt_count++"]
+    B --&gt; C{전체 전송 완료?}
+    C --&gt;|✅ 완료| D["download_completed_count++"]
+    C --&gt;|❌ 중단/실패| E["중단 로그 기록"]</code></pre>
+<table>
+<thead>
+<tr>
+<th>카운트 항목</th>
+<th>증가 시점</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>download_attempt_count</code></td>
+<td>스트림 요청 시작 시점</td>
+<td>시도 횟수 추적</td>
+</tr>
+<tr>
+<td><code>download_completed_count</code></td>
+<td>전체 파일 전송 완료 시점</td>
+<td>실제 완료 횟수 추적</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 분리 집계를 통해 네트워크 중단, 사용자 취소, 실패율 등을 정확히 분석할 수 있다.</p>
+</blockquote>
+<hr/>
+<h2 id="4">4. 에러 응답 총괄<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>flowchart LR
+    subgraph "4xx 에러"
+        E401["401 Unauthorized"]
+        E404["404 Not Found"]
+        E416["416 Range Not Satisfiable"]
+    end
+
+    subgraph "2xx 성공"
+        S200["200 OK"]
+        S206["206 Partial Content"]
+    end</code></pre>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>HTTP 상태 코드</th>
+<th>발생 단계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>인증 실패 / 인증 토큰 만료</td>
+<td><code>401 Unauthorized</code></td>
+<td>1단계</td>
+</tr>
+<tr>
+<td>다운로드 세션 토큰 만료 / 위변조</td>
+<td><code>401 Unauthorized</code></td>
+<td>5단계</td>
+</tr>
+<tr>
+<td>파일 없음 또는 권한 없음</td>
+<td><code>404 Not Found</code></td>
+<td>2, 3, 5, 6단계</td>
+</tr>
+<tr>
+<td>Range 범위 초과</td>
+<td><code>416 Range Not Satisfiable</code></td>
+<td>7단계</td>
+</tr>
+<tr>
+<td>정상 전체 응답</td>
+<td><code>200 OK</code></td>
+<td>7단계</td>
+</tr>
+<tr>
+<td>정상 부분 응답 (Range)</td>
+<td><code>206 Partial Content</code></td>
+<td>7단계</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="5">5. 보안 체크리스트<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>항목</th>
+<th>관련 단계</th>
+<th>중요도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>opaque session token / share token 검증</td>
+<td>1단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>2</td>
+<td>파일 접근 권한 및 공유 상태 검증</td>
+<td>2단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>3</td>
+<td>권한 없음과 파일 없음은 동일하게 <code>404</code> 처리</td>
+<td>2단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>4</td>
+<td>파일 메타데이터 및 다운로드 가능 상태 사전 검증</td>
+<td>3단계</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td>5</td>
+<td>다운로드 세션 토큰 단명 발급 (TTL ≈ 5분)</td>
+<td>4단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>6</td>
+<td>세션 토큰은 파일 ID + 요청자 식별자에 바인딩</td>
+<td>4단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>7</td>
+<td>세션 TTL 내 동일 URL 재요청 / 단일 Range resume / 재시도 허용, multi-range 미지원</td>
+<td>5단계</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Path traversal 방어 (<code>realpath</code> + 루트 경로 검증)</td>
+<td>6단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>9</td>
+<td>스트리밍 직전 파일 존재 및 open 가능 여부 재검증</td>
+<td>6단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>Content-Disposition: attachment</code> 강제</td>
+<td>7단계</td>
+<td>🔴 Critical</td>
+</tr>
+<tr>
+<td>11</td>
+<td>파일명 sanitize 및 <code>filename*</code> 지원</td>
+<td>7단계</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td>12</td>
+<td>MIME 타입은 서버 기준으로 안전하게 결정</td>
+<td>7단계</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>ETag</code> / <code>If-Range</code> 지원</td>
+<td>7단계</td>
+<td>🟢 Medium</td>
+</tr>
+<tr>
+<td>14</td>
+<td>다운로드 로그 및 감사 로그 기록</td>
+<td>8단계</td>
+<td>🟡 High</td>
+</tr>
+<tr>
+<td>15</td>
+<td>동시 다운로드 수 / rate limit / 대역폭 보호</td>
+<td>7~8단계</td>
+<td>🟡 High</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="6">6. 설계 목표 달성 요약<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>mindmap
+  root((다운로드
+    파이프라인))
+    보안
+      파일 존재 여부 노출 최소화
+        권한 없음/파일 없음 모두 404
+      권한 검증 강화
+        인증 사용자 다단계 검증
+        공유 링크 다단계 검증
+      재생 공격 위험 완화
+        단명 세션 토큰
+        파일·요청자 바인딩
+    효율
+      불필요한 세션 발급 방지
+        사전 검증으로 필터링
+      운영 환경 자원 보호
+        동시 다운로드 제한
+        Rate limit
+        대역폭 제어
+    호환성
+      브라우저 호환성 확보
+        GET 재요청 허용
+        Range resume 허용
+        multi-range 미지원</code></pre>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>목표</th>
+<th>달성 방법</th>
+<th>관련 단계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>파일 존재 여부 노출 최소화</strong></td>
+<td>권한 없음 / 파일 없음 모두 <code>404</code> 통일 처리</td>
+<td>2, 3, 6단계</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>권한 검증 강화</strong></td>
+<td>인증 사용자·공유 링크 모두 다단계 검증</td>
+<td>1, 2단계</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>불필요한 세션 발급 방지</strong></td>
+<td>세션 발급 전 다운로드 가능 상태 사전 검증</td>
+<td>3단계</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>브라우저 호환성 확보</strong></td>
+<td>세션 TTL 내 동일 URL 재요청 / 단일 Range resume / 재시도 허용, multi-range 미지원</td>
+<td>4, 5단계</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>재생 공격 위험 완화</strong></td>
+<td>단명 세션 토큰 + 파일·요청자 바인딩</td>
+<td>4단계</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>운영 환경 자원 보호</strong></td>
+<td>동시 다운로드 제한, rate limit, 대역폭 제어</td>
+<td>7, 8단계</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

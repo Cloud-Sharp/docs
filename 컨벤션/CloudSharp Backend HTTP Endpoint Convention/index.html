@@ -1,0 +1,1666 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/" rel="prev"/>
+<link href="../Command%20Query/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CloudSharp Backend HTTP Endpoint Convention - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cloudsharp-backend-http-endpoint-convention">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CloudSharp Backend HTTP Endpoint Convention
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 핵심 결정
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-endpoint">
+<span class="md-ellipsis">
+      
+        3. Endpoint 등록 패턴
+      
+    </span>
+</a>
+<nav aria-label="3. Endpoint 등록 패턴" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#route-group">
+<span class="md-ellipsis">
+      
+        Route Group 규칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-handler">
+<span class="md-ellipsis">
+      
+        4. Handler 메서드 패턴
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-request-response-dto">
+<span class="md-ellipsis">
+      
+        5. Request / Response DTO
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-validation">
+<span class="md-ellipsis">
+      
+        6. Validation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-result-http">
+<span class="md-ellipsis">
+      
+        7. Result -&gt; HTTP 매핑
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-endpoint-filter">
+<span class="md-ellipsis">
+      
+        8. Endpoint Filter
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-openapi">
+<span class="md-ellipsis">
+      
+        9. OpenAPI 메타데이터
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 인증 / 인가
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 금지 사항
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-feature">
+<span class="md-ellipsis">
+      
+        12. 새 Feature 추가 절차
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        13. 전체 흐름
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentValidation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 핵심 결정
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-endpoint">
+<span class="md-ellipsis">
+      
+        3. Endpoint 등록 패턴
+      
+    </span>
+</a>
+<nav aria-label="3. Endpoint 등록 패턴" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#route-group">
+<span class="md-ellipsis">
+      
+        Route Group 규칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-handler">
+<span class="md-ellipsis">
+      
+        4. Handler 메서드 패턴
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-request-response-dto">
+<span class="md-ellipsis">
+      
+        5. Request / Response DTO
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-validation">
+<span class="md-ellipsis">
+      
+        6. Validation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-result-http">
+<span class="md-ellipsis">
+      
+        7. Result -&gt; HTTP 매핑
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-endpoint-filter">
+<span class="md-ellipsis">
+      
+        8. Endpoint Filter
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-openapi">
+<span class="md-ellipsis">
+      
+        9. OpenAPI 메타데이터
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 인증 / 인가
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 금지 사항
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-feature">
+<span class="md-ellipsis">
+      
+        12. 새 Feature 추가 절차
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        13. 전체 흐름
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cloudsharp-backend-http-endpoint-convention">CloudSharp Backend HTTP Endpoint Convention<a class="headerlink" href="#cloudsharp-backend-http-endpoint-convention" title="Permanent link">¶</a></h1>
+<blockquote>
+<p><strong>투표 결과:</strong> 1안 - Minimal APIs + Feature별 Endpoints 구조로 확정<br/>
+<strong>적용 범위:</strong> <code>CloudSharp.Api</code> 프로젝트 내 모든 HTTP 진입점<br/>
+<strong>최종 수정:</strong> 2026-04-23</p>
+</blockquote>
+<hr/>
+<h2 id="1">1. 핵심 결정<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<p>CloudSharp의 HTTP 진입점은 Controller를 사용하지 않고 <strong>Minimal APIs + Feature별 Endpoint 확장 메서드</strong>로 통일한다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>결정</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP 스타일</td>
+<td>Minimal APIs</td>
+</tr>
+<tr>
+<td>파일 배치</td>
+<td><code>CloudSharp.Api/Endpoints/{Feature}/</code></td>
+</tr>
+<tr>
+<td>Handler 반환형</td>
+<td><code>IResult</code> 또는 <code>Task&lt;IResult&gt;</code></td>
+</tr>
+<tr>
+<td>UseCase 의존</td>
+<td><code>I{Domain}UseCases</code> Feature 단위 인터페이스</td>
+</tr>
+<tr>
+<td>입력 검증</td>
+<td>Handler 내부에서 <code>IValidator&lt;T&gt;.ValidateAsync</code> 수동 호출</td>
+</tr>
+<tr>
+<td>실패 변환</td>
+<td><code>FluentResults</code> 결과를 <code>ResultHttpMapper</code>로 HTTP 응답 변환</td>
+</tr>
+<tr>
+<td>인증</td>
+<td>Opaque Session Token 기반 <code>RequireAuthorization()</code></td>
+</tr>
+<tr>
+<td>Space 인가</td>
+<td>Endpoint Filter + UseCase 내부 권한 검증</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2">2. 디렉토리 구조<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code>CloudSharp.Api/
+├── Endpoints/
+│   ├── Auth/
+│   │   ├── AuthEndpoints.cs
+│   │   ├── Requests/
+│   │   ├── Responses/
+│   │   └── Validators/
+│   ├── Spaces/
+│   │   ├── SpaceEndpoints.cs
+│   │   ├── SpaceMemberEndpoints.cs
+│   │   ├── Filters/
+│   │   ├── Requests/
+│   │   ├── Responses/
+│   │   └── Validators/
+│   ├── Files/
+│   │   ├── FileEndpoints.cs
+│   │   ├── Requests/
+│   │   ├── Responses/
+│   │   └── Validators/
+│   └── _Common/
+│       ├── ResultHttpMapper.cs
+│       ├── ValidationResultMapper.cs
+│       ├── HttpContextExtensions.cs
+│       └── EndpointRegistrationExtensions.cs
+├── Auth/
+├── OpenApi/
+├── Middlewares/
+├── BackgroundServices/
+├── Program.cs
+└── DependencyInjection.cs
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>규칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Feature 단위 폴더</td>
+<td><code>Auth</code>, <code>Spaces</code>, <code>Files</code>처럼 도메인 Feature별로 분리한다</td>
+</tr>
+<tr>
+<td>하위 구조 고정</td>
+<td>각 Feature 폴더는 <code>Requests/</code>, <code>Responses/</code>, <code>Validators/</code>, 필요 시 <code>Filters/</code>를 둔다</td>
+</tr>
+<tr>
+<td><code>_Common/</code></td>
+<td>Feature에 속하지 않는 endpoint 공통 mapper, 확장 메서드, registration helper를 둔다</td>
+</tr>
+<tr>
+<td>파일 네이밍</td>
+<td><code>{Feature}Endpoints.cs</code> 형식을 따른다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3-endpoint">3. Endpoint 등록 패턴<a class="headerlink" href="#3-endpoint" title="Permanent link">¶</a></h2>
+<p>모든 Endpoint 클래스는 <code>static class</code>이며, <code>IEndpointRouteBuilder</code> 확장 메서드로 작성한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">SpaceEndpoints</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">RouteGroupBuilder</span><span class="w"> </span><span class="nf">MapSpaceEndpoints</span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="n">IEndpointRouteBuilder</span><span class="w"> </span><span class="n">app</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app</span><span class="p">.</span><span class="n">MapGroup</span><span class="p">(</span><span class="s">"/api/v1/spaces"</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithTags</span><span class="p">(</span><span class="s">"Spaces"</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">RequireAuthorization</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">group</span><span class="p">.</span><span class="n">MapPost</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span><span class="w"> </span><span class="n">CreateSpace</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithName</span><span class="p">(</span><span class="s">"CreateSpace"</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithSummary</span><span class="p">(</span><span class="s">"새 Space를 생성합니다."</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Produces</span><span class="o">&lt;</span><span class="n">SpaceResponse</span><span class="o">&gt;</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status201Created</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">ProducesValidationProblem</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Produces</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status401Unauthorized</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">group</span><span class="p">.</span><span class="n">MapGet</span><span class="p">(</span><span class="s">"/{spaceId:guid}"</span><span class="p">,</span><span class="w"> </span><span class="n">GetSpace</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithName</span><span class="p">(</span><span class="s">"GetSpace"</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithSummary</span><span class="p">(</span><span class="s">"Space 상세 정보를 조회합니다."</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">AddEndpointFilter</span><span class="o">&lt;</span><span class="n">SpacePermissionFilter</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Produces</span><span class="o">&lt;</span><span class="n">SpaceResponse</span><span class="o">&gt;</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status200OK</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Produces</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status401Unauthorized</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Produces</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status403Forbidden</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Produces</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status404NotFound</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">group</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>Program.cs</code>에는 Feature별 등록만 남긴다.</p>
+<div class="highlight"><pre><span></span><code><span class="n">app</span><span class="p">.</span><span class="n">MapAuthEndpoints</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">MapSpaceEndpoints</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">MapSpaceMemberEndpoints</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">MapFileEndpoints</span><span class="p">();</span>
+</code></pre></div>
+<blockquote>
+<p><code>Program.cs</code>에 서비스 API를 <code>MapGet</code>, <code>MapPost</code>로 직접 작성하지 않는다. Health check처럼 앱 부트스트랩 성격의 엔드포인트만 예외로 둘 수 있다.</p>
+</blockquote>
+<h3 id="route-group">Route Group 규칙<a class="headerlink" href="#route-group" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>규칙</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base path</td>
+<td><code>/api/v1/{feature}</code></td>
+<td><code>/api/v1/spaces</code></td>
+</tr>
+<tr>
+<td>공개 API</td>
+<td><code>/public/v1/{feature}</code></td>
+<td><code>/public/v1/share-links/{shareToken}/browse</code></td>
+</tr>
+<tr>
+<td>하위 리소스</td>
+<td>별도 Endpoints 클래스로 분리</td>
+<td><code>SpaceMemberEndpoints</code></td>
+</tr>
+<tr>
+<td>Route constraint</td>
+<td>가능한 한 명시</td>
+<td><code>{spaceId:guid}</code></td>
+</tr>
+<tr>
+<td>Tag</td>
+<td>Feature 복수형</td>
+<td><code>Spaces</code>, <code>Files</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="4-handler">4. Handler 메서드 패턴<a class="headerlink" href="#4-handler" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">IResult</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CreateSpace</span><span class="p">(</span>
+<span class="w">    </span><span class="n">CreateSpaceRequest</span><span class="w"> </span><span class="n">request</span><span class="p">,</span>
+<span class="w">    </span><span class="n">IValidator</span><span class="o">&lt;</span><span class="n">CreateSpaceRequest</span><span class="o">&gt;</span><span class="w"> </span><span class="n">validator</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ISpaceUseCases</span><span class="w"> </span><span class="n">spaceUseCases</span><span class="p">,</span>
+<span class="w">    </span><span class="n">HttpContext</span><span class="w"> </span><span class="n">httpContext</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">validationResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">validator</span><span class="p">.</span><span class="n">ValidateAsync</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">validationResult</span><span class="p">.</span><span class="n">IsValid</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">validationResult</span><span class="p">.</span><span class="n">ToValidationProblem</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">requesterUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">httpContext</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">GetUserId</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CreateSpaceCommand</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RequesterUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requesterUserId</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">StorageAllowedBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="n">StorageAllowedBytes</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">spaceUseCases</span><span class="p">.</span><span class="n">CreateAsync</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">ToHttpResult</span><span class="p">(</span><span class="k">value</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">        </span><span class="n">Results</span><span class="p">.</span><span class="n">Created</span><span class="p">(</span>
+<span class="w">            </span><span class="s">$"/api/v1/spaces/{value.SpaceId}"</span><span class="p">,</span>
+<span class="w">            </span><span class="k">value</span><span class="p">.</span><span class="n">ToResponse</span><span class="p">()));</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>필수 여부</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Validation</td>
+<td>Body 또는 복잡한 query가 있을 때 필수</td>
+<td><code>IValidator&lt;T&gt;.ValidateAsync</code>를 수동 호출</td>
+</tr>
+<tr>
+<td>2. 입력 변환</td>
+<td>필수</td>
+<td>Request, route, query, 인증 사용자 정보를 Command/Query로 변환</td>
+</tr>
+<tr>
+<td>3. UseCase 실행</td>
+<td>필수</td>
+<td>하나의 handler는 하나의 <code>I{Domain}UseCases</code> 메서드만 호출</td>
+</tr>
+<tr>
+<td>4. Result 매핑</td>
+<td>필수</td>
+<td>성공은 response DTO로, 실패는 <code>ResultHttpMapper</code>로 변환</td>
+</tr>
+</tbody>
+</table>
+<p>Handler 파라미터는 HTTP 입력, validator, UseCase 인터페이스, 인증 컨텍스트, <code>CancellationToken</code> 순서로 둔다. <code>CancellationToken</code>은 마지막 파라미터로 둔다.</p>
+<p>Handler에서 Repository, DbContext, Storage adapter를 직접 호출하지 않는다.</p>
+<hr/>
+<h2 id="5-request-response-dto">5. Request / Response DTO<a class="headerlink" href="#5-request-response-dto" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces.Requests</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="nf">CreateSpaceRequest</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">long?</span><span class="w"> </span><span class="n">StorageAllowedBytes</span><span class="p">);</span>
+</code></pre></div>
+<p>Request DTO 규칙:</p>
+<ul>
+<li><code>sealed record</code>로 선언한다.</li>
+<li>네이밍은 <code>{Action}{Feature}Request</code>를 따른다.</li>
+<li>Feature의 <code>Requests/</code> 폴더에 둔다.</li>
+<li>Domain entity, EF entity, Core command/query를 Request로 직접 사용하지 않는다.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces.Responses</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="nf">SpaceResponse</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Guid</span><span class="w"> </span><span class="n">Id</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">long?</span><span class="w"> </span><span class="n">StorageAllowedBytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DateTimeOffset</span><span class="w"> </span><span class="n">CreatedAtUtc</span><span class="p">);</span>
+</code></pre></div>
+<p>Response DTO는 API 외부 계약이다. Core Result 모델이나 도메인 객체를 그대로 노출하지 않는다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces.Responses</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">SpaceResponseMapper</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">SpaceResponse</span><span class="w"> </span><span class="nf">ToResponse</span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="n">CreateSpaceResult</span><span class="w"> </span><span class="n">result</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="nf">SpaceResponse</span><span class="p">(</span>
+<span class="w">            </span><span class="n">Id</span><span class="p">:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">SpaceId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Name</span><span class="p">:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">StorageAllowedBytes</span><span class="p">:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="p">,</span>
+<span class="w">            </span><span class="n">CreatedAtUtc</span><span class="p">:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">CreatedAtUtc</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>API Response 변환은 <code>Responses/</code> 아래 mapper에 둔다. 변환 입력은 기본적으로 Core UseCase Result 모델이다.</p>
+<hr/>
+<h2 id="6-validation">6. Validation<a class="headerlink" href="#6-validation" title="Permanent link">¶</a></h2>
+<p>Request validator는 HTTP 입력 모양만 검증한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints.Spaces.Validators</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CreateSpaceRequestValidator</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">AbstractValidator</span><span class="o">&lt;</span><span class="n">CreateSpaceRequest</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">CreateSpaceRequestValidator</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">NotEmpty</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">MaximumLength</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_NAME_INVALID"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">RuleFor</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">GreaterThan</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">When</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">StorageAllowedBytes</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithErrorCode</span><span class="p">(</span><span class="s">"SPACE_QUOTA_INVALID"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>규칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>호출 위치</td>
+<td>Handler의 첫 단계</td>
+</tr>
+<tr>
+<td>호출 방식</td>
+<td><code>IValidator&lt;T&gt;.ValidateAsync(..., cancellationToken)</code></td>
+</tr>
+<tr>
+<td>실패 응답</td>
+<td><code>_Common/ValidationResultMapper.ToValidationProblem()</code></td>
+</tr>
+<tr>
+<td>HTTP status</td>
+<td>request validation 실패는 <code>400 Bad Request</code></td>
+</tr>
+<tr>
+<td>자동 validation</td>
+<td>MVC <code>[ApiController]</code> 자동 validation은 사용하지 않는다</td>
+</tr>
+<tr>
+<td>등록</td>
+<td><code>AddValidatorsFromAssemblyContaining&lt;Program&gt;()</code> 또는 endpoint assembly scan</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint Filter로 validation을 자동화하지 않는다. MVP에서는 handler 흐름에 검증 위치가 보이게 둔다.</p>
+<hr/>
+<h2 id="7-result-http">7. Result -&gt; HTTP 매핑<a class="headerlink" href="#7-result-http" title="Permanent link">¶</a></h2>
+<p>CloudSharp Core는 <code>FluentResults.Result&lt;T&gt;</code> 또는 <code>Result</code>만 반환한다. API는 이를 외부 계약으로 노출하지 않고 <code>_Common/ResultHttpMapper</code>로 HTTP 응답에 매핑한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">ToHttpResult</span><span class="p">(</span><span class="k">value</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">Results</span><span class="p">.</span><span class="n">Ok</span><span class="p">(</span><span class="k">value</span><span class="p">.</span><span class="n">ToResponse</span><span class="p">()));</span>
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>UseCase 실패에 대해 handler가 직접 <code>Results.NotFound()</code>, <code>Results.Conflict()</code> 등을 조립하지 않는다.</li>
+<li>실패 status는 <code>CloudSharpError.StatusCodeMetadataKey</code> 또는 공통 error code mapping을 따른다.</li>
+<li><code>Result&lt;T&gt;</code>의 성공 값은 API Response DTO로 변환한다.</li>
+<li>처리되지 않은 시스템 예외는 <code>ExceptionHandlingMiddleware</code>에서 500으로 처리한다.</li>
+</ul>
+<hr/>
+<h2 id="8-endpoint-filter">8. Endpoint Filter<a class="headerlink" href="#8-endpoint-filter" title="Permanent link">¶</a></h2>
+<p>Endpoint Filter는 HTTP 진입 전후의 얇은 정책에만 사용한다.</p>
+<table>
+<thead>
+<tr>
+<th>허용</th>
+<th>금지</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Space 접근 가능 여부 검증</td>
+<td>Request DTO validation</td>
+</tr>
+<tr>
+<td>rate limit 같은 전처리</td>
+<td>UseCase 실행</td>
+</tr>
+<tr>
+<td>공통 로깅, correlation 보강</td>
+<td>Response DTO 변환</td>
+</tr>
+</tbody>
+</table>
+<p>Space 권한 필터는 repository를 직접 흩뿌리지 말고 <code>ISpacePermissionService</code>, <code>ISpaceRoleResolver</code> 같은 권한 전용 추상화를 사용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">memberGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app</span><span class="p">.</span><span class="n">MapGroup</span><span class="p">(</span><span class="s">"/api/v1/spaces/{spaceId:guid}/members"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WithTags</span><span class="p">(</span><span class="s">"SpaceMembers"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RequireAuthorization</span><span class="p">()</span>
+<span class="w">    </span><span class="p">.</span><span class="n">AddEndpointFilter</span><span class="o">&lt;</span><span class="n">SpacePermissionFilter</span><span class="o">&gt;</span><span class="p">();</span>
+</code></pre></div>
+<p>HTTP 계층은 "이 사용자가 이 Space 리소스에 접근 가능한가?"까지만 판단한다. "이 작업을 수행할 수 있는 역할인가?"는 UseCase와 도메인 정책에서 다시 판단한다.</p>
+<hr/>
+<h2 id="9-openapi">9. OpenAPI 메타데이터<a class="headerlink" href="#9-openapi" title="Permanent link">¶</a></h2>
+<p>모든 endpoint는 OpenAPI metadata를 명시한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">group</span><span class="p">.</span><span class="n">MapPost</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span><span class="w"> </span><span class="n">CreateSpace</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WithName</span><span class="p">(</span><span class="s">"CreateSpace"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WithSummary</span><span class="p">(</span><span class="s">"새 Space를 생성합니다."</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Produces</span><span class="o">&lt;</span><span class="n">SpaceResponse</span><span class="o">&gt;</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status201Created</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ProducesValidationProblem</span><span class="p">()</span>
+<span class="w">    </span><span class="p">.</span><span class="n">Produces</span><span class="p">(</span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status401Unauthorized</span><span class="p">);</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>메타데이터</th>
+<th>규칙</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>WithName</code></td>
+<td><code>{Action}{Feature}</code> PascalCase</td>
+</tr>
+<tr>
+<td><code>WithTags</code></td>
+<td>Feature 복수형</td>
+</tr>
+<tr>
+<td><code>WithSummary</code></td>
+<td>한국어 동사형 문장</td>
+</tr>
+<tr>
+<td><code>Produces&lt;T&gt;</code></td>
+<td>성공 응답은 반드시 명시</td>
+</tr>
+<tr>
+<td><code>ProducesValidationProblem</code></td>
+<td>request validation이 있으면 명시</td>
+</tr>
+<tr>
+<td><code>Produces(...)</code></td>
+<td>인증, 인가, not found, conflict 등 대표 실패 status 명시</td>
+</tr>
+</tbody>
+</table>
+<p>OpenAPI security scheme의 bearer format은 <code>JWT</code>가 아니라 <code>opaque</code>로 표기한다.</p>
+<hr/>
+<h2 id="10">10. 인증 / 인가<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app</span><span class="p">.</span><span class="n">MapGroup</span><span class="p">(</span><span class="s">"/api/v1/spaces"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">WithTags</span><span class="p">(</span><span class="s">"Spaces"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RequireAuthorization</span><span class="p">();</span>
+</code></pre></div>
+<p>CloudSharp 내부 API는 opaque session token을 사용한다. handler에서 사용자 ID가 필요하면 <code>HttpContext.User</code> 또는 <code>ICurrentUser</code>에서 추출하고, body의 <code>userId</code>는 신뢰하지 않는다.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">requesterUserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">httpContext</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">GetUserId</span><span class="p">();</span>
+</code></pre></div>
+<p>인가 계층:</p>
+<div class="highlight"><pre><span></span><code>RequireAuthorization()
+    -&gt; Opaque session token 인증
+Endpoint Filter
+    -&gt; Space 리소스 접근 가능 여부
+UseCase / Domain Policy
+    -&gt; 작업별 Role, 상태, quota, 소유권 검증
+</code></pre></div>
+<hr/>
+<h2 id="11">11. 금지 사항<a class="headerlink" href="#11" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>금지 사항</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>ControllerBase</code>, <code>[ApiController]</code> 사용</td>
+<td>Minimal API로 통일</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>IActionResult</code>, <code>ActionResult&lt;T&gt;</code> 반환</td>
+<td>HTTP handler는 <code>IResult</code>만 사용</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Handler에서 Repository, DbContext, Storage 직접 호출</td>
+<td>UseCase 경계를 유지</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Handler에서 여러 UseCase 메서드 호출</td>
+<td>하나의 HTTP 행위는 하나의 유스케이스 흐름으로 표현</td>
+</tr>
+<tr>
+<td>5</td>
+<td>서비스 API를 <code>Program.cs</code>에 인라인 등록</td>
+<td>Feature별 <code>Map*Endpoints()</code>로 등록</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Request/Response에 Domain/EF entity 직접 노출</td>
+<td>API DTO 경계 유지</td>
+</tr>
+<tr>
+<td>7</td>
+<td>UseCase 실패를 handler에서 직접 status별 분기</td>
+<td><code>ResultHttpMapper</code>로 통일</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Endpoint Filter에서 UseCase 실행</td>
+<td>Filter는 인가/전처리만 담당</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>HttpContext.RequestServices.GetService&lt;T&gt;()</code></td>
+<td>파라미터 주입 또는 생성자 주입 사용</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>Task.Result</code>, <code>.Wait()</code> 사용</td>
+<td>항상 async/await 사용</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="12-feature">12. 새 Feature 추가 절차<a class="headerlink" href="#12-feature" title="Permanent link">¶</a></h2>
+<ol>
+<li><code>Endpoints/{Feature}/</code> 폴더를 만든다.</li>
+<li><code>Requests/</code>에 Request DTO를 작성한다.</li>
+<li><code>Validators/</code>에 FluentValidation validator를 작성한다.</li>
+<li><code>Responses/</code>에 Response DTO와 <code>ToResponse()</code> mapper를 작성한다.</li>
+<li><code>{Feature}Endpoints.cs</code>에 <code>Map{Feature}Endpoints()</code>를 작성한다.</li>
+<li>필요한 경우 <code>Filters/</code>에 endpoint filter를 작성한다.</li>
+<li><code>Program.cs</code> 또는 <code>EndpointRegistrationExtensions</code>에서 <code>app.Map{Feature}Endpoints()</code>를 호출한다.</li>
+<li>Core usecase 테스트와 API 통합 테스트를 작성한다.</li>
+</ol>
+<hr/>
+<h2 id="13">13. 전체 흐름<a class="headerlink" href="#13" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code>HTTP Request
+    -&gt; ASP.NET Authentication
+    -&gt; Endpoint Filter
+    -&gt; Handler
+        1. Request validation
+        2. Request/path/query/user -&gt; Command/Query
+        3. I{Domain}UseCases method 실행
+        4. Result -&gt; IResult mapping
+    -&gt; HTTP Response
+</code></pre></div>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>
