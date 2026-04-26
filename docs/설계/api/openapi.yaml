@@ -53,13 +53,15 @@ components:
       scheme: bearer
       bearerFormat: opaque
   parameters:
-    spaceId:
-      name: spaceId
+    spaceSlug:
+      name: spaceSlug
       in: path
       required: true
-      description: Space 식별자
+      description: URL 접근에 사용하는 Space slug. UUID 문자열
       schema:
         type: string
+        format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
     folderId:
       name: folderId
       in: path
@@ -275,6 +277,8 @@ components:
       properties:
         id:
           type: string
+          description: Space 리소스 식별자. bigint가 아닌 opaque string
+          example: spc_01JV7V1QG6Q3A9M8R4T6K2N1YB
         name:
           type: string
         description:
@@ -318,6 +322,9 @@ components:
           properties:
             slug:
               type: string
+              format: uuid
+              description: URL path 접근에 사용하는 Space slug
+              example: 550e8400-e29b-41d4-a716-446655440000
             ownerUserId:
               type: string
     SpaceListResponse:
@@ -1247,13 +1254,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}:
+  /api/v1/spaces/{spaceSlug}:
     get:
       tags:
         - Spaces
       summary: Space 상세 조회
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       responses:
         '200':
           description: 상세 조회 성공
@@ -1272,7 +1279,7 @@ paths:
         - Spaces
       summary: Space 수정
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       requestBody:
         required: true
         content:
@@ -1297,7 +1304,7 @@ paths:
         - Spaces
       summary: Space 삭제 또는 비활성화
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       responses:
         '202':
           description: 삭제 요청 수락
@@ -1311,13 +1318,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/quota:
+  /api/v1/spaces/{spaceSlug}/quota:
     get:
       tags:
         - Spaces
       summary: Space quota 조회
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       responses:
         '200':
           description: quota 조회 성공
@@ -1330,7 +1337,7 @@ paths:
         - Spaces
       summary: Space quota 변경
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       requestBody:
         required: true
         content:
@@ -1350,13 +1357,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/invites:
+  /api/v1/spaces/{spaceSlug}/invites:
     post:
       tags:
         - Invites
       summary: Space 초대 생성
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       requestBody:
         required: true
         content:
@@ -1400,13 +1407,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/members:
+  /api/v1/spaces/{spaceSlug}/members:
     get:
       tags:
         - Members
       summary: Space 멤버 목록 조회
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       responses:
         '200':
           description: 멤버 목록 조회 성공
@@ -1414,13 +1421,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpaceMemberListResponse'
-  /api/v1/spaces/{spaceId}/members/{memberId}:
+  /api/v1/spaces/{spaceSlug}/members/{memberId}:
     patch:
       tags:
         - Members
       summary: Space 멤버 Role 변경
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/memberId'
       requestBody:
         required: true
@@ -1446,7 +1453,7 @@ paths:
         - Members
       summary: Space 멤버 제거
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/memberId'
       responses:
         '204':
@@ -1457,13 +1464,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/folders/{folderId}/children:
+  /api/v1/spaces/{spaceSlug}/folders/{folderId}/children:
     get:
       tags:
         - Folders
       summary: 폴더 자식 목록 조회
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/folderId'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -1484,13 +1491,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FolderChildrenResponse'
-  /api/v1/spaces/{spaceId}/folders:
+  /api/v1/spaces/{spaceSlug}/folders:
     post:
       tags:
         - Folders
       summary: 폴더 생성
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
       requestBody:
         required: true
         content:
@@ -1510,13 +1517,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/folders/{folderId}:
+  /api/v1/spaces/{spaceSlug}/folders/{folderId}:
     patch:
       tags:
         - Folders
       summary: 폴더명 변경 또는 이동
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/folderId'
       requestBody:
         required: true
@@ -1542,7 +1549,7 @@ paths:
         - Folders
       summary: 폴더 삭제
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/folderId'
       responses:
         '204':
@@ -1553,13 +1560,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/search:
+  /api/v1/spaces/{spaceSlug}/search:
     get:
       tags:
         - Folders
       summary: 파일 및 폴더 검색
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/q'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -1589,13 +1596,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResponse'
-  /api/v1/spaces/{spaceId}/files/{fileId}:
+  /api/v1/spaces/{spaceSlug}/files/{fileId}:
     patch:
       tags:
         - Files
       summary: 파일명 변경 또는 이동
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/fileId'
       requestBody:
         required: true
@@ -1621,7 +1628,7 @@ paths:
         - Files
       summary: 파일 삭제
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/fileId'
       responses:
         '204':
@@ -1671,13 +1678,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/files/{fileId}/download-sessions:
+  /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
     post:
       tags:
         - Downloads
       summary: 인증 사용자용 다운로드 세션 발급
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/fileId'
       responses:
         '200':
@@ -1692,13 +1699,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceId}/files/{fileId}/preview:
+  /api/v1/spaces/{spaceSlug}/files/{fileId}/preview:
     get:
       tags:
         - Downloads
       summary: 파일 미리보기 정보 또는 내용 조회
       parameters:
-        - $ref: '#/components/parameters/spaceId'
+        - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/fileId'
       responses:
         '200':

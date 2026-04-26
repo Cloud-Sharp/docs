@@ -13,7 +13,8 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 | 인증 방식 | `Authorization: Bearer {opaque_session_token}` |
 | 기본 데이터 형식 | `application/json` |
 | 파일 다운로드 응답 | `application/octet-stream` 또는 서버 판별 MIME |
-| API 리소스 ID | 외부 API에서는 모두 **opaque string** 으로 취급 |
+| API 리소스 ID | 응답의 `id`, `spaceId`, `fileId` 등은 모두 **opaque string** 으로 취급하며 bigint로 파싱하지 않음 |
+| Space URL 식별자 | `/api/v1/spaces/{spaceSlug}` 의 `spaceSlug` 는 UUID 형식 slug |
 | 시간 표기 | UTC 기준 ISO 8601 문자열 |
 | 업로드 전송 프로토콜 | tus 1.0.0 |
 
@@ -70,7 +71,7 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 - 업로드 세션 생성 이후 바이너리 전송은 tus 서버가 담당하고, 애플리케이션 API는 세션 생성과 상태 조회만 담당한다.
 - finalize 는 자동 처리이며, 별도 사용자 호출 finalize API는 두지 않는다.
 - 다운로드 세션은 발급 시점 권한 기준으로 최대 5분 동안 유효하며, 발급 후 즉시 revoke는 지원하지 않는다.
-- 미리보기는 `GET /api/v1/spaces/{spaceId}/files/{fileId}/preview` 한 경로로 통합하고, 형식별 결과는 `kind` 필드로 구분한다.
+- 미리보기는 `GET /api/v1/spaces/{spaceSlug}/files/{fileId}/preview` 한 경로로 통합하고, 형식별 결과는 `kind` 필드로 구분한다.
 
 ### 2.5 대표 비즈니스 에러 코드
 
@@ -101,19 +102,19 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 | `SFR-005` | `GET /api/v1/me` |
 | `SFR-006~010` | `GET/POST/PATCH/DELETE /api/v1/spaces*` |
 | `SFR-011~015` | Space 초대/멤버 API |
-| `SFR-016~017` | `GET/PATCH /api/v1/spaces/{spaceId}/quota` |
+| `SFR-016~017` | `GET/PATCH /api/v1/spaces/{spaceSlug}/quota` |
 | `SFR-018~022` | 폴더 목록/생성/수정/삭제 API |
 | `SFR-023` | `POST /api/v1/upload-sessions` |
 | `SFR-024` | tus 업로드 흐름 + `GET /api/v1/upload-sessions/{uploadSessionId}` |
 | `SFR-025` | 업로드 상태 조회 응답의 `fileItem`, `postProcessing` 필드 |
-| `SFR-026` | `POST /api/v1/spaces/{spaceId}/files/{fileId}/download-sessions` + 공개 stream API |
-| `SFR-027~029` | `PATCH/DELETE /api/v1/spaces/{spaceId}/files/{fileId}` |
+| `SFR-026` | `POST /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions` + 공개 stream API |
+| `SFR-027~029` | `PATCH/DELETE /api/v1/spaces/{spaceSlug}/files/{fileId}` |
 | `SFR-030` | 폴더 목록/검색 API의 `sortBy`, `sortDir` |
-| `SFR-031` | `GET /api/v1/spaces/{spaceId}/search` |
+| `SFR-031` | `GET /api/v1/spaces/{spaceSlug}/search` |
 | `SFR-032~034` | `POST/PATCH/DELETE /api/v1/share-links*` |
 | `SFR-035` | `POST /public/v1/share-links/{shareToken}/verify` |
 | `SFR-036` | `POST /public/v1/share-links/{shareToken}/browse`, `.../download-sessions` |
-| `SFR-037~040` | `GET /api/v1/spaces/{spaceId}/files/{fileId}/preview` |
+| `SFR-037~040` | `GET /api/v1/spaces/{spaceSlug}/files/{fileId}/preview` |
 | `SFR-041~042` | Space quota 조회 + 업로드 세션 생성 전 사전 검증 |
 | `SFR-043` | `GET /api/v1/admin/spaces/usage` |
 | `SFR-044~045` | `FileItem.metadata`, `previewStatus`, `scanStatus`, `tags` |
@@ -149,15 +150,18 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|
 | `GET` | `/api/v1/spaces` | 내가 속한 Space 목록 조회 | `VIEWER` | `SFR-006` |
 | `POST` | `/api/v1/spaces` | Space 생성 | 로그인 사용자 | `SFR-007` |
-| `GET` | `/api/v1/spaces/{spaceId}` | Space 상세 조회 | `VIEWER` | `SFR-008` |
-| `PATCH` | `/api/v1/spaces/{spaceId}` | 이름/설명 변경 | `ADMIN` | `SFR-009` |
-| `DELETE` | `/api/v1/spaces/{spaceId}` | 소프트 삭제 또는 비활성화 | `OWNER` | `SFR-010` |
-| `GET` | `/api/v1/spaces/{spaceId}/quota` | quota 조회 | `ADMIN` | `SFR-016`, `SFR-041` |
-| `PATCH` | `/api/v1/spaces/{spaceId}/quota` | quota 변경 | `OWNER` | `SFR-017` |
+| `GET` | `/api/v1/spaces/{spaceSlug}` | Space 상세 조회 | `VIEWER` | `SFR-008` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}` | 이름/설명 변경 | `ADMIN` | `SFR-009` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}` | 소프트 삭제 또는 비활성화 | `OWNER` | `SFR-010` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/quota` | quota 조회 | `ADMIN` | `SFR-016`, `SFR-041` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/quota` | quota 변경 | `OWNER` | `SFR-017` |
 
 **계약 요약**
 
 - `storageAllowedBytes = null` 이면 무제한 Space 이다.
+- Space 단건 및 하위 리소스 URL은 `{spaceSlug}` 를 사용하며, 값은 UUID 형식 slug이다.
+- Space 응답의 `id` 는 DB bigint가 아니라 외부 노출용 opaque string이다.
+- `slug` 필드는 URL path 접근에 사용하는 UUID 값을 반환한다.
 - `GET /quota` 응답에는 `storageUsedBytes`, `storageReservedBytes`, `availableBytes`, `usageRate`를 포함한다.
 - `PATCH /quota`는 현재 `used + reserved` 보다 작은 값으로 낮출 수 없다.
 
@@ -165,11 +169,11 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR |
 |---|---|---|---|---|
-| `POST` | `/api/v1/spaces/{spaceId}/invites` | Space 초대 생성 | `ADMIN` | `SFR-011` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 생성 | `ADMIN` | `SFR-011` |
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` |
-| `GET` | `/api/v1/spaces/{spaceId}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` |
-| `PATCH` | `/api/v1/spaces/{spaceId}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` |
-| `DELETE` | `/api/v1/spaces/{spaceId}/members/{memberId}` | 멤버 제거 | `ADMIN` | `SFR-015` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 제거 | `ADMIN` | `SFR-015` |
 
 **계약 요약**
 
@@ -181,11 +185,11 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR |
 |---|---|---|---|---|
-| `GET` | `/api/v1/spaces/{spaceId}/folders/{folderId}/children` | 자식 파일/폴더 목록 조회 | `VIEWER` | `SFR-018`, `SFR-030` |
-| `POST` | `/api/v1/spaces/{spaceId}/folders` | 폴더 생성 | `MEMBER` | `SFR-019` |
-| `PATCH` | `/api/v1/spaces/{spaceId}/folders/{folderId}` | 폴더명 변경 또는 이동 | `MEMBER` | `SFR-020`, `SFR-021` |
-| `DELETE` | `/api/v1/spaces/{spaceId}/folders/{folderId}` | 폴더 삭제 | `MEMBER` | `SFR-022` |
-| `GET` | `/api/v1/spaces/{spaceId}/search` | 파일/폴더 기본 검색 | `VIEWER` | `SFR-031` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/folders/{folderId}/children` | 자식 파일/폴더 목록 조회 | `VIEWER` | `SFR-018`, `SFR-030` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/folders` | 폴더 생성 | `MEMBER` | `SFR-019` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/folders/{folderId}` | 폴더명 변경 또는 이동 | `MEMBER` | `SFR-020`, `SFR-021` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/folders/{folderId}` | 폴더 삭제 | `MEMBER` | `SFR-022` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/search` | 파일/폴더 기본 검색 | `VIEWER` | `SFR-031` |
 
 **계약 요약**
 
@@ -198,8 +202,8 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR |
 |---|---|---|---|---|
-| `PATCH` | `/api/v1/spaces/{spaceId}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` |
-| `DELETE` | `/api/v1/spaces/{spaceId}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` |
 | `POST` | `/api/v1/upload-sessions` | 업로드 세션 생성 | `MEMBER` | `SFR-023`, `SFR-042` |
 | `GET` | `/api/v1/upload-sessions/{uploadSessionId}` | 업로드 상태 조회 | 세션 생성자 또는 관리자 | `SFR-024`, `SFR-025` |
 
@@ -231,8 +235,8 @@ ReDoc 렌더 버전은 [API(초안)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR |
 |---|---|---|---|---|
-| `POST` | `/api/v1/spaces/{spaceId}/files/{fileId}/download-sessions` | 다운로드 세션 발급 | `VIEWER` | `SFR-026` |
-| `GET` | `/api/v1/spaces/{spaceId}/files/{fileId}/preview` | 미리보기 정보 또는 내용 조회 | `VIEWER` | `SFR-037~040` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions` | 다운로드 세션 발급 | `VIEWER` | `SFR-026` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/preview` | 미리보기 정보 또는 내용 조회 | `VIEWER` | `SFR-037~040` |
 | `GET` | `/public/v1/download-sessions/{sessionToken}/stream` | 실제 스트리밍 | 공개 | `SFR-026`, `SFR-036` |
 
 **미리보기 응답 규칙**
