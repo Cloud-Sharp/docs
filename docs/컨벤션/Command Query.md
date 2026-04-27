@@ -15,7 +15,7 @@ HTTP Request
     ↓
 CloudSharp.Api
     - Request DTO binding
-    - Request validation
+    - Request DTO DataAnnotations validation
     - 인증 정보 추출
     - Request DTO → Command / Query 또는 UseCase 직접 인자 변환
     ↓
@@ -107,11 +107,19 @@ public Task<Result> RevokeAsync(
 API 계층의 HTTP 요청 모양이다.
 
 ```csharp
+using System.ComponentModel.DataAnnotations;
+
 namespace CloudSharp.Api.Endpoints.Spaces;
 
-public sealed record CreateSpaceRequest(
-    string Name,
-    long? StorageAllowedBytes);
+public sealed record CreateSpaceRequest
+{
+    [Required(AllowEmptyStrings = false)]
+    [StringLength(80)]
+    public string Name { get; init; } = string.Empty;
+
+    [Range(1, long.MaxValue)]
+    public long? StorageAllowedBytes { get; init; }
+}
 ```
 
 특징:
@@ -354,11 +362,9 @@ CloudSharp.Api/
 └── Endpoints/
     ├── Spaces/
     │   ├── CreateSpaceRequest.cs
-    │   ├── CreateSpaceRequestValidator.cs
     │   └── SpaceEndpoints.cs
     └── Uploads/
         ├── InitializeUploadRequest.cs
-        ├── InitializeUploadRequestValidator.cs
         └── UploadEndpoints.cs
 ```
 
@@ -368,7 +374,7 @@ CloudSharp.Api/
 |------|------|
 | 타입이 작아도 공개 계약이면 별도 파일 | `CreateSpaceCommand.cs` |
 | 한 유스케이스 전용 item record | 같은 파일에 함께 배치 가능 |
-| validator는 별도 파일 | `CreateSpaceCommandValidator.cs` |
+| Core validator는 별도 파일 | `CreateSpaceCommandValidator.cs` |
 | UseCase 실행 클래스는 기능 단위로 시작 | `SpaceUseCases.cs` |
 | mapper가 짧으면 endpoint private method | 반복되면 API 계층 extension으로 분리 |
 
@@ -486,15 +492,10 @@ public sealed record CreateSpaceCommand
 ```csharp
 private static async Task<IResult> CreateSpace(
     CreateSpaceRequest request,
-    IValidator<CreateSpaceRequest> requestValidator,
     SpaceUseCases useCases,
     IUserContext userContext,
     CancellationToken cancellationToken)
 {
-    var validationResult = await requestValidator.ValidateAsync(request, cancellationToken);
-    if (!validationResult.IsValid)
-        return validationResult.ToValidationProblem();
-
     var command = new CreateSpaceCommand
     {
         RequesterUserId = userContext.UserId,
@@ -543,11 +544,11 @@ private static InitializeUploadCommand ToCommand(
 
 ## 10. Validation 규칙
 
-### 10.1 Request validator와 Command / Query validator 역할
+### 10.1 Request 어노테이션과 Command / Query validator 역할
 
 | 위치 | 검증 대상 | 예시 |
 |------|-----------|------|
-| API request validator | HTTP 입력 모양 | body 필수값, query string 범위, path/body 조합 |
+| API request 어노테이션 | HTTP 입력 모양 | body 필수값, query string 범위, header 형식 |
 | Core command/query validator | 유스케이스 공통 입력 조건 | `SpaceId` 필수, 파일 크기 양수, 이름 길이 |
 | UseCase 본문 | 비즈니스 판단 | 권한, 존재 여부, quota, 상태 전이 |
 | Domain | 불변식 | 값 객체 생성, 상태 전이 가능 여부 |
@@ -837,7 +838,7 @@ API 테스트는 Request DTO와 HTTP 응답을 검증한다. Core Command / Quer
 |--------|-----------|
 | Core UseCase 테스트 | Command / Query 입력, Result 실패 이유 |
 | Command / Query validator 테스트 | 필드별 error code |
-| API 통합 테스트 | Request DTO validation, HTTP status, response body |
+| API 통합 테스트 | Request DTO 어노테이션 validation, HTTP status, response body |
 
 ---
 
@@ -870,6 +871,6 @@ API 테스트는 Request DTO와 HTTP 응답을 검증한다. Core Command / Quer
 | 어떻게 생성하는가? | 필수값은 `required init`, 생성은 개체 이니셜라이저를 기본으로 한다 |
 | 이름은 무엇 기준인가? | 유스케이스 행위 이름에 `Command` / `Query`를 붙인다 |
 | 인증 사용자 ID는 어디서 넣는가? | API가 인증 컨텍스트에서 추출해 `RequesterUserId`로 넣는다 |
-| 검증은 어디서 하는가? | 입력 모양은 API validator, 공통 입력 조건은 Core validator, 비즈니스 판단은 UseCase/Domain |
+| 검증은 어디서 하는가? | 입력 모양은 API request 어노테이션, 공통 입력 조건은 Core validator, 비즈니스 판단은 UseCase/Domain |
 
 > **Command / Query는 API 요청 모델이 아니라 Core 유스케이스의 입력 계약이다. MVP에서는 유스케이스 실행 코드를 기능 단위 `*UseCases` class에 모으고, 입력이 복잡할 때 유스케이스 행위 이름과 맞춘 `required init` record를 개체 이니셜라이저로 생성한다.**
