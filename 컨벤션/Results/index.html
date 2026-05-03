@@ -1,0 +1,3518 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../Repository%20Unit%20Tests/" rel="prev"/>
+<link href="../Test/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CloudSharp FluentResults 가이드 - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": [".d2", "img"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cloudsharp-fluentresults">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CloudSharp FluentResults 가이드
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  개발
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+        
+  
+  
+    
+  
+  API(구현 기준)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    개발
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    개발
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B0%9C%EB%B0%9C/OpenAPI%20Patch%20Notes/">
+<span class="md-ellipsis">
+    
+  
+    OpenAPI Patch Notes
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 개요
+      
+    </span>
+</a>
+<nav aria-label="1. 개요" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-fluentresults">
+<span class="md-ellipsis">
+      
+        1.1 FluentResults란
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        1.2 이 문서의 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        1.3 대상 독자
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-cloudsharp">
+<span class="md-ellipsis">
+      
+        1.4 CloudSharp 프로젝트 구조
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 도입 배경
+      
+    </span>
+</a>
+<nav aria-label="2. 도입 배경" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-cloudsharp">
+<span class="md-ellipsis">
+      
+        2.1 CloudSharp의 예상 가능한 비즈니스 실패
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 처리 방식 선택 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 아키텍처 내 실패 처리 전략
+      
+    </span>
+</a>
+<nav aria-label="3. 아키텍처 내 실패 처리 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        아키텍처 흐름도
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 패키지 배치
+      
+    </span>
+</a>
+<nav aria-label="4. 패키지 배치" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 설치
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 프로젝트별 사용 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 주의사항
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-core">
+<span class="md-ellipsis">
+      
+        5. Core 계층 사용 원칙
+      
+    </span>
+</a>
+<nav aria-label="5. Core 계층 사용 원칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 위치별 원칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 에러 객체 설계
+      
+    </span>
+</a>
+<nav aria-label="6. 에러 객체 설계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61-vs">
+<span class="md-ellipsis">
+      
+        6.1 문자열 에러 vs 객체 에러
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62">
+<span class="md-ellipsis">
+      
+        6.2 공통 에러 베이스 클래스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#63">
+<span class="md-ellipsis">
+      
+        6.3 도메인별 에러 클래스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#64">
+<span class="md-ellipsis">
+      
+        6.4 사용 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#65">
+<span class="md-ellipsis">
+      
+        6.5 객체 에러의 장점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-domain">
+<span class="md-ellipsis">
+      
+        7. Domain — 팩토리와 상태 전이
+      
+    </span>
+</a>
+<nav aria-label="7. Domain — 팩토리와 상태 전이" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72">
+<span class="md-ellipsis">
+      
+        7.2 팩토리 패턴 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#73">
+<span class="md-ellipsis">
+      
+        7.3 상태 전이 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#74-quota">
+<span class="md-ellipsis">
+      
+        7.4 Quota 검증 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-usecases">
+<span class="md-ellipsis">
+      
+        8. UseCases — 업무 흐름 파이프라인
+      
+    </span>
+</a>
+<nav aria-label="8. UseCases — 업무 흐름 파이프라인" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81">
+<span class="md-ellipsis">
+      
+        8.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-bind">
+<span class="md-ellipsis">
+      
+        8.2 Bind를 이용한 파이프라인
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-bind">
+<span class="md-ellipsis">
+      
+        8.3 Bind 패턴의 장점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-map-dto">
+<span class="md-ellipsis">
+      
+        9. Map — 도메인 객체를 DTO로 변환
+      
+    </span>
+</a>
+<nav aria-label="9. Map — 도메인 객체를 DTO로 변환" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 사용 패턴
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92">
+<span class="md-ellipsis">
+      
+        9.2 활용 위치
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-merge">
+<span class="md-ellipsis">
+      
+        10. Merge — 복수 검증 결과 집계
+      
+    </span>
+</a>
+<nav aria-label="10. Merge — 복수 검증 결과 집계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#101">
+<span class="md-ellipsis">
+      
+        10.1 사용 시나리오
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#102">
+<span class="md-ellipsis">
+      
+        10.2 개별 검증 메서드
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-abstractions">
+<span class="md-ellipsis">
+      
+        11. Abstractions — 포트의 실패 계약
+      
+    </span>
+</a>
+<nav aria-label="11. Abstractions — 포트의 실패 계약" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#111">
+<span class="md-ellipsis">
+      
+        11.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#112">
+<span class="md-ellipsis">
+      
+        11.2 반환형 설계 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#113">
+<span class="md-ellipsis">
+      
+        11.3 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#114-notfound">
+<span class="md-ellipsis">
+      
+        11.4 NotFound 처리 지침
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-infrastructure-result">
+<span class="md-ellipsis">
+      
+        12. Infrastructure — 외부 실패를 Result로 감싸기
+      
+    </span>
+</a>
+<nav aria-label="12. Infrastructure — 외부 실패를 Result로 감싸기" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#121">
+<span class="md-ellipsis">
+      
+        12.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#122">
+<span class="md-ellipsis">
+      
+        12.2 실패 분류 및 처리 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#123">
+<span class="md-ellipsis">
+      
+        12.3 외부 프로세스 실패 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#124-resulttry">
+<span class="md-ellipsis">
+      
+        12.4 Result.Try 활용
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13-api-result-http">
+<span class="md-ellipsis">
+      
+        13. Api — Result를 HTTP 응답으로 변환
+      
+    </span>
+</a>
+<nav aria-label="13. Api — Result를 HTTP 응답으로 변환" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#131">
+<span class="md-ellipsis">
+      
+        13.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#132">
+<span class="md-ellipsis">
+      
+        13.2 핵심 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#133-endpoint">
+<span class="md-ellipsis">
+      
+        13.3 Endpoint 사용 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#134">
+<span class="md-ellipsis">
+      
+        13.4 공통 변환기 구현
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-backgroundservices">
+<span class="md-ellipsis">
+      
+        14. BackgroundServices에서의 사용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15">
+<span class="md-ellipsis">
+      
+        15. 테스트 전략
+      
+    </span>
+</a>
+<nav aria-label="15. 테스트 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#151">
+<span class="md-ellipsis">
+      
+        15.1 테스트 프로젝트 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#152">
+<span class="md-ellipsis">
+      
+        15.2 프로젝트별 검증 대상
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#153-core">
+<span class="md-ellipsis">
+      
+        15.3 Core 테스트 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#154-api">
+<span class="md-ellipsis">
+      
+        15.4 API 통합 테스트 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#16">
+<span class="md-ellipsis">
+      
+        16. 에러 코드 체계
+      
+    </span>
+</a>
+<nav aria-label="16. 에러 코드 체계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#161">
+<span class="md-ellipsis">
+      
+        16.1 도메인별 에러 코드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#162">
+<span class="md-ellipsis">
+      
+        16.2 권장 메타데이터 필드
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#17">
+<span class="md-ellipsis">
+      
+        17. 자주 하는 실수
+      
+    </span>
+</a>
+<nav aria-label="17. 자주 하는 실수" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#171-result">
+<span class="md-ellipsis">
+      
+        17.1 모든 실패를 Result로만 처리하기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#172-value">
+<span class="md-ellipsis">
+      
+        17.2 실패 상태에서 Value 바로 읽기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#173">
+<span class="md-ellipsis">
+      
+        17.3 문자열 에러만 남발하기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#174-api-result">
+<span class="md-ellipsis">
+      
+        17.4 API 응답에 Result를 그대로 노출하기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#175-result">
+<span class="md-ellipsis">
+      
+        17.5 실패 가능성이 없는 메서드까지 Result로 감싸기
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#18">
+<span class="md-ellipsis">
+      
+        18. 도입 순서
+      
+    </span>
+</a>
+<nav aria-label="18. 도입 순서" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-core">
+<span class="md-ellipsis">
+      
+        1단계: Core 공통 에러 규칙 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-domain">
+<span class="md-ellipsis">
+      
+        2단계: Domain 팩토리와 상태 전이에 적용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-usecases">
+<span class="md-ellipsis">
+      
+        3단계: UseCases 반환형 통일
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-api-result-mapper">
+<span class="md-ellipsis">
+      
+        4단계: Api 공통 Result mapper 작성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-infrastructure-adapter">
+<span class="md-ellipsis">
+      
+        5단계: Infrastructure adapter 실패 정리
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6_1">
+<span class="md-ellipsis">
+      
+        6단계: 테스트로 규칙 고정
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#19">
+<span class="md-ellipsis">
+      
+        19. 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        참고 자료
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Validation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(구현 기준)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 개요
+      
+    </span>
+</a>
+<nav aria-label="1. 개요" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-fluentresults">
+<span class="md-ellipsis">
+      
+        1.1 FluentResults란
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        1.2 이 문서의 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        1.3 대상 독자
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-cloudsharp">
+<span class="md-ellipsis">
+      
+        1.4 CloudSharp 프로젝트 구조
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 도입 배경
+      
+    </span>
+</a>
+<nav aria-label="2. 도입 배경" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-cloudsharp">
+<span class="md-ellipsis">
+      
+        2.1 CloudSharp의 예상 가능한 비즈니스 실패
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 처리 방식 선택 기준
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 아키텍처 내 실패 처리 전략
+      
+    </span>
+</a>
+<nav aria-label="3. 아키텍처 내 실패 처리 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      
+        아키텍처 흐름도
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 패키지 배치
+      
+    </span>
+</a>
+<nav aria-label="4. 패키지 배치" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 설치
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 프로젝트별 사용 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 주의사항
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-core">
+<span class="md-ellipsis">
+      
+        5. Core 계층 사용 원칙
+      
+    </span>
+</a>
+<nav aria-label="5. Core 계층 사용 원칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 위치별 원칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 에러 객체 설계
+      
+    </span>
+</a>
+<nav aria-label="6. 에러 객체 설계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61-vs">
+<span class="md-ellipsis">
+      
+        6.1 문자열 에러 vs 객체 에러
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62">
+<span class="md-ellipsis">
+      
+        6.2 공통 에러 베이스 클래스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#63">
+<span class="md-ellipsis">
+      
+        6.3 도메인별 에러 클래스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#64">
+<span class="md-ellipsis">
+      
+        6.4 사용 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#65">
+<span class="md-ellipsis">
+      
+        6.5 객체 에러의 장점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-domain">
+<span class="md-ellipsis">
+      
+        7. Domain — 팩토리와 상태 전이
+      
+    </span>
+</a>
+<nav aria-label="7. Domain — 팩토리와 상태 전이" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72">
+<span class="md-ellipsis">
+      
+        7.2 팩토리 패턴 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#73">
+<span class="md-ellipsis">
+      
+        7.3 상태 전이 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#74-quota">
+<span class="md-ellipsis">
+      
+        7.4 Quota 검증 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-usecases">
+<span class="md-ellipsis">
+      
+        8. UseCases — 업무 흐름 파이프라인
+      
+    </span>
+</a>
+<nav aria-label="8. UseCases — 업무 흐름 파이프라인" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81">
+<span class="md-ellipsis">
+      
+        8.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-bind">
+<span class="md-ellipsis">
+      
+        8.2 Bind를 이용한 파이프라인
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-bind">
+<span class="md-ellipsis">
+      
+        8.3 Bind 패턴의 장점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-map-dto">
+<span class="md-ellipsis">
+      
+        9. Map — 도메인 객체를 DTO로 변환
+      
+    </span>
+</a>
+<nav aria-label="9. Map — 도메인 객체를 DTO로 변환" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 사용 패턴
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92">
+<span class="md-ellipsis">
+      
+        9.2 활용 위치
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-merge">
+<span class="md-ellipsis">
+      
+        10. Merge — 복수 검증 결과 집계
+      
+    </span>
+</a>
+<nav aria-label="10. Merge — 복수 검증 결과 집계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#101">
+<span class="md-ellipsis">
+      
+        10.1 사용 시나리오
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#102">
+<span class="md-ellipsis">
+      
+        10.2 개별 검증 메서드
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-abstractions">
+<span class="md-ellipsis">
+      
+        11. Abstractions — 포트의 실패 계약
+      
+    </span>
+</a>
+<nav aria-label="11. Abstractions — 포트의 실패 계약" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#111">
+<span class="md-ellipsis">
+      
+        11.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#112">
+<span class="md-ellipsis">
+      
+        11.2 반환형 설계 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#113">
+<span class="md-ellipsis">
+      
+        11.3 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#114-notfound">
+<span class="md-ellipsis">
+      
+        11.4 NotFound 처리 지침
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-infrastructure-result">
+<span class="md-ellipsis">
+      
+        12. Infrastructure — 외부 실패를 Result로 감싸기
+      
+    </span>
+</a>
+<nav aria-label="12. Infrastructure — 외부 실패를 Result로 감싸기" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#121">
+<span class="md-ellipsis">
+      
+        12.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#122">
+<span class="md-ellipsis">
+      
+        12.2 실패 분류 및 처리 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#123">
+<span class="md-ellipsis">
+      
+        12.3 외부 프로세스 실패 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#124-resulttry">
+<span class="md-ellipsis">
+      
+        12.4 Result.Try 활용
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13-api-result-http">
+<span class="md-ellipsis">
+      
+        13. Api — Result를 HTTP 응답으로 변환
+      
+    </span>
+</a>
+<nav aria-label="13. Api — Result를 HTTP 응답으로 변환" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#131">
+<span class="md-ellipsis">
+      
+        13.1 디렉토리 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#132">
+<span class="md-ellipsis">
+      
+        13.2 핵심 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#133-endpoint">
+<span class="md-ellipsis">
+      
+        13.3 Endpoint 사용 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#134">
+<span class="md-ellipsis">
+      
+        13.4 공통 변환기 구현
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-backgroundservices">
+<span class="md-ellipsis">
+      
+        14. BackgroundServices에서의 사용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15">
+<span class="md-ellipsis">
+      
+        15. 테스트 전략
+      
+    </span>
+</a>
+<nav aria-label="15. 테스트 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#151">
+<span class="md-ellipsis">
+      
+        15.1 테스트 프로젝트 구조
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#152">
+<span class="md-ellipsis">
+      
+        15.2 프로젝트별 검증 대상
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#153-core">
+<span class="md-ellipsis">
+      
+        15.3 Core 테스트 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#154-api">
+<span class="md-ellipsis">
+      
+        15.4 API 통합 테스트 예시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#16">
+<span class="md-ellipsis">
+      
+        16. 에러 코드 체계
+      
+    </span>
+</a>
+<nav aria-label="16. 에러 코드 체계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#161">
+<span class="md-ellipsis">
+      
+        16.1 도메인별 에러 코드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#162">
+<span class="md-ellipsis">
+      
+        16.2 권장 메타데이터 필드
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#17">
+<span class="md-ellipsis">
+      
+        17. 자주 하는 실수
+      
+    </span>
+</a>
+<nav aria-label="17. 자주 하는 실수" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#171-result">
+<span class="md-ellipsis">
+      
+        17.1 모든 실패를 Result로만 처리하기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#172-value">
+<span class="md-ellipsis">
+      
+        17.2 실패 상태에서 Value 바로 읽기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#173">
+<span class="md-ellipsis">
+      
+        17.3 문자열 에러만 남발하기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#174-api-result">
+<span class="md-ellipsis">
+      
+        17.4 API 응답에 Result를 그대로 노출하기
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#175-result">
+<span class="md-ellipsis">
+      
+        17.5 실패 가능성이 없는 메서드까지 Result로 감싸기
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#18">
+<span class="md-ellipsis">
+      
+        18. 도입 순서
+      
+    </span>
+</a>
+<nav aria-label="18. 도입 순서" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-core">
+<span class="md-ellipsis">
+      
+        1단계: Core 공통 에러 규칙 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-domain">
+<span class="md-ellipsis">
+      
+        2단계: Domain 팩토리와 상태 전이에 적용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-usecases">
+<span class="md-ellipsis">
+      
+        3단계: UseCases 반환형 통일
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-api-result-mapper">
+<span class="md-ellipsis">
+      
+        4단계: Api 공통 Result mapper 작성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-infrastructure-adapter">
+<span class="md-ellipsis">
+      
+        5단계: Infrastructure adapter 실패 정리
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6_1">
+<span class="md-ellipsis">
+      
+        6단계: 테스트로 규칙 고정
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#19">
+<span class="md-ellipsis">
+      
+        19. 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        참고 자료
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cloudsharp-fluentresults">CloudSharp FluentResults 가이드<a class="headerlink" href="#cloudsharp-fluentresults" title="Permanent link">¶</a></h1>
+<hr/>
+<h2 id="1">1. 개요<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<h3 id="11-fluentresults">1.1 FluentResults란<a class="headerlink" href="#11-fluentresults" title="Permanent link">¶</a></h3>
+<p><a href="https://github.com/altmann/FluentResults">FluentResults</a>는 비즈니스 실패를 예외로 던지지 않고 <code>Result</code> 객체로 명시적으로 반환하게 해주는 경량 .NET 라이브러리다.</p>
+<h3 id="12">1.2 이 문서의 목적<a class="headerlink" href="#12" title="Permanent link">¶</a></h3>
+<p>CloudSharp 백엔드 아키텍처에서 FluentResults를 <strong>어디에</strong>, <strong>어떻게</strong>, <strong>어떤 기준으로</strong> 사용할지 정의한다.</p>
+<h3 id="13">1.3 대상 독자<a class="headerlink" href="#13" title="Permanent link">¶</a></h3>
+<ul>
+<li>CloudSharp 백엔드 개발자</li>
+<li>코드 리뷰어</li>
+<li>아키텍처 의사결정에 참여하는 팀원</li>
+</ul>
+<h3 id="14-cloudsharp">1.4 CloudSharp 프로젝트 구조<a class="headerlink" href="#14-cloudsharp" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Api ──────────→ CloudSharp.Core
+                                ↑
+CloudSharp.Infrastructure ──────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>프로젝트</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CloudSharp.Core</code></td>
+<td>도메인 모델, 유스케이스, 포트 인터페이스</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api</code></td>
+<td>HTTP 요청/응답 변환, 엔드포인트, 미들웨어</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Infrastructure</code></td>
+<td>DB, Redis, Local FS, opaque session auth, tusd, ffmpeg, AI adapter 구현</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2">2. 도입 배경<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<h3 id="21-cloudsharp">2.1 CloudSharp의 예상 가능한 비즈니스 실패<a class="headerlink" href="#21-cloudsharp" title="Permanent link">¶</a></h3>
+<p>CloudSharp에는 시스템 장애가 아닌, 예상 가능한 비즈니스 실패가 많다.</p>
+<table>
+<thead>
+<tr>
+<th>도메인</th>
+<th>예상 가능한 실패</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auth</strong></td>
+<td>이메일 중복, 비밀번호 정책 위반, 로그인 실패</td>
+</tr>
+<tr>
+<td><strong>Spaces</strong></td>
+<td>Space 없음, 비활성 Space, 권한 없음</td>
+</tr>
+<tr>
+<td><strong>Members</strong></td>
+<td>초대 만료, 이미 멤버임, Role 변경 불가</td>
+</tr>
+<tr>
+<td><strong>Folders</strong></td>
+<td>부모 폴더 없음, 같은 이름의 폴더 존재, 순환 이동</td>
+</tr>
+<tr>
+<td><strong>Files</strong></td>
+<td>파일 없음, 삭제된 파일, 이동 불가</td>
+</tr>
+<tr>
+<td><strong>Uploads</strong></td>
+<td>quota 초과, 예약 만료, 업로드 세션 상태 불일치</td>
+</tr>
+<tr>
+<td><strong>Downloads</strong></td>
+<td>다운로드 토큰 만료, 권한 없음</td>
+</tr>
+<tr>
+<td><strong>ShareLinks</strong></td>
+<td>링크 만료, 비활성화된 링크, 비밀번호 불일치</td>
+</tr>
+<tr>
+<td><strong>Quotas</strong></td>
+<td>예약 용량 초과, Space quota 초과</td>
+</tr>
+</tbody>
+</table>
+<p>이런 실패는 시스템 장애가 아니므로 <code>throw</code>보다 <code>Result.Fail(...)</code>이 더 적합하다.</p>
+<h3 id="22">2.2 처리 방식 선택 기준<a class="headerlink" href="#22" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>권장 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>입력 검증 실패</td>
+<td><code>Result.Fail(...)</code></td>
+</tr>
+<tr>
+<td>도메인 규칙 위반</td>
+<td><code>Result.Fail(...)</code></td>
+</tr>
+<tr>
+<td>권한 없음, 리소스 없음</td>
+<td><code>Result.Fail(...)</code></td>
+</tr>
+<tr>
+<td>DB 연결 장애, 버그, 인프라 장애</td>
+<td>예외 또는 <code>Result.Try(...)</code> 후 로깅</td>
+</tr>
+<tr>
+<td>실패 가능성이 없는 단순 계산</td>
+<td>그냥 값 반환</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3">3. 아키텍처 내 실패 처리 전략<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<p>각 계층마다 실패의 성격과 처리 방식이 다르다.</p>
+<table>
+<thead>
+<tr>
+<th>계층</th>
+<th>실패의 의미</th>
+<th>처리 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CloudSharp.Core/Domain</code></td>
+<td>도메인 규칙 위반</td>
+<td><code>Result</code> / <code>Result&lt;T&gt;</code>로 반환</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Core/UseCases</code></td>
+<td>유스케이스 실패, 권한 없음, quota 초과</td>
+<td><code>Result</code> / <code>Result&lt;T&gt;</code>로 반환</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api/Endpoints</code></td>
+<td>Result를 HTTP 응답으로 변환</td>
+<td><code>ProblemDetails</code> 또는 응답 DTO로 매핑</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Infrastructure</code></td>
+<td>외부 시스템 실패, 저장소 실패</td>
+<td>예상 실패는 <code>Result</code>, 예상 못 한 장애는 예외 또는 <code>Try</code>로 감싸기</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api/Middlewares</code></td>
+<td>처리되지 않은 시스템 예외</td>
+<td>공통 예외 미들웨어에서 500 응답과 로그 처리</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_1">아키텍처 흐름도<a class="headerlink" href="#_1" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>HTTP Request
+    ↓
+CloudSharp.Api/Endpoints
+    - request DTO 검증
+    - UseCase 호출
+    - Result를 HTTP response로 변환
+    ↓
+CloudSharp.Core/UseCases
+    - 업무 흐름 실행
+    - Domain 정책 호출
+    - Abstractions port 호출
+    - Result&lt;T&gt; 반환
+    ↓
+CloudSharp.Core/Domain
+    - 도메인 규칙 검증
+    - 상태 전이
+    - 커스텀 Error 생성
+    ↓
+CloudSharp.Infrastructure
+    - DB/Redis/Storage/외부 도구 구현
+    - 외부 실패를 Result 또는 예외로 표현
+</code></pre></div>
+<hr/>
+<h2 id="4">4. 패키지 배치<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41">4.1 설치<a class="headerlink" href="#41" title="Permanent link">¶</a></h3>
+<p>CloudSharp에서는 <code>Result</code>가 내부 애플리케이션 계약으로 쓰이므로, 세 프로젝트 모두에 설치한다.</p>
+<div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>add<span class="w"> </span>src/CloudSharp.Core<span class="w"> </span>package<span class="w"> </span>FluentResults
+dotnet<span class="w"> </span>add<span class="w"> </span>src/CloudSharp.Api<span class="w"> </span>package<span class="w"> </span>FluentResults
+dotnet<span class="w"> </span>add<span class="w"> </span>src/CloudSharp.Infrastructure<span class="w"> </span>package<span class="w"> </span>FluentResults
+</code></pre></div>
+<h3 id="42">4.2 프로젝트별 사용 목적<a class="headerlink" href="#42" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>프로젝트</th>
+<th>사용 목적</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CloudSharp.Core</code></td>
+<td>도메인 팩토리, 정책, 유스케이스 반환형</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api</code></td>
+<td><code>Result&lt;T&gt;</code>를 HTTP 응답으로 변환</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Infrastructure</code></td>
+<td>외부 adapter 실패를 <code>Result</code>로 변환</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43">4.3 주의사항<a class="headerlink" href="#43" title="Permanent link">¶</a></h3>
+<blockquote>
+<p><strong>public API 응답에 <code>Result&lt;T&gt;</code>를 그대로 노출하지 않는다.</strong> API 경계에서는 항상 CloudSharp의 응답 DTO 또는 <code>ProblemDetails</code>로 변환한다.</p>
+</blockquote>
+<hr/>
+<h2 id="5-core">5. Core 계층 사용 원칙<a class="headerlink" href="#5-core" title="Permanent link">¶</a></h2>
+<h3 id="51">5.1 디렉토리 구조<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Core/
+├── Common/
+│   ├── Errors/          ← 공통 Error base, ErrorCode
+│   └── Results/         ← Result helper
+├── Domain/              ← 도메인 규칙 위반을 커스텀 Error로 표현
+├── Abstractions/        ← 저장소/외부 포트의 실패 계약
+└── UseCases/            ← 유스케이스 흐름을 Result&lt;T&gt;로 반환
+</code></pre></div>
+<h3 id="52">5.2 위치별 원칙<a class="headerlink" href="#52" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>위치</th>
+<th>원칙</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Common</code></td>
+<td>공통 Error base, ErrorCode, Result helper</td>
+</tr>
+<tr>
+<td><code>Domain/*</code></td>
+<td>도메인 규칙 위반을 커스텀 <code>Error</code>로 표현</td>
+</tr>
+<tr>
+<td><code>UseCases/*</code></td>
+<td>유스케이스 흐름을 <code>Result&lt;T&gt;</code>로 반환</td>
+</tr>
+<tr>
+<td><code>Abstractions/*</code></td>
+<td>저장소/외부 포트의 실패 계약을 명확히 표현</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="6">6. 에러 객체 설계<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<h3 id="61-vs">6.1 문자열 에러 vs 객체 에러<a class="headerlink" href="#61-vs" title="Permanent link">¶</a></h3>
+<p>간단한 프로토타입에서는 문자열 에러도 충분하다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Space를 찾을 수 없습니다."</span><span class="p">);</span>
+</code></pre></div>
+<p>하지만 CloudSharp처럼 도메인이 많은 시스템에서는 <strong>커스텀 <code>Error</code> 객체</strong>가 낫다.</p>
+<h3 id="62">6.2 공통 에러 베이스 클래스<a class="headerlink" href="#62" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentResults</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Core.Common.Errors</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">abstract</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CloudSharpError</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Error</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">protected</span><span class="w"> </span><span class="nf">CloudSharpError</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">errorCode</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">message</span><span class="p">)</span>
+<span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="k">base</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Metadata</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"ErrorCode"</span><span class="p">,</span><span class="w"> </span><span class="n">errorCode</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="63">6.3 도메인별 에러 클래스<a class="headerlink" href="#63" title="Permanent link">¶</a></h3>
+<p>도메인별 에러는 해당 도메인 폴더 또는 <code>Common/Errors</code>에 둔다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">CloudSharp.Core.Common.Errors</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Core.Domain.Users</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">DuplicateEmailError</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">CloudSharpError</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">DuplicateEmailError</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">email</span><span class="p">)</span>
+<span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="k">base</span><span class="p">(</span><span class="s">"USER_DUPLICATE_EMAIL"</span><span class="p">,</span><span class="w"> </span><span class="s">"이미 사용 중인 이메일입니다."</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Metadata</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"Email"</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="64">6.4 사용 예시<a class="headerlink" href="#64" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="nf">Register</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">email</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_userRepository</span><span class="p">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">email</span><span class="p">))</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DuplicateEmailError</span><span class="p">(</span><span class="n">email</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="65">6.5 객체 에러의 장점<a class="headerlink" href="#65" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>장점</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>표준화</strong></td>
+<td><code>ErrorCode</code>를 모든 계층에서 동일하게 사용</td>
+</tr>
+<tr>
+<td><strong>API 변환</strong></td>
+<td>HTTP status와 response body 매핑이 쉬움</td>
+</tr>
+<tr>
+<td><strong>로깅</strong></td>
+<td>SpaceId, FileId, UploadSessionId 같은 메타데이터 보관 가능</td>
+</tr>
+<tr>
+<td><strong>테스트</strong></td>
+<td>문자열 비교 대신 에러 타입/코드 검증 가능</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="7-domain">7. Domain — 팩토리와 상태 전이<a class="headerlink" href="#7-domain" title="Permanent link">¶</a></h2>
+<h3 id="71">7.1 원칙<a class="headerlink" href="#71" title="Permanent link">¶</a></h3>
+<p>도메인 객체 생성이나 상태 전이는 실패할 수 있다. <code>FolderPath</code>, <code>UploadSession</code>, <code>ShareLink</code> 같은 값 객체/엔티티는 잘못된 값으로 만들어지면 안 된다.</p>
+<table>
+<thead>
+<tr>
+<th>규칙</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>비즈니스 실패에 예외를 쓰지 않는다</td>
+<td>예상 가능한 실패는 호출자가 처리해야 한다</td>
+</tr>
+<tr>
+<td><code>Result&lt;T&gt;</code>는 유효한 객체만 성공으로 반환한다</td>
+<td>실패한 객체가 시스템에 들어오지 않게 한다</td>
+</tr>
+<tr>
+<td>인프라 예외 타입을 참조하지 않는다</td>
+<td><code>Core → Infrastructure</code> 의존성을 막는다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72">7.2 팩토리 패턴 예시<a class="headerlink" href="#72" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentResults</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Core.Domain.Folders</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">record</span><span class="w"> </span><span class="n">FolderPath</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nf">FolderPath</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Result</span><span class="o">&lt;</span><span class="n">FolderPath</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Create</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="k">value</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="o">&lt;</span><span class="n">FolderPath</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"폴더 경로는 비어 있을 수 없습니다."</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="k">value</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">(</span><span class="sc">'/'</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="o">&lt;</span><span class="n">FolderPath</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"폴더 경로는 /로 시작해야 합니다."</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FolderPath</span><span class="p">(</span><span class="k">value</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="73">7.3 상태 전이 예시<a class="headerlink" href="#73" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="nf">FinalizeUpload</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Status</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">UploadSessionStatus</span><span class="p">.</span><span class="n">Uploading</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"업로드 중인 세션만 finalize할 수 있습니다."</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UploadSessionStatus</span><span class="p">.</span><span class="n">Completed</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="74-quota">7.4 Quota 검증 예시<a class="headerlink" href="#74-quota" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="nf">ValidateQuota</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">requestedBytes</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">requestedBytes</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"업로드 크기는 0보다 커야 합니다."</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">requestedBytes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">RemainingBytes</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Space quota를 초과했습니다."</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="8-usecases">8. UseCases — 업무 흐름 파이프라인<a class="headerlink" href="#8-usecases" title="Permanent link">¶</a></h2>
+<h3 id="81">8.1 디렉토리 구조<a class="headerlink" href="#81" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Core/UseCases/
+├── Auth/
+├── Spaces/
+├── Members/
+├── Folders/
+├── Files/
+├── Uploads/
+├── Downloads/
+├── ShareLinks/
+├── Quotas/
+└── Admin/
+</code></pre></div>
+<h3 id="82-bind">8.2 Bind를 이용한 파이프라인<a class="headerlink" href="#82-bind" title="Permanent link">¶</a></h3>
+<p>업로드 초기화처럼 여러 단계가 있는 흐름에서 <code>Bind</code>를 쓰면 실패 가능한 단계를 연결할 수 있다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="o">&lt;</span><span class="n">InitializeUploadResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Handle</span><span class="p">(</span><span class="n">InitializeUploadCommand</span><span class="w"> </span><span class="n">command</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nf">EnsureSpaceExists</span><span class="p">(</span><span class="n">command</span><span class="p">.</span><span class="n">SpaceId</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">EnsureCanUpload</span><span class="p">(</span><span class="n">command</span><span class="p">.</span><span class="n">SpaceId</span><span class="p">,</span><span class="w"> </span><span class="n">command</span><span class="p">.</span><span class="n">UserId</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">EnsureQuotaAvailable</span><span class="p">(</span><span class="n">command</span><span class="p">.</span><span class="n">SpaceId</span><span class="p">,</span><span class="w"> </span><span class="n">command</span><span class="p">.</span><span class="n">SizeBytes</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">ReserveFileName</span><span class="p">(</span><span class="n">command</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">reservation</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">CreateUploadSession</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">reservation</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="83-bind">8.3 Bind 패턴의 장점<a class="headerlink" href="#83-bind" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>장점</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>앞 단계 실패 시 뒤 단계가 실행되지 않음</strong></td>
+<td>불필요한 DB/Storage 호출 방지</td>
+</tr>
+<tr>
+<td><strong>실패 이유가 보존됨</strong></td>
+<td>API 응답과 로그에서 원인 추적 가능</td>
+</tr>
+<tr>
+<td><strong>중첩 <code>if</code> 감소</strong></td>
+<td>유스케이스가 업무 흐름처럼 읽힘</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="9-map-dto">9. Map — 도메인 객체를 DTO로 변환<a class="headerlink" href="#9-map-dto" title="Permanent link">¶</a></h2>
+<h3 id="91">9.1 사용 패턴<a class="headerlink" href="#91" title="Permanent link">¶</a></h3>
+<p>조회 유스케이스에서는 도메인 객체를 DTO로 바꿔야 한다. <code>Map</code>은 성공 값만 변환하고, 실패하면 기존 에러를 그대로 유지한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="o">&lt;</span><span class="n">SpaceDetailDto</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Handle</span><span class="p">(</span><span class="n">GetSpaceDetailQuery</span><span class="w"> </span><span class="n">query</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nf">FindSpace</span><span class="p">(</span><span class="n">query</span><span class="p">.</span><span class="n">SpaceId</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">space</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">EnsureReadable</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">query</span><span class="p">.</span><span class="n">UserId</span><span class="p">).</span><span class="n">Map</span><span class="p">(</span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">space</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="n">Map</span><span class="p">(</span><span class="n">space</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SpaceDetailDto</span><span class="p">(</span>
+<span class="w">            </span><span class="n">space</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+<span class="w">            </span><span class="n">space</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">space</span><span class="p">.</span><span class="n">Status</span><span class="p">.</span><span class="n">ToString</span><span class="p">()));</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="92">9.2 활용 위치<a class="headerlink" href="#92" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>위치</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UseCases/Spaces</code></td>
+<td><code>Space</code> → <code>SpaceDetailDto</code></td>
+</tr>
+<tr>
+<td><code>UseCases/Files</code></td>
+<td><code>FileItem</code> → <code>FileListItemDto</code></td>
+</tr>
+<tr>
+<td><code>UseCases/Downloads</code></td>
+<td><code>DownloadSession</code> → <code>DownloadTokenDto</code></td>
+</tr>
+<tr>
+<td><code>UseCases/ShareLinks</code></td>
+<td><code>ShareLink</code> → <code>ShareLinkDto</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="10-merge">10. Merge — 복수 검증 결과 집계<a class="headerlink" href="#10-merge" title="Permanent link">¶</a></h2>
+<h3 id="101">10.1 사용 시나리오<a class="headerlink" href="#101" title="Permanent link">¶</a></h3>
+<p>회원가입, Space 생성, 파일 업로드 초기화처럼 입력값이 많은 유스케이스에서는 검증 오류가 여러 개 나올 수 있다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="nf">ValidateCreateSpace</span><span class="p">(</span><span class="n">CreateSpaceCommand</span><span class="w"> </span><span class="n">command</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">nameResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ValidateSpaceName</span><span class="p">(</span><span class="n">command</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">quotaResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ValidateInitialQuota</span><span class="p">(</span><span class="n">command</span><span class="p">.</span><span class="n">InitialQuotaBytes</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Merge</span><span class="p">(</span><span class="n">nameResult</span><span class="p">,</span><span class="w"> </span><span class="n">quotaResult</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="102">10.2 개별 검증 메서드<a class="headerlink" href="#102" title="Permanent link">¶</a></h3>
+<p>각 검증은 작게 유지한다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="nf">ValidateSpaceName</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Space 이름은 필수입니다."</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Space 이름은 80자를 초과할 수 없습니다."</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>API는 이 에러 목록을 그대로 모아 400 응답으로 변환할 수 있다.</p>
+<hr/>
+<h2 id="11-abstractions">11. Abstractions — 포트의 실패 계약<a class="headerlink" href="#11-abstractions" title="Permanent link">¶</a></h2>
+<h3 id="111">11.1 디렉토리 구조<a class="headerlink" href="#111" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Core/Abstractions/
+├── Auth/
+├── Persistence/
+├── Storage/
+├── Messaging/
+├── Clock/
+└── Processing/
+</code></pre></div>
+<h3 id="112">11.2 반환형 설계 기준<a class="headerlink" href="#112" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>포트 성격</th>
+<th>권장 반환형</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>단순 조회, 없을 수 있음</td>
+<td><code>Task&lt;T?&gt;</code></td>
+</tr>
+<tr>
+<td>저장/상태 변경, 실패 이유 필요</td>
+<td><code>Task&lt;Result&gt;</code></td>
+</tr>
+<tr>
+<td>외부 adapter 결과가 필요</td>
+<td><code>Task&lt;Result&lt;T&gt;&gt;</code></td>
+</tr>
+<tr>
+<td>실패 가능성이 없는 시간/ID 생성</td>
+<td>일반 값 반환</td>
+</tr>
+</tbody>
+</table>
+<h3 id="113">11.3 예시<a class="headerlink" href="#113" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">IUploadSessionRepository</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">UploadSession</span><span class="o">?&gt;</span><span class="w"> </span><span class="n">FindByIdAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Guid</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&gt;</span><span class="w"> </span><span class="n">AddAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="n">UploadSession</span><span class="w"> </span><span class="n">uploadSession</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="114-notfound">11.4 NotFound 처리 지침<a class="headerlink" href="#114-notfound" title="Permanent link">¶</a></h3>
+<blockquote>
+<p>리소스가 없는 것이 도메인/유스케이스 의미를 가져야 한다면, <strong>저장소는 <code>null</code>을 반환</strong>하고 <strong>UseCase에서 <code>SpaceNotFoundError</code>, <code>FileNotFoundError</code> 같은 에러로 바꾸는</strong> 편이 명확하다.</p>
+</blockquote>
+<hr/>
+<h2 id="12-infrastructure-result">12. Infrastructure — 외부 실패를 Result로 감싸기<a class="headerlink" href="#12-infrastructure-result" title="Permanent link">¶</a></h2>
+<h3 id="121">12.1 디렉토리 구조<a class="headerlink" href="#121" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Infrastructure/
+├── Persistence/
+├── Storage/
+├── Uploads/
+├── Messaging/
+├── Auth/
+├── Preview/
+└── Ai/
+</code></pre></div>
+<h3 id="122">12.2 실패 분류 및 처리 기준<a class="headerlink" href="#122" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>실패 유형</th>
+<th>처리 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>비즈니스적으로 예상 가능한 adapter 실패</td>
+<td><code>Result.Fail(...)</code></td>
+</tr>
+<tr>
+<td>외부 프로세스 실패 코드</td>
+<td><code>Result.Fail(...)</code> + 메타데이터</td>
+</tr>
+<tr>
+<td>DB 연결 장애, 파일 시스템 장애</td>
+<td>예외를 로깅하거나 <code>CausedBy</code>로 보존</td>
+</tr>
+<tr>
+<td>프로그래밍 버그</td>
+<td>예외를 숨기지 않음</td>
+</tr>
+</tbody>
+</table>
+<h3 id="123">12.3 외부 프로세스 실패 예시<a class="headerlink" href="#123" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GeneratePreviewAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="n">FileItem</span><span class="w"> </span><span class="n">file</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">try</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">exitCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_ffmpegRunner</span><span class="p">.</span><span class="n">RunAsync</span><span class="p">(</span>
+<span class="w">            </span><span class="n">file</span><span class="p">.</span><span class="n">StorageKey</span><span class="p">,</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exitCode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span>
+<span class="w">                </span><span class="k">new</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="s">"미리보기 생성에 실패했습니다."</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"ErrorCode"</span><span class="p">,</span><span class="w"> </span><span class="s">"PREVIEW_FFMPEG_FAILED"</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"FileId"</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">Id</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"ExitCode"</span><span class="p">,</span><span class="w"> </span><span class="n">exitCode</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Ok</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="nf">Error</span><span class="p">(</span><span class="s">"미리보기 작업 중 예외가 발생했습니다."</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">CausedBy</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"ErrorCode"</span><span class="p">,</span><span class="w"> </span><span class="s">"PREVIEW_UNEXPECTED_ERROR"</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"FileId"</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">Id</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="124-resulttry">12.4 Result.Try 활용<a class="headerlink" href="#124-resulttry" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CreateToken</span><span class="p">(</span><span class="n">DownloadSession</span><span class="w"> </span><span class="n">session</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">.</span><span class="n">Try</span><span class="p">(</span>
+<span class="w">        </span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">_tokenWriter</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>
+<span class="w">        </span><span class="n">exception</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Error</span><span class="p">(</span><span class="s">"다운로드 토큰 생성에 실패했습니다."</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">CausedBy</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"ErrorCode"</span><span class="p">,</span><span class="w"> </span><span class="s">"DOWNLOAD_TOKEN_CREATE_FAILED"</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">WithMetadata</span><span class="p">(</span><span class="s">"DownloadSessionId"</span><span class="p">,</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="n">Id</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="13-api-result-http">13. Api — Result를 HTTP 응답으로 변환<a class="headerlink" href="#13-api-result-http" title="Permanent link">¶</a></h2>
+<h3 id="131">13.1 디렉토리 구조<a class="headerlink" href="#131" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>CloudSharp.Api/
+├── Endpoints/
+│   └── ResultHttpMapper.cs    ← 공통 변환기
+├── Auth/
+├── OpenApi/
+├── Middlewares/
+│   └── ExceptionHandlingMiddleware.cs
+└── BackgroundServices/
+</code></pre></div>
+<h3 id="132">13.2 핵심 원칙<a class="headerlink" href="#132" title="Permanent link">¶</a></h3>
+<p><code>CloudSharp.Api</code>는 <code>Result&lt;T&gt;</code>를 외부 계약으로 노출하지 않는다.</p>
+<table>
+<thead>
+<tr>
+<th>내부</th>
+<th>외부</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Result&lt;T&gt;</code> (성공)</td>
+<td><code>200 OK</code> + DTO</td>
+</tr>
+<tr>
+<td><code>Result.Fail</code></td>
+<td><code>ProblemDetails</code> 또는 CloudSharp error response</td>
+</tr>
+<tr>
+<td><code>Error.Metadata</code></td>
+<td><code>errors[].metadata</code> 또는 내부 로그 필드</td>
+</tr>
+</tbody>
+</table>
+<h3 id="133-endpoint">13.3 Endpoint 사용 예시<a class="headerlink" href="#133-endpoint" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">IResult</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetSpace</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Guid</span><span class="w"> </span><span class="n">spaceId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GetSpaceDetailUseCase</span><span class="w"> </span><span class="n">useCase</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">useCase</span><span class="p">.</span><span class="n">Handle</span><span class="p">(</span>
+<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="nf">GetSpaceDetailQuery</span><span class="p">(</span><span class="n">spaceId</span><span class="p">),</span>
+<span class="w">        </span><span class="n">cancellationToken</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">ToHttpResult</span><span class="p">(</span><span class="n">Results</span><span class="p">.</span><span class="n">Ok</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="134">13.4 공통 변환기 구현<a class="headerlink" href="#134" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">FluentResults</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">Microsoft.AspNetCore.Http</span><span class="p">;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">CloudSharp.Api.Endpoints</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ResultHttpMapper</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">IResult</span><span class="w"> </span><span class="n">ToHttpResult</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="k">this</span><span class="w"> </span><span class="n">Result</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">IResult</span><span class="o">&gt;</span><span class="w"> </span><span class="n">onSuccess</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">IsSuccess</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nf">onSuccess</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">statusCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ResolveStatusCode</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Errors</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Results</span><span class="p">.</span><span class="n">Problem</span><span class="p">(</span>
+<span class="w">            </span><span class="n">statusCode</span><span class="p">:</span><span class="w"> </span><span class="n">statusCode</span><span class="p">,</span>
+<span class="w">            </span><span class="n">title</span><span class="p">:</span><span class="w"> </span><span class="s">"요청을 처리할 수 없습니다."</span><span class="p">,</span>
+<span class="w">            </span><span class="n">extensions</span><span class="p">:</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object?</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="na">["errors"]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">Errors</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">Metadata</span>
+<span class="w">                </span><span class="p">})</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ResolveStatusCode</span><span class="p">(</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">IError</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">errorCodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">errors</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">                </span><span class="n">error</span><span class="p">.</span><span class="n">Metadata</span><span class="p">.</span><span class="n">TryGetValue</span><span class="p">(</span><span class="s">"ErrorCode"</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="kt">var</span><span class="w"> </span><span class="n">code</span><span class="p">)</span>
+<span class="w">                    </span><span class="o">?</span><span class="w"> </span><span class="n">code</span><span class="o">?.</span><span class="n">ToString</span><span class="p">()</span>
+<span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">ToArray</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">errorCodes</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">c</span><span class="o">!</span><span class="p">.</span><span class="n">EndsWith</span><span class="p">(</span><span class="s">"_NOT_FOUND"</span><span class="p">)))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status404NotFound</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">errorCodes</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">            </span><span class="n">c</span><span class="o">!</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">"FORBIDDEN"</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="o">!</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">"UNAUTHORIZED"</span><span class="p">)))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status403Forbidden</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">errorCodes</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">            </span><span class="n">c</span><span class="o">!</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">"CONFLICT"</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="o">!</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="s">"DUPLICATE"</span><span class="p">)))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status409Conflict</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status400BadRequest</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="14-backgroundservices">14. BackgroundServices에서의 사용<a class="headerlink" href="#14-backgroundservices" title="Permanent link">¶</a></h2>
+<p><code>CloudSharp.Api/BackgroundServices</code>는 Redis 이벤트 구독, media/AI 후처리 host를 담당한다.</p>
+<p>BackgroundService에서는 실패를 HTTP 응답으로 바꾸지 않는다. 대신 <strong>Result를 로그와 재시도 정책으로 연결</strong>한다.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">previewUseCase</span><span class="p">.</span><span class="n">Handle</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">stoppingToken</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">IsFailed</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">_logger</span><span class="p">.</span><span class="n">LogWarning</span><span class="p">(</span>
+<span class="w">        </span><span class="s">"Preview job failed. Errors: {Errors}"</span><span class="p">,</span>
+<span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="n">Errors</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">new</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">error</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span>
+<span class="w">            </span><span class="n">error</span><span class="p">.</span><span class="n">Metadata</span>
+<span class="w">        </span><span class="p">}));</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>반복 작업에서 예외를 삼켜서 서비스가 조용히 죽지 않게 하고, 예상 가능한 실패는 <code>Result</code>로 기록한다.</p>
+</blockquote>
+<hr/>
+<h2 id="15">15. 테스트 전략<a class="headerlink" href="#15" title="Permanent link">¶</a></h2>
+<h3 id="151">15.1 테스트 프로젝트 구조<a class="headerlink" href="#151" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>tests/
+├── CloudSharp.Core.Tests/
+├── CloudSharp.Infrastructure.Tests/
+├── CloudSharp.Api.IntegrationTests/
+└── CloudSharp.Architecture.Tests/
+</code></pre></div>
+<h3 id="152">15.2 프로젝트별 검증 대상<a class="headerlink" href="#152" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>테스트 프로젝트</th>
+<th>FluentResults 검증 대상</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CloudSharp.Core.Tests</code></td>
+<td>도메인 정책, 상태 전이, UseCase 실패 이유</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Infrastructure.Tests</code></td>
+<td>adapter 실패가 적절한 <code>ErrorCode</code>로 변환되는지</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Api.IntegrationTests</code></td>
+<td><code>Result.Fail</code>이 올바른 HTTP status/body로 변환되는지</td>
+</tr>
+<tr>
+<td><code>CloudSharp.Architecture.Tests</code></td>
+<td><code>Core</code>가 <code>Api</code>, <code>Infrastructure</code>를 참조하지 않는지</td>
+</tr>
+</tbody>
+</table>
+<h3 id="153-core">15.3 Core 테스트 예시<a class="headerlink" href="#153-core" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="na">[Test]</span>
+<span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Create_ShouldFail_WhenFolderPathIsEmpty</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FolderPath</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">IsFailed</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">True</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span>
+<span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="n">Errors</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">Message</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="s">"폴더 경로는 비어 있을 수 없습니다."</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="154-api">15.4 API 통합 테스트 예시<a class="headerlink" href="#154-api" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="na">[Test]</span>
+<span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">GetSpace_ShouldReturn404_WhenSpaceDoesNotExist</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_client</span><span class="p">.</span><span class="n">GetAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="s">"/spaces/00000000-0000-0000-0000-000000000000"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span>
+<span class="w">        </span><span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">NotFound</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="16">16. 에러 코드 체계<a class="headerlink" href="#16" title="Permanent link">¶</a></h2>
+<h3 id="161">16.1 도메인별 에러 코드<a class="headerlink" href="#161" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>영역</th>
+<th>예시 코드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auth</strong></td>
+<td><code>AUTH_INVALID_CREDENTIALS</code>, <code>AUTH_EMAIL_ALREADY_USED</code></td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td><code>USER_NOT_FOUND</code>, <code>USER_DUPLICATE_EMAIL</code></td>
+</tr>
+<tr>
+<td><strong>Spaces</strong></td>
+<td><code>SPACE_NOT_FOUND</code>, <code>SPACE_INACTIVE</code>, <code>SPACE_FORBIDDEN</code></td>
+</tr>
+<tr>
+<td><strong>Members</strong></td>
+<td><code>MEMBER_NOT_FOUND</code>, <code>MEMBER_ALREADY_EXISTS</code>, <code>INVITE_EXPIRED</code></td>
+</tr>
+<tr>
+<td><strong>Folders</strong></td>
+<td><code>FOLDER_NOT_FOUND</code>, <code>FOLDER_DUPLICATE_NAME</code>, <code>FOLDER_INVALID_MOVE</code></td>
+</tr>
+<tr>
+<td><strong>Files</strong></td>
+<td><code>FILE_NOT_FOUND</code>, <code>FILE_DELETED</code>, <code>FILE_DUPLICATE_NAME</code></td>
+</tr>
+<tr>
+<td><strong>Uploads</strong></td>
+<td><code>UPLOAD_QUOTA_EXCEEDED</code>, <code>UPLOAD_SESSION_EXPIRED</code>, <code>UPLOAD_INVALID_STATUS</code></td>
+</tr>
+<tr>
+<td><strong>Downloads</strong></td>
+<td><code>DOWNLOAD_TOKEN_EXPIRED</code>, <code>DOWNLOAD_FORBIDDEN</code></td>
+</tr>
+<tr>
+<td><strong>ShareLinks</strong></td>
+<td><code>SHARE_LINK_EXPIRED</code>, <code>SHARE_LINK_DISABLED</code>, <code>SHARE_LINK_PASSWORD_MISMATCH</code></td>
+</tr>
+<tr>
+<td><strong>Preview</strong></td>
+<td><code>PREVIEW_FFMPEG_FAILED</code>, <code>PREVIEW_UNEXPECTED_ERROR</code></td>
+</tr>
+<tr>
+<td><strong>AI</strong></td>
+<td><code>AI_METADATA_EXTRACTION_FAILED</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="162">16.2 권장 메타데이터 필드<a class="headerlink" href="#162" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ErrorCode</code></td>
+<td><code>UPLOAD_QUOTA_EXCEEDED</code></td>
+</tr>
+<tr>
+<td><code>SpaceId</code></td>
+<td><code>space.Id</code></td>
+</tr>
+<tr>
+<td><code>FileId</code></td>
+<td><code>file.Id</code></td>
+</tr>
+<tr>
+<td><code>UploadSessionId</code></td>
+<td><code>uploadSession.Id</code></td>
+</tr>
+<tr>
+<td><code>TraceId</code></td>
+<td>HTTP trace id</td>
+</tr>
+<tr>
+<td><code>CurrentUserId</code></td>
+<td>현재 사용자 id</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="17">17. 자주 하는 실수<a class="headerlink" href="#17" title="Permanent link">¶</a></h2>
+<h3 id="171-result">17.1 모든 실패를 Result로만 처리하기<a class="headerlink" href="#171-result" title="Permanent link">¶</a></h3>
+<p>진짜 시스템 장애까지 전부 <code>Result.Fail</code>로 덮으면 장애 감지가 흐려진다.</p>
+<table>
+<thead>
+<tr>
+<th>실패</th>
+<th>처리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>quota 초과</td>
+<td><code>Result.Fail</code></td>
+</tr>
+<tr>
+<td>권한 없음</td>
+<td><code>Result.Fail</code></td>
+</tr>
+<tr>
+<td>파일 없음</td>
+<td><code>Result.Fail</code></td>
+</tr>
+<tr>
+<td>DB 서버 다운</td>
+<td><strong>예외</strong> + 미들웨어/로그</td>
+</tr>
+<tr>
+<td>코드 버그</td>
+<td><strong>예외</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="172-value">17.2 실패 상태에서 Value 바로 읽기<a class="headerlink" href="#172-value" title="Permanent link">¶</a></h3>
+<p><code>Result&lt;T&gt;.Value</code>는 <strong>성공일 때만</strong> 읽는다.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ✅ 올바른 패턴</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">IsFailed</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">ToHttpResult</span><span class="p">();</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="173">17.3 문자열 에러만 남발하기<a class="headerlink" href="#173" title="Permanent link">¶</a></h3>
+<p>초기에는 빠르지만, API 매핑과 테스트가 어려워진다. 도메인별 커스텀 <code>Error</code> 또는 최소한 표준 <code>ErrorCode</code> 메타데이터를 둔다.</p>
+<h3 id="174-api-result">17.4 API 응답에 Result를 그대로 노출하기<a class="headerlink" href="#174-api-result" title="Permanent link">¶</a></h3>
+<p>외부 계약은 라이브러리 타입이 아니라 CloudSharp의 DTO여야 한다.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ❌ 피한다</span>
+<span class="k">public</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">SpaceDetailDto</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">GetSpace</span><span class="p">(...)</span>
+
+<span class="c1">// ✅ 권장한다</span>
+<span class="k">public</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">IResult</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetSpace</span><span class="p">(...)</span>
+</code></pre></div>
+<h3 id="175-result">17.5 실패 가능성이 없는 메서드까지 Result로 감싸기<a class="headerlink" href="#175-result" title="Permanent link">¶</a></h3>
+<p>모든 메서드가 <code>Result&lt;T&gt;</code>를 반환하면 오히려 의미가 흐려진다.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ✅ 실패할 이유가 없다면 그냥 값으로 둔다</span>
+<span class="k">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">CalculateRemainingBytes</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">quotaBytes</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">usedBytes</span><span class="p">)</span>
+<span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">quotaBytes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">usedBytes</span><span class="p">;</span>
+</code></pre></div>
+<hr/>
+<h2 id="18">18. 도입 순서<a class="headerlink" href="#18" title="Permanent link">¶</a></h2>
+<p>한 번에 모든 계층을 바꾸지 말고 다음 순서로 진행한다.</p>
+<h3 id="1-core">1단계: Core 공통 에러 규칙 정의<a class="headerlink" href="#1-core" title="Permanent link">¶</a></h3>
+<p><code>CloudSharp.Core/Common/Errors</code>에 <code>CloudSharpError</code>, 에러 코드 규칙, 공통 메타데이터 규칙을 둔다.</p>
+<h3 id="2-domain">2단계: Domain 팩토리와 상태 전이에 적용<a class="headerlink" href="#2-domain" title="Permanent link">¶</a></h3>
+<p><code>FolderPath.Create</code>, <code>UploadSession.Finalize</code>, <code>ShareLink.ValidatePassword</code> 같은 실패 가능한 도메인 메서드부터 적용한다.</p>
+<h3 id="3-usecases">3단계: UseCases 반환형 통일<a class="headerlink" href="#3-usecases" title="Permanent link">¶</a></h3>
+<p><code>UseCases/*</code>의 command/query handler는 <code>Result</code> 또는 <code>Result&lt;T&gt;</code>를 반환한다.</p>
+<h3 id="4-api-result-mapper">4단계: Api 공통 Result mapper 작성<a class="headerlink" href="#4-api-result-mapper" title="Permanent link">¶</a></h3>
+<p><code>CloudSharp.Api/Endpoints</code>에 <code>ResultHttpMapper</code>를 두고, endpoint마다 반복되는 <code>if (result.IsFailed)</code> 코드를 줄인다.</p>
+<h3 id="5-infrastructure-adapter">5단계: Infrastructure adapter 실패 정리<a class="headerlink" href="#5-infrastructure-adapter" title="Permanent link">¶</a></h3>
+<p>DB, Redis, Local FS, tusd, ffmpeg, AI adapter에서 예상 가능한 실패에 <code>ErrorCode</code>와 메타데이터를 붙인다.</p>
+<h3 id="6_1">6단계: 테스트로 규칙 고정<a class="headerlink" href="#6_1" title="Permanent link">¶</a></h3>
+<p><code>Core.Tests</code>와 <code>Api.IntegrationTests</code>에서 실패 결과와 HTTP 매핑을 검증하고, <code>Architecture.Tests</code>에서 의존성 규칙을 지킨다.</p>
+<hr/>
+<h2 id="19">19. 요약<a class="headerlink" href="#19" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>질문</th>
+<th>답</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>어디서 쓰나?</strong></td>
+<td><code>CloudSharp.Core/Domain</code>, <code>CloudSharp.Core/UseCases</code>, 일부 <code>Infrastructure adapter</code></td>
+</tr>
+<tr>
+<td><strong>어디서 변환하나?</strong></td>
+<td><code>CloudSharp.Api/Endpoints</code>의 공통 mapper</td>
+</tr>
+<tr>
+<td><strong>무엇을 표현하나?</strong></td>
+<td>비즈니스 실패, 검증 실패, 권한 실패, quota 실패</td>
+</tr>
+<tr>
+<td><strong>무엇을 표현하지 않나?</strong></td>
+<td>버그, 시스템 장애, 실패 가능성이 없는 단순 계산</td>
+</tr>
+<tr>
+<td><strong>핵심 API</strong></td>
+<td><code>Result.Ok</code>, <code>Result.Fail</code>, <code>Map</code>, <code>Bind</code>, <code>Merge</code>, <code>Try</code></td>
+</tr>
+<tr>
+<td><strong>핵심 규칙</strong></td>
+<td>내부는 <code>Result</code>, 외부 API는 DTO / <code>ProblemDetails</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>CloudSharp에서 FluentResults는 Core의 비즈니스 실패를 명시적으로 표현하고, Api가 이를 HTTP 응답으로 변환하게 만드는 내부 애플리케이션 계약이다.</strong></p>
+</blockquote>
+<hr/>
+<h2 id="_2">참고 자료<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://github.com/altmann/FluentResults">FluentResults GitHub</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

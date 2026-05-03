@@ -1,0 +1,1966 @@
+openapi: 3.0.3
+info:
+  title: CloudSharp API Draft
+  version: 0.2.0-draft
+  description: |
+    기능 요구사항과 설계 문서를 기준으로 정리한 CloudSharp MVP API 초안이다.
+    내부 인증 API는 `/api/v1`, 외부 공개 API는 `/public/v1` 경로를 사용한다.
+servers:
+  - url: /
+    description: Site root
+security:
+  - bearerAuth: []
+x-tagGroups:
+  - name: Identity
+    tags:
+      - Auth
+      - Users
+  - name: Collaboration
+    tags:
+      - Spaces
+      - Invites
+      - Members
+  - name: Content
+    tags:
+      - Folders
+      - Files
+      - Uploads
+      - Downloads
+  - name: Sharing
+    tags:
+      - Share Links
+      - Public Share
+  - name: Operations
+    tags:
+      - Admin
+tags:
+  - name: Auth
+  - name: Users
+  - name: Spaces
+  - name: Invites
+  - name: Members
+  - name: Folders
+  - name: Files
+  - name: Uploads
+  - name: Downloads
+  - name: Share Links
+  - name: Public Share
+  - name: Admin
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque
+  parameters:
+    spaceSlug:
+      name: spaceSlug
+      in: path
+      required: true
+      description: URL 접근에 사용하는 Space slug. UUID 문자열
+      schema:
+        type: string
+        format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+    folderId:
+      name: folderId
+      in: path
+      required: true
+      description: 폴더 식별자. 루트 폴더는 `root` 사용
+      schema:
+        type: string
+    fileId:
+      name: fileId
+      in: path
+      required: true
+      description: 파일 식별자
+      schema:
+        type: string
+    memberId:
+      name: memberId
+      in: path
+      required: true
+      description: Space 멤버 식별자
+      schema:
+        type: string
+    shareLinkId:
+      name: shareLinkId
+      in: path
+      required: true
+      description: 공유 링크 식별자
+      schema:
+        type: string
+    uploadSessionId:
+      name: uploadSessionId
+      in: path
+      required: true
+      description: 업로드 세션 식별자
+      schema:
+        type: string
+    sessionToken:
+      name: sessionToken
+      in: path
+      required: true
+      description: 다운로드 세션 토큰
+      schema:
+        type: string
+    shareToken:
+      name: shareToken
+      in: path
+      required: true
+      description: 외부 공유 토큰
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    pageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+    sortDir:
+      name: sortDir
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+    q:
+      name: q
+      in: query
+      schema:
+        type: string
+  schemas:
+    ErrorDetail:
+      type: object
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      required:
+        - reason
+    ErrorBody:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+      required:
+        - code
+        - message
+    ErrorResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+      required:
+        - error
+    PageInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+      required:
+        - page
+        - pageSize
+        - totalItems
+        - totalPages
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        systemRole:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - email
+        - systemRole
+        - createdAt
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        password:
+          type: string
+          format: password
+          minLength: 8
+      required:
+        - email
+        - password
+    LoginRequest:
+      type: object
+      properties:
+        loginId:
+          type: string
+        password:
+          type: string
+          format: password
+      required:
+        - loginId
+        - password
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: Redis UserSession에 대응되는 opaque session token
+          example: cs_sess_8eM3S1Qj6c7Yg4nM5gV1y7uQvC8sYxk9lW0aB2cD3eF
+        tokenType:
+          type: string
+          example: Bearer
+        expiresInSeconds:
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserProfile'
+      required:
+        - accessToken
+        - tokenType
+        - expiresInSeconds
+        - user
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    SpaceSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Space 리소스 식별자. bigint
+          example: 123
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+            - OWNER
+            - ADMIN
+            - MEMBER
+            - VIEWER
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - ARCHIVED
+            - DELETED
+        storageAllowedBytes:
+          type: integer
+          nullable: true
+        storageUsedBytes:
+          type: integer
+        storageReservedBytes:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - role
+        - status
+        - storageUsedBytes
+        - storageReservedBytes
+        - createdAt
+    SpaceDetail:
+      allOf:
+        - $ref: '#/components/schemas/SpaceSummary'
+        - type: object
+          properties:
+            slug:
+              type: string
+              format: uuid
+              description: URL path 접근에 사용하는 Space slug
+              example: 550e8400-e29b-41d4-a716-446655440000
+            ownerUserId:
+              type: integer
+              format: int64
+              description: Space 소유자 사용자 식별자. bigint
+              example: 456
+    SpaceListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpaceSummary'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - items
+        - page
+    CreateSpaceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        storageAllowedBytes:
+          type: integer
+          nullable: true
+      required:
+        - name
+    UpdateSpaceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+    QuotaSummary:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        storageAllowedBytes:
+          type: integer
+          nullable: true
+        storageUsedBytes:
+          type: integer
+        storageReservedBytes:
+          type: integer
+        availableBytes:
+          type: integer
+          nullable: true
+        usageRate:
+          type: number
+          format: float
+      required:
+        - spaceId
+        - storageUsedBytes
+        - storageReservedBytes
+        - usageRate
+    UpdateQuotaRequest:
+      type: object
+      properties:
+        storageAllowedBytes:
+          type: integer
+          nullable: true
+      required:
+        - storageAllowedBytes
+    Invite:
+      type: object
+      properties:
+        id:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        inviteeUserId:
+          type: string
+          nullable: true
+        inviteeEmail:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - MEMBER
+            - VIEWER
+        status:
+          type: string
+          enum:
+            - PENDING
+            - ACCEPTED
+            - REVOKED
+            - EXPIRED
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - spaceId
+        - role
+        - status
+        - createdAt
+    CreateInviteRequest:
+      type: object
+      properties:
+        inviteeUserId:
+          type: string
+          nullable: true
+        inviteeEmail:
+          type: string
+          format: email
+          nullable: true
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - MEMBER
+            - VIEWER
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - role
+    AcceptInviteRequest:
+      oneOf:
+        - type: object
+          properties:
+            inviteId:
+              type: string
+          required:
+            - inviteId
+        - type: object
+          properties:
+            inviteToken:
+              type: string
+          required:
+            - inviteToken
+    SpaceMember:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+            - OWNER
+            - ADMIN
+            - MEMBER
+            - VIEWER
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - INVITED
+            - SUSPENDED
+            - LEFT
+        joinedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - userId
+        - email
+        - role
+        - status
+    SpaceMemberListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpaceMember'
+      required:
+        - items
+    UpdateMemberRoleRequest:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - MEMBER
+            - VIEWER
+      required:
+        - role
+    FolderResource:
+      type: object
+      properties:
+        id:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        parentFolderId:
+          type: string
+          nullable: true
+        name:
+          type: string
+        fullPath:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - spaceId
+        - name
+        - createdAt
+        - updatedAt
+    FolderNode:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - FOLDER
+            - FILE
+        name:
+          type: string
+        parentFolderId:
+          type: string
+          nullable: true
+        sizeBytes:
+          type: integer
+          nullable: true
+        mimeType:
+          type: string
+          nullable: true
+        fileStatus:
+          type: string
+          nullable: true
+        previewStatus:
+          type: string
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - name
+        - updatedAt
+    FolderChildrenResponse:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        folderId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderNode'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - spaceId
+        - folderId
+        - items
+        - page
+    CreateFolderRequest:
+      type: object
+      properties:
+        parentFolderId:
+          type: string
+          nullable: true
+        name:
+          type: string
+      required:
+        - name
+    UpdateFolderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        parentFolderId:
+          type: string
+          nullable: true
+    SearchResponse:
+      type: object
+      properties:
+        q:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderNode'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - items
+        - page
+    FileItem:
+      type: object
+      properties:
+        id:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        folderId:
+          type: string
+        displayName:
+          type: string
+        sizeBytes:
+          type: integer
+        mimeType:
+          type: string
+          nullable: true
+        checksumSha256:
+          type: string
+          nullable: true
+        fileStatus:
+          type: string
+          enum:
+            - ACTIVE
+            - DELETED
+            - CORRUPTED
+            - QUARANTINED
+        previewStatus:
+          type: string
+          enum:
+            - PENDING
+            - PROCESSING
+            - DONE
+            - FAILED
+            - UNSUPPORTED
+        scanStatus:
+          type: string
+          enum:
+            - PENDING
+            - PASSED
+            - FAILED
+            - QUARANTINED
+        metadata:
+          type: object
+          additionalProperties: true
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - spaceId
+        - folderId
+        - displayName
+        - sizeBytes
+        - fileStatus
+        - previewStatus
+        - scanStatus
+        - createdAt
+        - updatedAt
+    UpdateFileRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+        folderId:
+          type: string
+    CreateUploadSessionRequest:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+          description: 요청 body에 전달하는 Space 식별자. bigint
+          example: 123
+        targetFolderId:
+          type: string
+        originalName:
+          type: string
+        expectedSize:
+          type: integer
+        clientMimeType:
+          type: string
+          nullable: true
+        checksum:
+          type: string
+          nullable: true
+      required:
+        - spaceId
+        - targetFolderId
+        - originalName
+        - expectedSize
+    UploadSession:
+      type: object
+      properties:
+        id:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        targetFolderId:
+          type: string
+        originalName:
+          type: string
+        expectedSize:
+          type: integer
+        receivedSize:
+          type: integer
+        status:
+          type: string
+          enum:
+            - CREATED
+            - UPLOADING
+            - FINALIZING
+            - COMPLETED
+            - FAILED
+            - ABORTED
+            - EXPIRED
+        uploadUrl:
+          type: string
+        tusUploadId:
+          type: string
+          nullable: true
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        fileItem:
+          $ref: '#/components/schemas/FileItem'
+        postProcessing:
+          type: object
+          properties:
+            scanStatus:
+              type: string
+            previewStatus:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+          additionalProperties: true
+          nullable: true
+      required:
+        - id
+        - spaceId
+        - targetFolderId
+        - originalName
+        - expectedSize
+        - receivedSize
+        - status
+        - uploadUrl
+    DownloadSessionResponse:
+      type: object
+      properties:
+        sessionToken:
+          type: string
+        downloadUrl:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        fileId:
+          type: string
+      required:
+        - sessionToken
+        - downloadUrl
+        - expiresAt
+        - fileId
+    PreviewResponse:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+            - IMAGE
+            - TEXT
+            - PDF
+            - UNSUPPORTED
+        canDownload:
+          type: boolean
+        contentType:
+          type: string
+          nullable: true
+        previewUrl:
+          type: string
+          nullable: true
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        textContent:
+          type: string
+          nullable: true
+        encoding:
+          type: string
+          nullable: true
+        truncated:
+          type: boolean
+          nullable: true
+      required:
+        - kind
+        - canDownload
+    ShareLink:
+      type: object
+      properties:
+        id:
+          type: string
+        publicUrl:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        targetType:
+          type: string
+          enum:
+            - FILE
+            - FOLDER
+        fileId:
+          type: string
+          nullable: true
+        folderId:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - DISABLED
+            - EXPIRED
+            - REVOKED
+        hasPassword:
+          type: boolean
+        allowDownload:
+          type: boolean
+        allowPreview:
+          type: boolean
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        maxDownloadCount:
+          type: integer
+          nullable: true
+        downloadAttemptCount:
+          type: integer
+        downloadCompletedCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - publicUrl
+        - spaceId
+        - targetType
+        - status
+        - hasPassword
+        - allowDownload
+        - allowPreview
+        - downloadAttemptCount
+        - downloadCompletedCount
+        - createdAt
+    CreateShareLinkRequest:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+          description: 요청 body에 전달하는 Space 식별자. bigint
+          example: 123
+        targetType:
+          type: string
+          enum:
+            - FILE
+            - FOLDER
+        fileId:
+          type: string
+          nullable: true
+        folderId:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        allowDownload:
+          type: boolean
+        allowPreview:
+          type: boolean
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        maxDownloadCount:
+          type: integer
+          nullable: true
+      required:
+        - spaceId
+        - targetType
+        - allowDownload
+        - allowPreview
+    UpdateShareLinkRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        allowDownload:
+          type: boolean
+        allowPreview:
+          type: boolean
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        maxDownloadCount:
+          type: integer
+          nullable: true
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - DISABLED
+            - REVOKED
+    ShareVerifyRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          nullable: true
+    ShareVerifyResponse:
+      type: object
+      properties:
+        shareLink:
+          $ref: '#/components/schemas/ShareLink'
+        requiresPassword:
+          type: boolean
+        canBrowse:
+          type: boolean
+        canDownload:
+          type: boolean
+        canPreview:
+          type: boolean
+        targetName:
+          type: string
+        targetType:
+          type: string
+          enum:
+            - FILE
+            - FOLDER
+      required:
+        - shareLink
+        - requiresPassword
+        - canBrowse
+        - canDownload
+        - canPreview
+        - targetName
+        - targetType
+    PublicBrowseRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          nullable: true
+        folderId:
+          type: string
+          nullable: true
+        page:
+          type: integer
+          minimum: 1
+          default: 1
+        pageSize:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 50
+    PublicBrowseResponse:
+      type: object
+      properties:
+        shareLink:
+          $ref: '#/components/schemas/ShareLink'
+        targetType:
+          type: string
+          enum:
+            - FILE
+            - FOLDER
+        file:
+          $ref: '#/components/schemas/FileItem'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderNode'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - shareLink
+        - targetType
+    PublicDownloadSessionRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          nullable: true
+        fileId:
+          type: string
+          nullable: true
+    AdminSpaceUsage:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        name:
+          type: string
+        status:
+          type: string
+        ownerUserId:
+          type: integer
+          format: int64
+          description: Space 소유자 사용자 식별자. bigint
+          example: 456
+        memberCount:
+          type: integer
+        storageAllowedBytes:
+          type: integer
+          nullable: true
+        storageUsedBytes:
+          type: integer
+        storageReservedBytes:
+          type: integer
+        usageRate:
+          type: number
+          format: float
+      required:
+        - spaceId
+        - name
+        - status
+        - ownerUserId
+        - memberCount
+        - storageUsedBytes
+        - storageReservedBytes
+        - usageRate
+    AdminSpaceUsageListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminSpaceUsage'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - items
+        - page
+    UploadCompletedEvent:
+      type: object
+      properties:
+        eventId:
+          type: string
+        eventType:
+          type: string
+          example: file.upload.completed
+        occurredAt:
+          type: string
+          format: date-time
+        spaceId:
+          type: integer
+          format: int64
+          description: 이벤트 payload에 포함되는 Space 식별자. bigint
+          example: 123
+        uploadSessionId:
+          type: string
+        fileItemId:
+          type: string
+        storageKey:
+          type: string
+        mimeType:
+          type: string
+        sizeBytes:
+          type: integer
+      required:
+        - eventId
+        - eventType
+        - occurredAt
+        - spaceId
+        - uploadSessionId
+        - fileItemId
+        - storageKey
+        - sizeBytes
+paths:
+  /api/v1/auth/register:
+    post:
+      tags:
+        - Auth
+      security: []
+      summary: 회원가입
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: 가입 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: 입력 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 이메일 또는 username 중복
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Auth
+      security: []
+      summary: 로그인
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 인증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: 로그아웃
+      responses:
+        '204':
+          description: 로그아웃 성공
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/me:
+    get:
+      tags:
+        - Users
+      summary: 내 프로필 조회
+      responses:
+        '200':
+          description: 프로필 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces:
+    get:
+      tags:
+        - Spaces
+      summary: Space 목록 조회
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceListResponse'
+    post:
+      tags:
+        - Spaces
+      summary: Space 생성
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceRequest'
+      responses:
+        '201':
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceDetail'
+        '400':
+          description: 입력 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}:
+    get:
+      tags:
+        - Spaces
+      summary: Space 상세 조회
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      responses:
+        '200':
+          description: 상세 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceDetail'
+        '404':
+          description: 대상 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - Spaces
+      summary: Space 수정
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSpaceRequest'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceDetail'
+        '403':
+          description: 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Spaces
+      summary: Space 삭제 또는 비활성화
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      responses:
+        '202':
+          description: 삭제 요청 수락
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '403':
+          description: 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/quota:
+    get:
+      tags:
+        - Spaces
+      summary: Space quota 조회
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      responses:
+        '200':
+          description: quota 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaSummary'
+    patch:
+      tags:
+        - Spaces
+      summary: Space quota 변경
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuotaRequest'
+      responses:
+        '200':
+          description: quota 변경 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaSummary'
+        '409':
+          description: 현재 사용량보다 작은 값으로는 축소 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/invites:
+    post:
+      tags:
+        - Invites
+      summary: Space 초대 생성
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInviteRequest'
+      responses:
+        '201':
+          description: 초대 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invite'
+        '403':
+          description: 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/invites/accept:
+    post:
+      tags:
+        - Invites
+      summary: Space 초대 수락
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptInviteRequest'
+      responses:
+        '200':
+          description: 초대 수락 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceMember'
+        '404':
+          description: 초대 없음, 만료, 이미 처리됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/members:
+    get:
+      tags:
+        - Members
+      summary: Space 멤버 목록 조회
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      responses:
+        '200':
+          description: 멤버 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceMemberListResponse'
+  /api/v1/spaces/{spaceSlug}/members/{memberId}:
+    patch:
+      tags:
+        - Members
+      summary: Space 멤버 Role 변경
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/memberId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMemberRoleRequest'
+      responses:
+        '200':
+          description: 변경 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceMember'
+        '403':
+          description: 허용되지 않는 Role 변경
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Members
+      summary: Space 멤버 제거
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/memberId'
+      responses:
+        '204':
+          description: 제거 성공
+        '403':
+          description: 마지막 OWNER 제거 시도 등
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/folders/{folderId}/children:
+    get:
+      tags:
+        - Folders
+      summary: 폴더 자식 목록 조회
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/folderId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum:
+              - name
+              - size
+              - updatedAt
+            default: updatedAt
+        - $ref: '#/components/parameters/sortDir'
+      responses:
+        '200':
+          description: 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderChildrenResponse'
+  /api/v1/spaces/{spaceSlug}/folders:
+    post:
+      tags:
+        - Folders
+      summary: 폴더 생성
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFolderRequest'
+      responses:
+        '201':
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderResource'
+        '409':
+          description: 이름 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/folders/{folderId}:
+    patch:
+      tags:
+        - Folders
+      summary: 폴더명 변경 또는 이동
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/folderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFolderRequest'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderResource'
+        '409':
+          description: 이름 충돌 또는 순환 이동
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Folders
+      summary: 폴더 삭제
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/folderId'
+      responses:
+        '204':
+          description: 삭제 성공
+        '409':
+          description: 루트 폴더 또는 삭제 불가 상태
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/search:
+    get:
+      tags:
+        - Folders
+      summary: 파일 및 폴더 검색
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/q'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum:
+              - name
+              - size
+              - updatedAt
+            default: updatedAt
+        - $ref: '#/components/parameters/sortDir'
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+              - file
+              - folder
+            default: all
+      responses:
+        '200':
+          description: 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+  /api/v1/spaces/{spaceSlug}/files/{fileId}:
+    patch:
+      tags:
+        - Files
+      summary: 파일명 변경 또는 이동
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFileRequest'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileItem'
+        '409':
+          description: 이름 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Files
+      summary: 파일 삭제
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '204':
+          description: 삭제 성공
+  /api/v1/upload-sessions:
+    post:
+      tags:
+        - Uploads
+      summary: 업로드 세션 생성
+      description: quota, 파일명 충돌, 대상 폴더 상태를 먼저 검증한 뒤 tus 업로드 URL을 발급한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUploadSessionRequest'
+      responses:
+        '201':
+          description: 세션 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadSession'
+        '409':
+          description: quota 초과, 이름 충돌, 폴더 상태 문제
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/upload-sessions/{uploadSessionId}:
+    get:
+      tags:
+        - Uploads
+      summary: 업로드 세션 상태 조회
+      parameters:
+        - $ref: '#/components/parameters/uploadSessionId'
+      responses:
+        '200':
+          description: 상태 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadSession'
+        '404':
+          description: 세션 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
+    post:
+      tags:
+        - Downloads
+      summary: 인증 사용자용 다운로드 세션 발급
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '200':
+          description: 세션 발급 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadSessionResponse'
+        '404':
+          description: 접근 불가, 삭제, 격리, 리소스 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/files/{fileId}/preview:
+    get:
+      tags:
+        - Downloads
+      summary: 파일 미리보기 정보 또는 내용 조회
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '200':
+          description: 미리보기 응답
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewResponse'
+        '404':
+          description: 접근 불가 또는 파일 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/share-links:
+    post:
+      tags:
+        - Share Links
+      summary: 공유 링크 생성
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateShareLinkRequest'
+      responses:
+        '201':
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareLink'
+  /api/v1/share-links/{shareLinkId}:
+    patch:
+      tags:
+        - Share Links
+      summary: 공유 링크 옵션 수정
+      parameters:
+        - $ref: '#/components/parameters/shareLinkId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateShareLinkRequest'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareLink'
+    delete:
+      tags:
+        - Share Links
+      summary: 공유 링크 비활성화 또는 폐기
+      parameters:
+        - $ref: '#/components/parameters/shareLinkId'
+      responses:
+        '200':
+          description: 폐기 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareLink'
+  /api/v1/admin/spaces/usage:
+    get:
+      tags:
+        - Admin
+      summary: 관리자용 Space 사용량 조회
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSpaceUsageListResponse'
+        '403':
+          description: 관리자 권한 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /public/v1/share-links/{shareToken}/verify:
+    post:
+      tags:
+        - Public Share
+      security: []
+      summary: 공유 링크 유효성 검사
+      parameters:
+        - $ref: '#/components/parameters/shareToken'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareVerifyRequest'
+      responses:
+        '200':
+          description: 검증 성공 또는 비밀번호 요구 상태
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareVerifyResponse'
+        '404':
+          description: 잘못된 토큰, 비활성 링크, 잘못된 비밀번호
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /public/v1/share-links/{shareToken}/browse:
+    post:
+      tags:
+        - Public Share
+      security: []
+      summary: 공유 링크 기반 파일 또는 폴더 열람
+      parameters:
+        - $ref: '#/components/parameters/shareToken'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicBrowseRequest'
+      responses:
+        '200':
+          description: 열람 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicBrowseResponse'
+        '404':
+          description: 접근 불가, 대상 없음, 비밀번호 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /public/v1/share-links/{shareToken}/download-sessions:
+    post:
+      tags:
+        - Public Share
+      security: []
+      summary: 공유 링크 기반 다운로드 세션 발급
+      parameters:
+        - $ref: '#/components/parameters/shareToken'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicDownloadSessionRequest'
+      responses:
+        '200':
+          description: 세션 발급 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadSessionResponse'
+        '404':
+          description: 접근 불가 또는 대상 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /public/v1/download-sessions/{sessionToken}/stream:
+    get:
+      tags:
+        - Downloads
+      security: []
+      summary: 다운로드 세션 기반 파일 스트리밍
+      parameters:
+        - $ref: '#/components/parameters/sessionToken'
+        - name: Range
+          in: header
+          schema:
+            type: string
+          required: false
+          description: 단일 byte range만 지원
+      responses:
+        '200':
+          description: 전체 파일 응답
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: 부분 파일 응답
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: 세션 토큰 만료 또는 위변조
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 세션 대상 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '416':
+          description: 지원하지 않는 Range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'

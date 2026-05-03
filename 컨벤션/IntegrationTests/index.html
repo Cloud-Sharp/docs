@@ -1,0 +1,2022 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../Command%20Query/" rel="prev"/>
+<link href="../Migration/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CloudSharp API 통합 테스트 가이드 - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": [".d2", "img"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cloudsharp-api">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CloudSharp API 통합 테스트 가이드
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  개발
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+        
+  
+  
+    
+  
+  API(구현 기준)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    개발
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    개발
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B0%9C%EB%B0%9C/OpenAPI%20Patch%20Notes/">
+<span class="md-ellipsis">
+    
+  
+    OpenAPI Patch Notes
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 목적
+      
+    </span>
+</a>
+<nav aria-label="1. 목적" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        1.1 대상 범위
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 핵심 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 패키지 기준
+      
+    </span>
+</a>
+<nav aria-label="3. 패키지 기준" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 역할
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 테스트 호스트와 초기화 규칙
+      
+    </span>
+</a>
+<nav aria-label="4. 테스트 호스트와 초기화 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 전역 초기화
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 공용 테스트 호스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 앱 부팅 방식
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#44-redis">
+<span class="md-ellipsis">
+      
+        4.4 데이터베이스와 Redis 초기화
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 테스트 클래스 구조
+      
+    </span>
+</a>
+<nav aria-label="5. 테스트 클래스 구조" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 기본 클래스 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-integrationtestbase">
+<span class="md-ellipsis">
+      
+        5.2 IntegrationTestBase 사용 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 파일/폴더 배치
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-httpclient">
+<span class="md-ellipsis">
+      
+        6. HttpClient 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 테스트 이름 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 검증 규칙
+      
+    </span>
+</a>
+<nav aria-label="8. 검증 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81-1-http">
+<span class="md-ellipsis">
+      
+        8.1 1차 검증은 HTTP 응답
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82">
+<span class="md-ellipsis">
+      
+        8.2 성공 응답 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-db-side-effect">
+<span class="md-ellipsis">
+      
+        8.3 DB side effect 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#84">
+<span class="md-ellipsis">
+      
+        8.4 실패 응답 검증
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 입력 데이터 규칙
+      
+    </span>
+</a>
+<nav aria-label="9. 입력 데이터 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 기본 요청 생성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92-bogus">
+<span class="md-ellipsis">
+      
+        9.2 Bogus 사용 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93">
+<span class="md-ellipsis">
+      
+        9.3 조건 표현 방식
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 작성 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11_1">
+<span class="md-ellipsis">
+      
+        11. 금지하는 것
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        12. 실행 명령
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13-pr">
+<span class="md-ellipsis">
+      
+        13. PR 체크리스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14">
+<span class="md-ellipsis">
+      
+        14. 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Validation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(구현 기준)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 목적
+      
+    </span>
+</a>
+<nav aria-label="1. 목적" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        1.1 대상 범위
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 핵심 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 패키지 기준
+      
+    </span>
+</a>
+<nav aria-label="3. 패키지 기준" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 역할
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 테스트 호스트와 초기화 규칙
+      
+    </span>
+</a>
+<nav aria-label="4. 테스트 호스트와 초기화 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 전역 초기화
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 공용 테스트 호스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 앱 부팅 방식
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#44-redis">
+<span class="md-ellipsis">
+      
+        4.4 데이터베이스와 Redis 초기화
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 테스트 클래스 구조
+      
+    </span>
+</a>
+<nav aria-label="5. 테스트 클래스 구조" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 기본 클래스 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-integrationtestbase">
+<span class="md-ellipsis">
+      
+        5.2 IntegrationTestBase 사용 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 파일/폴더 배치
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-httpclient">
+<span class="md-ellipsis">
+      
+        6. HttpClient 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 테스트 이름 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 검증 규칙
+      
+    </span>
+</a>
+<nav aria-label="8. 검증 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81-1-http">
+<span class="md-ellipsis">
+      
+        8.1 1차 검증은 HTTP 응답
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82">
+<span class="md-ellipsis">
+      
+        8.2 성공 응답 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-db-side-effect">
+<span class="md-ellipsis">
+      
+        8.3 DB side effect 검증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#84">
+<span class="md-ellipsis">
+      
+        8.4 실패 응답 검증
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9">
+<span class="md-ellipsis">
+      
+        9. 입력 데이터 규칙
+      
+    </span>
+</a>
+<nav aria-label="9. 입력 데이터 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91">
+<span class="md-ellipsis">
+      
+        9.1 기본 요청 생성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92-bogus">
+<span class="md-ellipsis">
+      
+        9.2 Bogus 사용 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93">
+<span class="md-ellipsis">
+      
+        9.3 조건 표현 방식
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 작성 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11_1">
+<span class="md-ellipsis">
+      
+        11. 금지하는 것
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        12. 실행 명령
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13-pr">
+<span class="md-ellipsis">
+      
+        13. PR 체크리스트
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14">
+<span class="md-ellipsis">
+      
+        14. 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cloudsharp-api">CloudSharp API 통합 테스트 가이드<a class="headerlink" href="#cloudsharp-api" title="Permanent link">¶</a></h1>
+<blockquote>
+<p><code>CloudSharp.Api.IntegrationTests</code> 프로젝트에서 실제 PostgreSQL, Redis, ASP.NET Core 앱을 함께 띄워 API 계약과 인프라 연동을 검증하는 규칙</p>
+</blockquote>
+<h2 id="1">1. 목적<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<h3 id="11">1.1 대상 범위<a class="headerlink" href="#11" title="Permanent link">¶</a></h3>
+<p>이 문서는 <code>apps/backend/tests/CloudSharp.Api.IntegrationTests</code> 프로젝트를 기준으로 한다.</p>
+<p>이 테스트 프로젝트는 다음을 함께 검증한다.</p>
+<ul>
+<li>Minimal API 엔드포인트의 HTTP status code와 응답 본문</li>
+<li>FluentValidation 및 <code>ResultHttpMapper</code>를 거친 에러 응답 계약</li>
+<li>EF Core를 통한 DB 반영 결과</li>
+<li>Redis 세션/상태 저장소 연동</li>
+</ul>
+<p>이 문서는 유닛 테스트 규칙을 대체하지 않는다.<br/>
+유닛 테스트 공통 규칙은 <code>conventions/testing.md</code>를 따르고, 여기서는 <strong>API 통합 테스트에서만 필요한 호스트/인프라/검증 규칙</strong>을 추가로 정의한다.</p>
+<hr/>
+<h2 id="2">2. 핵심 원칙<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>원칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>실제 인프라를 붙인다</strong></td>
+<td>PostgreSQL, Redis는 Testcontainers로 실제 컨테이너를 띄운다</td>
+</tr>
+<tr>
+<td><strong>앱은 테스트 호스트로 부팅한다</strong></td>
+<td><code>WebApplicationFactory&lt;Program&gt;</code> 기반으로 API를 메모리 내에서 실행한다</td>
+</tr>
+<tr>
+<td><strong>테스트 간 상태를 완전히 초기화한다</strong></td>
+<td>각 테스트 전 DB는 Respawn, Redis는 flush로 비운다</td>
+</tr>
+<tr>
+<td><strong>HTTP 계약을 먼저 검증한다</strong></td>
+<td>1차 검증은 항상 status code와 응답 바디 계약이다</td>
+</tr>
+<tr>
+<td><strong>필요할 때만 DB side effect를 확인한다</strong></td>
+<td>성공 후 영속화/변경 여부는 <code>ExecuteDbContextAsync</code>로 검증한다</td>
+</tr>
+<tr>
+<td><strong>실패는 메시지보다 에러 코드로 본다</strong></td>
+<td><code>JsonElement</code> + <code>ExtractErrorCodes()</code>로 계약을 검증한다</td>
+</tr>
+<tr>
+<td><strong>정상 요청은 factory로 만든다</strong></td>
+<td>기본 요청 생성은 <code>RequestFactories</code>에 숨기고 테스트는 override만 한다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3">3. 패키지 기준<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<p><code>CloudSharp.Api.IntegrationTests.csproj</code> 기준 필수 패키지는 다음과 같다.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Bogus"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"35.6.5"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"coverlet.collector"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"6.0.4"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"FluentValidation"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"12.1.1"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Microsoft.AspNetCore.Mvc.Testing"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"10.0.5"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Microsoft.NET.Test.Sdk"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"17.14.0"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"NUnit"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"4.3.2"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"NUnit.Analyzers"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"4.7.0"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"NUnit3TestAdapter"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"5.0.0"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Respawn"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"7.0.0"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"StackExchange.Redis"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"3.0.2-preview"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Testcontainers.PostgreSql"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"4.11.0"</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">"Testcontainers.Redis"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"4.11.0"</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+<h3 id="31">3.1 역할<a class="headerlink" href="#31" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>패키지</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Microsoft.AspNetCore.Mvc.Testing</code></td>
+<td><code>WebApplicationFactory&lt;Program&gt;</code> 기반 API 부팅</td>
+</tr>
+<tr>
+<td><code>Testcontainers.PostgreSql</code></td>
+<td>테스트 전용 PostgreSQL 컨테이너</td>
+</tr>
+<tr>
+<td><code>Testcontainers.Redis</code></td>
+<td>테스트 전용 Redis 컨테이너</td>
+</tr>
+<tr>
+<td><code>Respawn</code></td>
+<td>각 테스트 전 DB 상태 초기화</td>
+</tr>
+<tr>
+<td><code>StackExchange.Redis</code></td>
+<td>Redis flush 및 연결 관리</td>
+</tr>
+<tr>
+<td><code>Bogus</code></td>
+<td>정상 요청 기본값 생성</td>
+</tr>
+<tr>
+<td><code>FluentValidation</code></td>
+<td>요청/응답 계약 타입 참조 시 사용</td>
+</tr>
+<tr>
+<td><code>coverlet.collector</code></td>
+<td>코드 커버리지 수집</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="4">4. 테스트 호스트와 초기화 규칙<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41">4.1 전역 초기화<a class="headerlink" href="#41" title="Permanent link">¶</a></h3>
+<p>전역 초기화는 <code>[SetUpFixture]</code>를 사용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="na">[SetUpFixture]</span>
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ApiIntegrationGlobalSetup</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="na">[OneTimeSetUp]</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">SetUp</span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">ApiIntegrationTestHost</span><span class="p">.</span><span class="n">InitializeAsync</span><span class="p">();</span>
+
+<span class="w">    </span><span class="na">[OneTimeTearDown]</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">TearDown</span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">ApiIntegrationTestHost</span><span class="p">.</span><span class="n">DisposeAsync</span><span class="p">().</span><span class="n">AsTask</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>테스트 런 전체에서 공용 호스트는 한 번만 초기화한다</li>
+<li>컨테이너 시작, 마이그레이션, 앱 부팅은 <code>ApiIntegrationTestHost</code>에만 둔다</li>
+<li>테스트 클래스가 직접 컨테이너를 만들거나 dispose하지 않는다</li>
+</ul>
+<h3 id="42">4.2 공용 테스트 호스트<a class="headerlink" href="#42" title="Permanent link">¶</a></h3>
+<p>공용 호스트는 <code>TestSupport/ApiIntegrationTestHost.cs</code>가 담당한다.</p>
+<p>역할:</p>
+<ul>
+<li>PostgreSQL 컨테이너 시작</li>
+<li>Redis 컨테이너 시작</li>
+<li>테스트용 설정값 조립</li>
+<li>마이그레이션 실행</li>
+<li><code>CloudSharpApiFactory</code> 생성</li>
+<li>테스트 간 DB/Redis 초기화</li>
+</ul>
+<h3 id="43">4.3 앱 부팅 방식<a class="headerlink" href="#43" title="Permanent link">¶</a></h3>
+<p>API는 <code>CloudSharpApiFactory : WebApplicationFactory&lt;Program&gt;</code>로 부팅한다.</p>
+<p>규칙:</p>
+<ul>
+<li>환경은 <code>Development</code>로 고정한다</li>
+<li>테스트 설정은 <code>AddInMemoryCollection(...)</code>으로 주입한다</li>
+<li>테스트는 운영 설정 파일을 직접 수정하지 않는다</li>
+</ul>
+<h3 id="44-redis">4.4 데이터베이스와 Redis 초기화<a class="headerlink" href="#44-redis" title="Permanent link">¶</a></h3>
+<p>DB와 Redis는 테스트마다 깨끗해야 한다.</p>
+<p>규칙:</p>
+<ul>
+<li>PostgreSQL은 Testcontainers로 실제 컨테이너를 띄운다</li>
+<li>Redis도 Testcontainers로 실제 컨테이너를 띄운다</li>
+<li>DB schema는 앱 시작 전에 마이그레이션으로 만든다</li>
+<li>DB reset은 Respawn으로 수행한다</li>
+<li>Respawn reset 대상에서 <code>__EFMigrationsHistory</code>는 제외한다</li>
+<li>Redis는 각 테스트 전 <code>FlushAllDatabasesAsync()</code>로 비운다</li>
+</ul>
+<p>이 프로젝트의 테스트는 <strong>실제 PostgreSQL/Redis와 통신하므로 유닛 테스트가 아니다.</strong></p>
+<hr/>
+<h2 id="5">5. 테스트 클래스 구조<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<h3 id="51">5.1 기본 클래스 규칙<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<p>API 통합 테스트 클래스는 다음 패턴을 따른다.</p>
+<div class="highlight"><pre><span></span><code><span class="na">[TestFixture]</span>
+<span class="na">[Category("ApiIntegration")]</span>
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">RegisterEndpointTests</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IntegrationTestBase</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>클래스에는 <code>[TestFixture]</code>를 붙인다</li>
+<li>클래스에는 <code>[Category("ApiIntegration")]</code>를 붙인다</li>
+<li>공통 베이스 클래스는 <code>IntegrationTestBase</code>를 상속한다</li>
+<li><code>sealed</code>를 기본값으로 사용한다</li>
+</ul>
+<h3 id="52-integrationtestbase">5.2 <code>IntegrationTestBase</code> 사용 규칙<a class="headerlink" href="#52-integrationtestbase" title="Permanent link">¶</a></h3>
+<p><code>IntegrationTestBase</code>는 다음 공용 기능을 제공한다.</p>
+<ul>
+<li><code>[SetUp]</code>에서 <code>ResetStateAsync()</code> 호출</li>
+<li><code>CreateClient()</code>로 테스트용 <code>HttpClient</code> 생성</li>
+<li><code>ExecuteDbContextAsync(...)</code>로 DB side effect 조회</li>
+</ul>
+<p>규칙:</p>
+<ul>
+<li>각 테스트는 독립적이어야 하며 이전 테스트 상태에 의존하지 않는다</li>
+<li>테스트 코드에서 직접 서비스 스코프를 열기보다 <code>ExecuteDbContextAsync(...)</code>를 우선 사용한다</li>
+<li>테스트 시작 시 상태 리셋은 베이스 클래스에만 둔다</li>
+</ul>
+<h3 id="53">5.3 파일/폴더 배치<a class="headerlink" href="#53" title="Permanent link">¶</a></h3>
+<p>테스트 파일은 기능별 폴더 아래에 둔다.</p>
+<p>예시:</p>
+<div class="highlight"><pre><span></span><code>Auth/RegisterEndpointTests.cs
+Health/HealthEndpointTests.cs
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>기능 단위 폴더를 사용한다</li>
+<li>파일명은 <code>*EndpointTests.cs</code> 패턴을 따른다</li>
+<li><code>TestSupport/</code>에는 fixture, host, factory, JSON helper, request factory만 둔다</li>
+</ul>
+<hr/>
+<h2 id="6-httpclient">6. HttpClient 규칙<a class="headerlink" href="#6-httpclient" title="Permanent link">¶</a></h2>
+<p>클라이언트는 반드시 <code>CreateClient()</code>로 생성한다.</p>
+<p>기본 옵션:</p>
+<ul>
+<li><code>AllowAutoRedirect = false</code></li>
+<li><code>HandleCookies = false</code></li>
+<li><code>BaseAddress = https://localhost</code></li>
+</ul>
+<p>규칙:</p>
+<ul>
+<li>테스트마다 <code>using var client = CreateClient();</code>로 새 클라이언트를 만든다</li>
+<li>자동 리다이렉트를 끈 상태에서 실제 응답 status code를 검증한다</li>
+<li>쿠키 자동 저장에 의존하지 않는다</li>
+</ul>
+<hr/>
+<h2 id="7">7. 테스트 이름 규칙<a class="headerlink" href="#7" title="Permanent link">¶</a></h2>
+<p>메서드 이름은 결과 중심으로 작성한다.</p>
+<p>기본 형식:</p>
+<div class="highlight"><pre><span></span><code>EndpointOrAction_ShouldExpectedResult
+</code></pre></div>
+<p>예시:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Register_ShouldReturnCreated</span>
+<span class="n">Register_ShouldReturnConflict</span>
+<span class="n">Register_ShouldReturnBadRequest</span>
+<span class="n">GetHealth_ShouldReturnOk</span>
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>조건보다 결과를 이름에 우선 반영한다</li>
+<li>같은 기대 결과를 공유하는 입력 변화는 <code>[TestCaseSource]</code>로 표현한다</li>
+<li>성공/실패는 한 메서드에 합치지 않는다</li>
+</ul>
+<hr/>
+<h2 id="8">8. 검증 규칙<a class="headerlink" href="#8" title="Permanent link">¶</a></h2>
+<h3 id="81-1-http">8.1 1차 검증은 HTTP 응답<a class="headerlink" href="#81-1-http" title="Permanent link">¶</a></h3>
+<p>모든 API 통합 테스트는 먼저 HTTP 응답을 검증한다.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">Created</span><span class="p">));</span>
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>첫 assertion은 status code를 우선한다</li>
+<li>디버깅이 어려운 엔드포인트는 응답 본문을 assertion 메시지에 포함해도 된다</li>
+</ul>
+<p>예시:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">responseBody</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">ReadAsStringAsync</span><span class="p">();</span>
+
+<span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span>
+<span class="w">    </span><span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">Created</span><span class="p">),</span>
+<span class="w">    </span><span class="s">$"Response body: {responseBody}"</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="82">8.2 성공 응답 검증<a class="headerlink" href="#82" title="Permanent link">¶</a></h3>
+<p>성공 응답은 DTO로 deserialize 한 뒤 필드를 검증한다.</p>
+<p>규칙:</p>
+<ul>
+<li><code>ReadFromJsonAsync&lt;T&gt;()</code>로 응답 DTO를 읽는다</li>
+<li>null 여부를 먼저 확인한다</li>
+<li>API 계약상 중요한 필드를 명시적으로 검증한다</li>
+<li>토큰, 식별자, 만료시간처럼 계약상 의미 있는 값은 <code>Not.Empty</code>, <code>GreaterThan(0)</code> 등으로 검증한다</li>
+</ul>
+<h3 id="83-db-side-effect">8.3 DB side effect 검증<a class="headerlink" href="#83-db-side-effect" title="Permanent link">¶</a></h3>
+<p>성공 응답 뒤에 영속화 결과가 중요하면 DB를 직접 조회해 검증한다.</p>
+<p>규칙:</p>
+<ul>
+<li>DB 확인은 <code>ExecuteDbContextAsync(...)</code>로 수행한다</li>
+<li>API 응답만으로 충분한 경우 DB 조회를 강제하지 않는다</li>
+<li>단순 repository 구현 자체를 검증하려는 테스트는 이 프로젝트가 아니라 Infrastructure 테스트로 분리한다</li>
+</ul>
+<h3 id="84">8.4 실패 응답 검증<a class="headerlink" href="#84" title="Permanent link">¶</a></h3>
+<p>실패 응답은 <code>JsonElement</code>로 읽고 에러 코드 계약을 검증한다.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">problem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">ReadFromJsonAsync</span><span class="o">&lt;</span><span class="n">JsonElement</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">BadRequest</span><span class="p">));</span>
+<span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">problem</span><span class="p">.</span><span class="n">ValueKind</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">JsonValueKind</span><span class="p">.</span><span class="n">Object</span><span class="p">));</span>
+<span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">problem</span><span class="p">.</span><span class="n">ExtractErrorCodes</span><span class="p">(),</span><span class="w"> </span><span class="n">Does</span><span class="p">.</span><span class="n">Contain</span><span class="p">(</span><span class="s">"AUTH_PASSWORD_INVALID"</span><span class="p">));</span>
+</code></pre></div>
+<p>규칙:</p>
+<ul>
+<li>실패는 문자열 메시지보다 <code>ErrorCode</code>를 우선 검증한다</li>
+<li><code>JsonExtensions.ExtractErrorCodes()</code>를 공용 helper로 사용한다</li>
+<li><code>ProblemDetails</code> 구조가 변해도 error code 계약은 유지되어야 한다</li>
+</ul>
+<hr/>
+<h2 id="9">9. 입력 데이터 규칙<a class="headerlink" href="#9" title="Permanent link">¶</a></h2>
+<h3 id="91">9.1 기본 요청 생성<a class="headerlink" href="#91" title="Permanent link">¶</a></h3>
+<p>정상 기본 요청은 <code>RequestFactories</code>에서 생성한다.</p>
+<p>규칙:</p>
+<ul>
+<li>테스트 본문에 Bogus 설정을 반복해서 쓰지 않는다</li>
+<li>기본 요청은 factory/helper에 숨긴다</li>
+<li>테스트에서는 필요한 값만 override 한다</li>
+</ul>
+<p>예시:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RequestFactories</span><span class="p">.</span><span class="n">CreateRegisterRequest</span><span class="p">(</span>
+<span class="w">    </span><span class="n">email</span><span class="p">:</span><span class="w"> </span><span class="s">"duplicate@example.com"</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="92-bogus">9.2 Bogus 사용 기준<a class="headerlink" href="#92-bogus" title="Permanent link">¶</a></h3>
+<p>Bogus는 <strong>정상 기본 입력 생성</strong>에만 사용한다.</p>
+<p>권장:</p>
+<ul>
+<li>랜덤하지만 유효한 email, username, display name 생성</li>
+<li>테스트마다 충돌 가능성이 낮은 기본 요청 생성</li>
+</ul>
+<p>지양:</p>
+<ul>
+<li>경계값, 잘못된 입력, 정책 위반 값을 Bogus에 맡기기</li>
+<li>어떤 조건이 깨졌는지 테스트에서 보이지 않게 만드는 것</li>
+</ul>
+<p>즉, 경계값과 실패 조건은 테스트 코드에서 명시적으로 override 한다.</p>
+<h3 id="93">9.3 조건 표현 방식<a class="headerlink" href="#93" title="Permanent link">¶</a></h3>
+<p>같은 기대 결과를 공유하는 실패 입력은 <code>[TestCaseSource]</code>로 묶는다.</p>
+<p>규칙:</p>
+<ul>
+<li>요청 객체처럼 복잡한 입력은 <code>[TestCaseSource]</code>를 사용한다</li>
+<li><code>SetName(...)</code>으로 실패 상황을 드러낸다</li>
+<li>메서드 이름은 결과 중심으로 유지한다</li>
+</ul>
+<hr/>
+<h2 id="10">10. 작성 예시<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code><span class="na">[Test]</span>
+<span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">Register_ShouldReturnCreated</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateClient</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RequestFactories</span><span class="p">.</span><span class="n">CreateRegisterRequest</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">PostAsJsonAsync</span><span class="p">(</span><span class="s">"/api/v1/auth/register"</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">responseBody</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">ReadAsStringAsync</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span>
+<span class="w">        </span><span class="n">response</span><span class="p">.</span><span class="n">StatusCode</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Is</span><span class="p">.</span><span class="n">EqualTo</span><span class="p">(</span><span class="n">HttpStatusCode</span><span class="p">.</span><span class="n">Created</span><span class="p">),</span>
+<span class="w">        </span><span class="s">$"Response body: {responseBody}"</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">ReadFromJsonAsync</span><span class="o">&lt;</span><span class="n">AuthResponse</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">body</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">Not</span><span class="p">.</span><span class="n">Null</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">body</span><span class="o">!</span><span class="p">.</span><span class="n">SessionToken</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">Not</span><span class="p">.</span><span class="n">Empty</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">savedUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">ExecuteDbContextAsync</span><span class="p">(</span><span class="n">dbContext</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">        </span><span class="n">dbContext</span><span class="p">.</span><span class="n">Users</span><span class="p">.</span><span class="n">SingleOrDefaultAsync</span><span class="p">(</span><span class="n">user</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">user</span><span class="p">.</span><span class="n">Email</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="n">Email</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="n">That</span><span class="p">(</span><span class="n">savedUser</span><span class="p">,</span><span class="w"> </span><span class="n">Is</span><span class="p">.</span><span class="n">Not</span><span class="p">.</span><span class="n">Null</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="11_1">11. 금지하는 것<a class="headerlink" href="#11_1" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>금지 항목</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>테스트마다 컨테이너를 직접 만들기</td>
+<td>초기화 규칙이 분산되고 실행 시간이 늘어난다</td>
+</tr>
+<tr>
+<td>상태 초기화 없이 테스트 간 데이터 공유</td>
+<td>순서 의존, flaky test 유발</td>
+</tr>
+<tr>
+<td>실패를 메시지 문자열로만 검증</td>
+<td>다국어/문구 변경에 취약</td>
+</tr>
+<tr>
+<td>테스트 본문에 긴 fixture 생성 코드 작성</td>
+<td>의도가 흐려지고 중복이 늘어난다</td>
+</tr>
+<tr>
+<td>API 통합 테스트에서 repository 내부 구현을 과하게 검증</td>
+<td>테스트 책임이 흐려진다</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="12">12. 실행 명령<a class="headerlink" href="#12" title="Permanent link">¶</a></h2>
+<p>기본 경로:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">apps</span><span class="p">/</span><span class="n">backend</span>
+</code></pre></div>
+<p>실행:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dotnet</span> <span class="n">test</span> <span class="n">tests</span><span class="p">/</span><span class="n">CloudSharp</span><span class="p">.</span><span class="n">Api</span><span class="p">.</span><span class="n">IntegrationTests</span>
+</code></pre></div>
+<p>주의사항:</p>
+<ul>
+<li>Docker/Testcontainers를 사용할 수 있어야 한다</li>
+<li>로컬 Docker daemon이 실행 중이어야 한다</li>
+<li>첫 실행 시 컨테이너 이미지 pull 때문에 시간이 더 걸릴 수 있다</li>
+</ul>
+<hr/>
+<h2 id="13-pr">13. PR 체크리스트<a class="headerlink" href="#13-pr" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>확인 내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>분류</strong></td>
+<td><code>[Category("ApiIntegration")]</code>가 붙어 있는가</td>
+</tr>
+<tr>
+<td><strong>상속</strong></td>
+<td><code>IntegrationTestBase</code>를 사용하고 있는가</td>
+</tr>
+<tr>
+<td><strong>초기화</strong></td>
+<td>테스트 간 상태가 DB/Redis reset에 의존하도록 작성했는가</td>
+</tr>
+<tr>
+<td><strong>클라이언트</strong></td>
+<td><code>CreateClient()</code>를 사용했는가</td>
+</tr>
+<tr>
+<td><strong>성공 검증</strong></td>
+<td>status code와 응답 DTO 계약을 검증했는가</td>
+</tr>
+<tr>
+<td><strong>실패 검증</strong></td>
+<td><code>ExtractErrorCodes()</code>로 에러 코드를 검증했는가</td>
+</tr>
+<tr>
+<td><strong>DB 검증</strong></td>
+<td>필요한 경우에만 <code>ExecuteDbContextAsync(...)</code>로 side effect를 확인했는가</td>
+</tr>
+<tr>
+<td><strong>데이터 생성</strong></td>
+<td><code>RequestFactories</code>를 사용하고 필요한 값만 override 했는가</td>
+</tr>
+<tr>
+<td><strong>실행</strong></td>
+<td><code>dotnet test tests/CloudSharp.Api.IntegrationTests</code>로 통과했는가</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="14">14. 요약<a class="headerlink" href="#14" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>질문</th>
+<th>답</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>어떤 테스트인가</strong></td>
+<td>실제 PostgreSQL/Redis + API 앱을 함께 띄우는 API 통합 테스트</td>
+</tr>
+<tr>
+<td><strong>호스트는 어떻게 띄우나</strong></td>
+<td><code>WebApplicationFactory&lt;Program&gt;</code> + <code>CloudSharpApiFactory</code></td>
+</tr>
+<tr>
+<td><strong>DB는 어떻게 초기화하나</strong></td>
+<td>마이그레이션 후 Respawn reset</td>
+</tr>
+<tr>
+<td><strong>Redis는 어떻게 초기화하나</strong></td>
+<td>매 테스트 전 flush</td>
+</tr>
+<tr>
+<td><strong>실패는 무엇으로 검증하나</strong></td>
+<td>status code + error code</td>
+</tr>
+<tr>
+<td><strong>정상 요청은 어떻게 만드나</strong></td>
+<td><code>RequestFactories</code> + 필요한 값만 override</td>
+</tr>
+<tr>
+<td><strong>실행 명령은 무엇인가</strong></td>
+<td><code>dotnet test tests/CloudSharp.Api.IntegrationTests</code></td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

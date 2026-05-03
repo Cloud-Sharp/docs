@@ -1,0 +1,1820 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/" rel="prev"/>
+<link href="../../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/" rel="next"/>
+<link href="../../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>후처리 결과와 파일 접근 정책 연결 - 개발 문서</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": [".d2", "img"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              후처리 결과와 파일 접근 정책 연결
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  개발
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+        
+  
+  
+    
+  
+  API(구현 기준)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 개요
+      
+    </span>
+</a>
+<nav aria-label="1. 개요" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        1.1 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        1.2 적용 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        1.3 전제 조건
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 후처리 작업과 파일 상태 관계
+      
+    </span>
+</a>
+<nav aria-label="2. 후처리 작업과 파일 상태 관계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 후처리 작업 분류
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 작업별 접근 정책 영향도
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 바이러스 스캔 정책
+      
+    </span>
+</a>
+<nav aria-label="3. 바이러스 스캔 정책" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 스캔 완료 전 다운로드 허용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 스캔 결과별 처리 정책
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33-quarantined">
+<span class="md-ellipsis">
+      
+        3.3 quarantined 상태 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34">
+<span class="md-ellipsis">
+      
+        3.4 다운로드 파이프라인 연결
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 썸네일 및 미리보기 정책
+      
+    </span>
+</a>
+<nav aria-label="4. 썸네일 및 미리보기 정책" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 기본 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 실패 시 사용자 경험 처리
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 사용자에게 유지되는 정보
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 클라이언트 상태 표시
+      
+    </span>
+</a>
+<nav aria-label="5. 클라이언트 상태 표시" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 응답 포함 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 응답 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 필드 의미 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54">
+<span class="md-ellipsis">
+      
+        5.4 필드 간 일관성 원칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 상태 전이 흐름 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 운영 원칙 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    개발
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    개발
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B0%9C%EB%B0%9C/OpenAPI%20Patch%20Notes/">
+<span class="md-ellipsis">
+    
+  
+    OpenAPI Patch Notes
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Validation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(구현 기준)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 개요
+      
+    </span>
+</a>
+<nav aria-label="1. 개요" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        1.1 목적
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12">
+<span class="md-ellipsis">
+      
+        1.2 적용 범위
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13">
+<span class="md-ellipsis">
+      
+        1.3 전제 조건
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 후처리 작업과 파일 상태 관계
+      
+    </span>
+</a>
+<nav aria-label="2. 후처리 작업과 파일 상태 관계" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21">
+<span class="md-ellipsis">
+      
+        2.1 후처리 작업 분류
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22">
+<span class="md-ellipsis">
+      
+        2.2 작업별 접근 정책 영향도
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3">
+<span class="md-ellipsis">
+      
+        3. 바이러스 스캔 정책
+      
+    </span>
+</a>
+<nav aria-label="3. 바이러스 스캔 정책" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 스캔 완료 전 다운로드 허용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32">
+<span class="md-ellipsis">
+      
+        3.2 스캔 결과별 처리 정책
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33-quarantined">
+<span class="md-ellipsis">
+      
+        3.3 quarantined 상태 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34">
+<span class="md-ellipsis">
+      
+        3.4 다운로드 파이프라인 연결
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 썸네일 및 미리보기 정책
+      
+    </span>
+</a>
+<nav aria-label="4. 썸네일 및 미리보기 정책" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 기본 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42">
+<span class="md-ellipsis">
+      
+        4.2 실패 시 사용자 경험 처리
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 사용자에게 유지되는 정보
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 클라이언트 상태 표시
+      
+    </span>
+</a>
+<nav aria-label="5. 클라이언트 상태 표시" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 응답 포함 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52">
+<span class="md-ellipsis">
+      
+        5.2 응답 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 필드 의미 정의
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54">
+<span class="md-ellipsis">
+      
+        5.4 필드 간 일관성 원칙
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 상태 전이 흐름 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 운영 원칙 요약
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="_1">후처리 결과와 파일 접근 정책 연결<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<h2 id="1">1. 개요<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<h3 id="11">1.1 목적<a class="headerlink" href="#11" title="Permanent link">¶</a></h3>
+<p>본 문서는 <code>FileItem</code> 생성 완료 이후 수행되는 후처리 작업의 결과가 파일 접근 정책에 어떻게 반영되는지를 정의한다. 후처리 결과는 단순 부가 정보가 아니라, 다운로드 파이프라인의 사전 검증 단계에서 참조하는 <strong>정책 값</strong>으로 관리된다.</p>
+<h3 id="12">1.2 적용 범위<a class="headerlink" href="#12" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>항목</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>후처리 대상 작업</strong></td>
+<td>이미지 썸네일 생성, 텍스트/PDF 미리보기 캐시, 바이러스 스캔, 검색 인덱싱, 감사 로그 기록</td>
+</tr>
+<tr>
+<td><strong>접근 정책 연결 대상</strong></td>
+<td>바이러스 스캔 결과, 썸네일/미리보기 생성 결과</td>
+</tr>
+<tr>
+<td><strong>연결 지점</strong></td>
+<td>다운로드 파이프라인 사전 검증 단계</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13">1.3 전제 조건<a class="headerlink" href="#13" title="Permanent link">¶</a></h3>
+<ul>
+<li><code>FileItem</code> 저장 확정이 완료된 상태에서 후처리가 시작된다.</li>
+<li>후처리는 큐 기반 또는 비동기 방식으로 수행된다.</li>
+<li>다운로드 파이프라인은 세션 발급 전 사전 검증 단계에서 파일 메타데이터, <code>storage_key</code>, 삭제·손상·비활성·격리 상태, 다운로드 정책 차단 여부를 확인한다.</li>
+</ul>
+<hr/>
+<h2 id="2">2. 후처리 작업과 파일 상태 관계<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<h3 id="21">2.1 후처리 작업 분류<a class="headerlink" href="#21" title="Permanent link">¶</a></h3>
+<p><div class="panzoom-box" data-key="alt" id="panzoom0" oncontextmenu="return false;">
+<nav class="panzoom-nav">
+<button class="panzoom-info panzoom-button">
+<svg class="panzoom-icon" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"></path>
+</svg>
+</button><button class="panzoom-reset panzoom-button">
+<svg class="panzoom-icon" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<path d="M125.7 160l50.3 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L48 224c-17.7 0-32-14.3-32-32L16 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"></path>
+</svg>
+</button><button class="panzoom-max panzoom-button">
+<svg class="panzoom-icon" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+<path d="M32 32C14.3 32 0 46.3 0 64l0 96c0 17.7 14.3 32 32 32s32-14.3 32-32l0-64 64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7 14.3 32 32 32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0 0-64zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0 0 64c0 17.7 14.3 32 32 32s32-14.3 32-32l0-96c0-17.7-14.3-32-32-32l-96 0zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 64-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c17.7 0 32-14.3 32-32l0-96z"></path>
+</svg>
+</button><button class="panzoom-min panzoom-button panzoom-hidden">
+<svg class="panzoom-icon" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+<path d="M160 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 64-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c17.7 0 32-14.3 32-32l0-96zM32 320c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0 0 64c0 17.7 14.3 32 32 32s32-14.3 32-32l0-96c0-17.7-14.3-32-32-32l-96 0zM352 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7 14.3 32 32 32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0 0-64zM320 320c-17.7 0-32 14.3-32 32l0 96c0 17.7 14.3 32 32 32s32-14.3 32-32l0-64 64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0z"></path>
+</svg>
+</button>
+</nav>
+<img alt="Gemini_Generated_Image_4knzwh4knzwh4knz.png" src="../../../img/Gemini_Generated_Image_4knzwh4knzwh4knz.png"/>
+<div class="panzoom-info-box panzoom-info-box-bottom panzoom-hidden">
+Hold "Alt" / "Option" to enable pan &amp; zoom
+</div>
+</div></p>
+<h3 id="22">2.2 작업별 접근 정책 영향도<a class="headerlink" href="#22" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>후처리 작업</th>
+<th>실패 시 파일 접근 차단 여부</th>
+<th>실패 시 FileItem 상태 전환</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>바이러스 스캔</td>
+<td><strong>차단</strong></td>
+<td><code>quarantined</code> 전환</td>
+<td>감염 탐지 또는 스캔 엔진 오류 포함</td>
+</tr>
+<tr>
+<td>이미지 썸네일 생성</td>
+<td>차단하지 않음</td>
+<td>상태 전환 없음</td>
+<td>플레이스홀더 표시로 대체</td>
+</tr>
+<tr>
+<td>텍스트/PDF 미리보기 캐시</td>
+<td>차단하지 않음</td>
+<td>상태 전환 없음</td>
+<td>플레이스홀더 표시로 대체</td>
+</tr>
+<tr>
+<td>검색 인덱싱</td>
+<td>차단하지 않음</td>
+<td>상태 전환 없음</td>
+<td>검색 결과 누락 가능</td>
+</tr>
+<tr>
+<td>감사 로그 기록</td>
+<td>차단하지 않음</td>
+<td>상태 전환 없음</td>
+<td>운영 모니터링으로 처리</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3">3. 바이러스 스캔 정책<a class="headerlink" href="#3" title="Permanent link">¶</a></h2>
+<h3 id="31">3.1 스캔 완료 전 다운로드 허용<a class="headerlink" href="#31" title="Permanent link">¶</a></h3>
+<p><code>FileItem</code>이 최종 생성되고 저장 확정이 완료되었다면, 바이러스 스캔이 <code>PENDING</code> 또는 진행 중 상태이더라도 다운로드 세션 발급 대상이 될 수 있다.</p>
+<p><strong>정책 근거</strong></p>
+<ul>
+<li>업로드 파이프라인은 <code>FileItem</code> 생성 이후 후처리 큐를 등록하며, 바이러스 스캔은 후처리 작업 중 하나로 비동기 수행된다.</li>
+<li>스캔 완료는 저장 확정의 선행 조건이 아니라, 저장 완료 이후의 후속 처리다.</li>
+<li>스캔 결과가 나오기 전까지는 <strong>정상 파일로 간주</strong>하되, 감염 또는 스캔 실패 결과가 나오면 <strong>즉시 접근 정책에 반영</strong>한다.</li>
+</ul>
+<h3 id="32">3.2 스캔 결과별 처리 정책<a class="headerlink" href="#32" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────┐
+│ 바이러스 스캔 시작 │
+└────────┬─────────┘
+         │
+         ├─── PENDING(대기 중) ────→ 다운로드 허용
+         │                           (정상 파일로 간주)
+         │
+         ├─── CLEAN(스캔 성공) ────→ 정상 접근 유지
+         │                           (상태 변경 없음)
+         │
+         ├─── INFECTED(감염 탐지) ──→ quarantined 전환
+         │                           → 다운로드 즉시 차단
+         │
+         └─── FAILED(스캔 실패) ───→ quarantined 전환
+                                     → 다운로드 즉시 차단
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>스캔 상태</th>
+<th>다운로드 허용 여부</th>
+<th>FileItem 상태 전환</th>
+<th>외부 응답</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PENDING</code></td>
+<td><strong>허용</strong></td>
+<td>전환 없음</td>
+<td>정상 다운로드 응답</td>
+</tr>
+<tr>
+<td><code>CLEAN</code></td>
+<td><strong>허용</strong></td>
+<td>전환 없음</td>
+<td>정상 다운로드 응답</td>
+</tr>
+<tr>
+<td><code>INFECTED</code></td>
+<td><strong>차단</strong></td>
+<td><code>quarantined</code></td>
+<td><code>404 Not Found</code></td>
+</tr>
+<tr>
+<td><code>FAILED</code></td>
+<td><strong>차단</strong></td>
+<td><code>quarantined</code></td>
+<td><code>404 Not Found</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-quarantined">3.3 quarantined 상태 정의<a class="headerlink" href="#33-quarantined" title="Permanent link">¶</a></h3>
+<p><code>quarantined</code>는 다음 상황에 적용하는 <code>FileItem</code> 상태값이다.</p>
+<table>
+<thead>
+<tr>
+<th>적용 조건</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>악성 코드 또는 감염 징후 탐지</td>
+<td>스캔 엔진이 악성 코드를 식별한 경우</td>
+</tr>
+<tr>
+<td>스캔 엔진 오류 또는 후처리 실패</td>
+<td>파일 안전성을 신뢰할 수 없다고 판단한 경우</td>
+</tr>
+<tr>
+<td>운영 정책상 격리 대상 분류</td>
+<td>관리자 또는 자동화 규칙에 의한 격리</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34">3.4 다운로드 파이프라인 연결<a class="headerlink" href="#34" title="Permanent link">¶</a></h3>
+<p>다운로드 파이프라인의 사전 검증 단계는 기존에 삭제·손상·비활성·격리 상태를 차단 대상으로 정의하고 있다. <code>quarantined</code>는 격리 상태에 해당하므로 <strong>다운로드 차단 상태로 직접 연결</strong>된다.</p>
+<div class="highlight"><pre><span></span><code>다운로드 요청
+  │
+  ▼
+사전 검증 단계
+  │
+  ├── 파일 메타데이터 확인
+  ├── storage_key 존재 여부 확인
+  ├── 삭제 상태 확인 ────────────→ 차단 (404)
+  ├── 손상 상태 확인 ────────────→ 차단 (404)
+  ├── 비활성 상태 확인 ──────────→ 차단 (404)
+  ├── 격리(quarantined) 상태 확인 → 차단 (404)  ◀── 바이러스 스캔 결과 반영 지점
+  ├── 다운로드 정책 차단 여부 확인 → 차단 (404)
+  │
+  ▼
+모든 검증 통과 시 다운로드 세션 발급
+</code></pre></div>
+<blockquote>
+<p><strong>외부 응답 통일 원칙</strong>: <code>quarantined</code> 파일에 대한 다운로드 요청은 기존 원칙대로 <code>404 Not Found</code>로 응답한다. 차단 사유를 외부에 노출하지 않는다.</p>
+</blockquote>
+<hr/>
+<h2 id="4">4. 썸네일 및 미리보기 정책<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41">4.1 기본 원칙<a class="headerlink" href="#41" title="Permanent link">¶</a></h3>
+<p>썸네일 생성과 미리보기 캐시 생성은 <strong>편의 기능</strong>으로 분류한다. 이들 작업의 실패는 파일 자체의 저장 실패로 취급하지 않으며, 파일 접근 차단 사유가 되지 않는다.</p>
+<h3 id="42">4.2 실패 시 사용자 경험 처리<a class="headerlink" href="#42" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>실패 유형</th>
+<th>사용자 화면 처리</th>
+<th>원본 파일 접근</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>썸네일 생성 실패</td>
+<td>기본 아이콘 또는 대표 플레이스홀더 이미지 표시</td>
+<td><strong>다운로드 가능</strong></td>
+</tr>
+<tr>
+<td>미리보기 생성 실패</td>
+<td>미리보기 영역에 실패 안내 또는 기본 플레이스홀더 표시</td>
+<td><strong>다운로드 가능</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="43">4.3 사용자에게 유지되는 정보<a class="headerlink" href="#43" title="Permanent link">¶</a></h3>
+<p>썸네일 또는 미리보기가 실패하더라도 사용자는 다음 정보를 확인하고 원본 다운로드를 수행할 수 있다.</p>
+<ul>
+<li>파일명</li>
+<li>파일 크기</li>
+<li>업로드 시각</li>
+<li>기타 <code>FileItem</code> 메타데이터</li>
+</ul>
+<hr/>
+<h2 id="5">5. 클라이언트 상태 표시<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<h3 id="51">5.1 응답 포함 원칙<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<p>업로드 완료 후 상태 조회 응답 또는 파일 메타데이터 응답에는 후처리 상태를 별도 필드로 포함한다. 스캔 결과, 썸네일/미리보기 상태, 접근 가능 여부를 클라이언트가 구분할 수 있어야 한다.</p>
+<h3 id="52">5.2 응답 예시<a class="headerlink" href="#52" title="Permanent link">¶</a></h3>
+<p><strong>정상 업로드 직후 (스캔 대기 중, 미리보기 실패)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"fileItemId"</span><span class="p">:</span><span class="w"> </span><span class="mi">987</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"scanStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PENDING"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"previewStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FAILED"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"thumbnailStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FAILED"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"accessStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOWNLOADABLE"</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>scanStatus</code>가 <code>PENDING</code>이지만 <code>accessStatus</code>는 <code>DOWNLOADABLE</code> → 스캔 완료 전 다운로드 허용 정책 반영</li>
+<li><code>previewStatus</code>, <code>thumbnailStatus</code>가 <code>FAILED</code>이지만 접근 차단 없음 → 편의 기능 분리 정책 반영</li>
+</ul>
+<p><strong>감염 탐지 또는 스캔 실패 시</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"fileItemId"</span><span class="p">:</span><span class="w"> </span><span class="mi">987</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"scanStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FAILED"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"fileStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"QUARANTINED"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"accessStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BLOCKED"</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>scanStatus</code>가 <code>FAILED</code> → <code>fileStatus</code>가 <code>QUARANTINED</code>로 전환</li>
+<li><code>accessStatus</code>가 <code>BLOCKED</code> → 다운로드 세션 발급 차단</li>
+</ul>
+<h3 id="53">5.3 필드 의미 정의<a class="headerlink" href="#53" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>설명</th>
+<th>예시 값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scanStatus</code></td>
+<td>바이러스 스캔 진행 상태</td>
+<td><code>PENDING</code>, <code>CLEAN</code>, <code>INFECTED</code>, <code>FAILED</code></td>
+</tr>
+<tr>
+<td><code>previewStatus</code></td>
+<td>미리보기 캐시 생성 상태</td>
+<td><code>PENDING</code>, <code>COMPLETED</code>, <code>FAILED</code></td>
+</tr>
+<tr>
+<td><code>thumbnailStatus</code></td>
+<td>썸네일 생성 상태</td>
+<td><code>PENDING</code>, <code>COMPLETED</code>, <code>FAILED</code></td>
+</tr>
+<tr>
+<td><code>fileStatus</code></td>
+<td>FileItem 상태</td>
+<td><code>ACTIVE</code>, <code>QUARANTINED</code>, <code>DELETED</code> 등</td>
+</tr>
+<tr>
+<td><code>accessStatus</code></td>
+<td>다운로드 가능 여부</td>
+<td><code>DOWNLOADABLE</code>, <code>BLOCKED</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>참고</strong>: 위 필드명은 구현 예시이며, 실제 필드명은 프로젝트의 <code>FileItem</code> 메타데이터 구조에 맞게 조정할 수 있다.</p>
+</blockquote>
+<h3 id="54">5.4 필드 간 일관성 원칙<a class="headerlink" href="#54" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>원칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>스캔 결과와 접근 차단 상태는 분리 가능하되 일관되게 연결</td>
+<td><code>scanStatus</code>가 <code>INFECTED</code>/<code>FAILED</code>이면 <code>accessStatus</code>는 반드시 <code>BLOCKED</code></td>
+</tr>
+<tr>
+<td>미리보기 실패는 다운로드 가능 여부와 분리</td>
+<td><code>previewStatus</code>/<code>thumbnailStatus</code>가 <code>FAILED</code>여도 <code>accessStatus</code>는 <code>DOWNLOADABLE</code> 가능</td>
+</tr>
+<tr>
+<td>격리 상태는 다운로드 차단과 직접 연결</td>
+<td><code>fileStatus</code>가 <code>QUARANTINED</code>이면 <code>accessStatus</code>는 반드시 <code>BLOCKED</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="6">6. 상태 전이 흐름 요약<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<div class="highlight"><pre><span></span><code>FileItem 저장 확정 완료
+  │
+  ├──→ 바이러스 스캔 큐 등록 (scanStatus: PENDING)
+  │     │
+  │     ├── 스캔 완료, 정상 ──→ scanStatus: CLEAN
+  │     │                       fileStatus: 변경 없음
+  │     │                       accessStatus: DOWNLOADABLE
+  │     │
+  │     ├── 감염 탐지 ────────→ scanStatus: INFECTED
+  │     │                       fileStatus: QUARANTINED
+  │     │                       accessStatus: BLOCKED
+  │     │
+  │     └── 스캔 실패 ────────→ scanStatus: FAILED
+  │                             fileStatus: QUARANTINED
+  │                             accessStatus: BLOCKED
+  │
+  ├──→ 썸네일 생성 큐 등록 (thumbnailStatus: PENDING)
+  │     │
+  │     ├── 생성 완료 ────────→ thumbnailStatus: COMPLETED
+  │     │                       accessStatus: 영향 없음
+  │     │
+  │     └── 생성 실패 ────────→ thumbnailStatus: FAILED
+  │                             accessStatus: 영향 없음
+  │                             UI: 플레이스홀더 표시
+  │
+  └──→ 미리보기 캐시 큐 등록 (previewStatus: PENDING)
+        │
+        ├── 생성 완료 ────────→ previewStatus: COMPLETED
+        │                       accessStatus: 영향 없음
+        │
+        └── 생성 실패 ────────→ previewStatus: FAILED
+                                accessStatus: 영향 없음
+                                UI: 플레이스홀더 표시
+</code></pre></div>
+<hr/>
+<h2 id="7">7. 운영 원칙 요약<a class="headerlink" href="#7" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>원칙</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>FileItem</code> 저장 확정 완료 후 후처리는 비동기로 수행한다.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>바이러스 스캔 완료 전 파일 다운로드는 허용한다.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>바이러스 스캔 실패 또는 감염 탐지 시 파일 상태는 <code>quarantined</code>로 전환한다.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>quarantined</code> 파일은 다운로드 파이프라인의 사전 검증 단계에서 차단한다.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>quarantined</code> 파일에 대한 외부 응답은 <code>404 Not Found</code>로 통일한다.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>썸네일·미리보기 생성 실패는 파일 저장 실패나 접근 차단으로 보지 않는다.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>썸네일·미리보기 생성 실패 시 사용자 화면에는 플레이스홀더를 표시한다.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>후처리 상태는 클라이언트가 조회 가능하도록 응답에 포함한다.</td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

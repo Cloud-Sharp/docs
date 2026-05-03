@@ -1,0 +1,2807 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/" rel="prev"/>
+<link href="../%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/" rel="next"/>
+<link href="../../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>사용자 인증 및 인가 정책 - 개발 문서</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": [".d2", "img"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              사용자 인증 및 인가 정책
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  개발
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+        
+  
+  
+    
+  
+  API(구현 기준)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 결론
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 토큰 종류 구분
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-opaque-session-token">
+<span class="md-ellipsis">
+      
+        3. 왜 opaque session token인가
+      
+    </span>
+</a>
+<nav aria-label="3. 왜 opaque session token인가" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 권한 변경 즉시 반영
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32-space-role">
+<span class="md-ellipsis">
+      
+        3.2 Space별 Role 모델과의 적합성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33">
+<span class="md-ellipsis">
+      
+        3.3 로그아웃과 강제 차단
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34">
+<span class="md-ellipsis">
+      
+        3.4 토큰 정보 노출 최소화
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#35-aspnet-core">
+<span class="md-ellipsis">
+      
+        3.5 ASP.NET Core 구현 적합성
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 인증 모델
+      
+    </span>
+</a>
+<nav aria-label="4. 인증 모델" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 인증 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42-redis-usersession">
+<span class="md-ellipsis">
+      
+        4.2 Redis UserSession 모델
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 토큰 생성 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#44">
+<span class="md-ellipsis">
+      
+        4.4 세션 수명 정책
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 인가 모델
+      
+    </span>
+</a>
+<nav aria-label="5. 인가 모델" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 인가 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-role">
+<span class="md-ellipsis">
+      
+        5.2 Role 매트릭스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 권한 변경 반영 시점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-aspnet-core">
+<span class="md-ellipsis">
+      
+        6. ASP.NET Core 구현 가이드
+      
+    </span>
+</a>
+<nav aria-label="6. ASP.NET Core 구현 가이드" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61">
+<span class="md-ellipsis">
+      
+        6.1 구성 방향
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62-authenticationhandler">
+<span class="md-ellipsis">
+      
+        6.2 AuthenticationHandler 책임
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#63">
+<span class="md-ellipsis">
+      
+        6.3 인증 핸들러 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#64-space">
+<span class="md-ellipsis">
+      
+        6.4 Space 권한 서비스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#65-authorizationhandler">
+<span class="md-ellipsis">
+      
+        6.5 AuthorizationHandler 적용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#66">
+<span class="md-ellipsis">
+      
+        6.6 로그인 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#67">
+<span class="md-ellipsis">
+      
+        6.7 로그아웃 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#68">
+<span class="md-ellipsis">
+      
+        6.8 비밀번호 변경 및 계정 정지
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-redis">
+<span class="md-ellipsis">
+      
+        7. Redis 및 캐시 전략
+      
+    </span>
+</a>
+<nav aria-label="7. Redis 및 캐시 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 세션 저장소
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72-space">
+<span class="md-ellipsis">
+      
+        7.2 Space 권한 캐시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 보안 운영 규칙
+      
+    </span>
+</a>
+<nav aria-label="8. 보안 운영 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81">
+<span class="md-ellipsis">
+      
+        8.1 필수 보안 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-http">
+<span class="md-ellipsis">
+      
+        8.2 HTTP 상태 코드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-rate-limiting">
+<span class="md-ellipsis">
+      
+        8.3 Rate limiting
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-api">
+<span class="md-ellipsis">
+      
+        9. API 문서 표현 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 구현 체크리스트
+      
+    </span>
+</a>
+<nav aria-label="10. 구현 체크리스트" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        인증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3">
+<span class="md-ellipsis">
+      
+        인가
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4">
+<span class="md-ellipsis">
+      
+        운영
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 참고 자료
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    개발
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    개발
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B0%9C%EB%B0%9C/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B0%9C%EB%B0%9C/OpenAPI%20Patch%20Notes/">
+<span class="md-ellipsis">
+    
+  
+    OpenAPI Patch Notes
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Validation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EC%BB%A8%EB%B2%A4%EC%85%98/%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../%EA%B0%9C%EB%B0%9C/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(구현 기준)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 결론
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 토큰 종류 구분
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-opaque-session-token">
+<span class="md-ellipsis">
+      
+        3. 왜 opaque session token인가
+      
+    </span>
+</a>
+<nav aria-label="3. 왜 opaque session token인가" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#31">
+<span class="md-ellipsis">
+      
+        3.1 권한 변경 즉시 반영
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#32-space-role">
+<span class="md-ellipsis">
+      
+        3.2 Space별 Role 모델과의 적합성
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#33">
+<span class="md-ellipsis">
+      
+        3.3 로그아웃과 강제 차단
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#34">
+<span class="md-ellipsis">
+      
+        3.4 토큰 정보 노출 최소화
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#35-aspnet-core">
+<span class="md-ellipsis">
+      
+        3.5 ASP.NET Core 구현 적합성
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4">
+<span class="md-ellipsis">
+      
+        4. 인증 모델
+      
+    </span>
+</a>
+<nav aria-label="4. 인증 모델" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#41">
+<span class="md-ellipsis">
+      
+        4.1 인증 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#42-redis-usersession">
+<span class="md-ellipsis">
+      
+        4.2 Redis UserSession 모델
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#43">
+<span class="md-ellipsis">
+      
+        4.3 토큰 생성 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#44">
+<span class="md-ellipsis">
+      
+        4.4 세션 수명 정책
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 인가 모델
+      
+    </span>
+</a>
+<nav aria-label="5. 인가 모델" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51">
+<span class="md-ellipsis">
+      
+        5.1 인가 원칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-role">
+<span class="md-ellipsis">
+      
+        5.2 Role 매트릭스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53">
+<span class="md-ellipsis">
+      
+        5.3 권한 변경 반영 시점
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-aspnet-core">
+<span class="md-ellipsis">
+      
+        6. ASP.NET Core 구현 가이드
+      
+    </span>
+</a>
+<nav aria-label="6. ASP.NET Core 구현 가이드" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#61">
+<span class="md-ellipsis">
+      
+        6.1 구성 방향
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#62-authenticationhandler">
+<span class="md-ellipsis">
+      
+        6.2 AuthenticationHandler 책임
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#63">
+<span class="md-ellipsis">
+      
+        6.3 인증 핸들러 예시
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#64-space">
+<span class="md-ellipsis">
+      
+        6.4 Space 권한 서비스
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#65-authorizationhandler">
+<span class="md-ellipsis">
+      
+        6.5 AuthorizationHandler 적용
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#66">
+<span class="md-ellipsis">
+      
+        6.6 로그인 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#67">
+<span class="md-ellipsis">
+      
+        6.7 로그아웃 흐름
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#68">
+<span class="md-ellipsis">
+      
+        6.8 비밀번호 변경 및 계정 정지
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-redis">
+<span class="md-ellipsis">
+      
+        7. Redis 및 캐시 전략
+      
+    </span>
+</a>
+<nav aria-label="7. Redis 및 캐시 전략" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#71">
+<span class="md-ellipsis">
+      
+        7.1 세션 저장소
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#72-space">
+<span class="md-ellipsis">
+      
+        7.2 Space 권한 캐시
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8">
+<span class="md-ellipsis">
+      
+        8. 보안 운영 규칙
+      
+    </span>
+</a>
+<nav aria-label="8. 보안 운영 규칙" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81">
+<span class="md-ellipsis">
+      
+        8.1 필수 보안 규칙
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-http">
+<span class="md-ellipsis">
+      
+        8.2 HTTP 상태 코드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-rate-limiting">
+<span class="md-ellipsis">
+      
+        8.3 Rate limiting
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-api">
+<span class="md-ellipsis">
+      
+        9. API 문서 표현 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10">
+<span class="md-ellipsis">
+      
+        10. 구현 체크리스트
+      
+    </span>
+</a>
+<nav aria-label="10. 구현 체크리스트" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        인증
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3">
+<span class="md-ellipsis">
+      
+        인가
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4">
+<span class="md-ellipsis">
+      
+        운영
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11">
+<span class="md-ellipsis">
+      
+        11. 참고 자료
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="_1">사용자 인증 및 인가 정책<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<blockquote>
+<p><strong>문서 분류:</strong> 보안 정책 / 사용자 인증·인가
+<strong>상태:</strong> 권장안
+<strong>적용 범위:</strong> 로그인 사용자 인증, 내부 API 인가, Space Role 기반 접근 제어</p>
+</blockquote>
+<hr/>
+<h2 id="1">1. 결론<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<p>CloudSharp의 내부 사용자 인증은 <strong>opaque session token 기반 Bearer 인증</strong>을 사용한다.</p>
+<div class="highlight"><pre><span></span><code>Authorization: Bearer {opaque_session_token}
+</code></pre></div>
+<p>토큰은 사용자를 식별하기 위한 무작위 문자열이며, 권한 정보는 토큰 안에 넣지 않는다. 내부 API는 토큰으로 사용자를 인증한 뒤, 각 요청의 <code>spaceId</code>와 작업 종류에 따라 최신 <code>SpaceMember</code> 및 <code>Role</code>을 조회해 인가를 판단한다.</p>
+<p>이 결정은 다음 프로젝트 전제에 맞춘 것이다.</p>
+<table>
+<thead>
+<tr>
+<th>전제</th>
+<th>설계 영향</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>파일과 폴더의 실질 소유자는 <code>User</code>가 아니라 <code>Space</code>다</td>
+<td>사용자의 전역 권한만으로 접근을 판단할 수 없다</td>
+</tr>
+<tr>
+<td>권한 판단의 기본 단위는 <code>SpaceMember</code>다</td>
+<td>요청마다 대상 Space 기준의 멤버십을 봐야 한다</td>
+</tr>
+<tr>
+<td>한 사용자는 여러 Space에서 서로 다른 Role을 가질 수 있다</td>
+<td>토큰 하나에 모든 권한을 고정해 담기 어렵다</td>
+</tr>
+<tr>
+<td>Space Role 변경, 멤버 제거, 정지가 즉시 반영되어야 한다</td>
+<td>self-contained JWT 권한 claim은 stale 권한 문제가 생긴다</td>
+</tr>
+<tr>
+<td>다운로드 세션은 별도 단명 토큰 정책을 가진다</td>
+<td>일반 로그인 세션과 다운로드 스트리밍 세션을 분리해야 한다</td>
+</tr>
+</tbody>
+</table>
+<p>관련 내부 문서:</p>
+<ul>
+<li><a href="../../db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">ERD 설계서</a></li>
+<li><a href="../../API%20%EB%AA%85%EC%84%B8/">API 명세</a></li>
+<li><a href="../%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">다운로드 세션 권한 변경·강제 revoke 정책</a></li>
+</ul>
+<hr/>
+<h2 id="2">2. 토큰 종류 구분<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<p>CloudSharp에는 목적이 다른 토큰이 여럿 존재한다. 이 문서는 그중 <strong>로그인 사용자 세션 토큰</strong>을 다룬다.</p>
+<table>
+<thead>
+<tr>
+<th>토큰</th>
+<th>용도</th>
+<th>권장 형식</th>
+<th>권한 변경 반영</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용자 세션 토큰</td>
+<td>내부 API 로그인 상태 유지</td>
+<td>opaque random token</td>
+<td>다음 요청부터 즉시 반영</td>
+</tr>
+<tr>
+<td>다운로드 세션 토큰</td>
+<td>실제 파일 스트리밍</td>
+<td>단명 opaque 또는 서명 토큰</td>
+<td>TTL 내 즉시 revoke 미지원</td>
+</tr>
+<tr>
+<td>공유 링크 토큰</td>
+<td>외부 공유 링크 접근</td>
+<td>opaque random token</td>
+<td>링크 상태 조회 시 반영</td>
+</tr>
+<tr>
+<td>초대 토큰</td>
+<td>Space 초대 수락</td>
+<td>opaque random token</td>
+<td>초대 상태 조회 시 반영</td>
+</tr>
+</tbody>
+</table>
+<p>중요한 구분은 다음과 같다.</p>
+<ul>
+<li><strong>사용자 세션 토큰</strong>은 인증 상태만 표현한다.</li>
+<li><strong>Space 권한</strong>은 토큰이 아니라 서버의 최신 DB 상태가 표현한다.</li>
+<li><strong>다운로드 세션 토큰</strong>은 브라우저 다운로드 호환성 때문에 짧은 TTL 동안 발급 시점 권한을 허용한다.</li>
+</ul>
+<hr/>
+<h2 id="3-opaque-session-token">3. 왜 opaque session token인가<a class="headerlink" href="#3-opaque-session-token" title="Permanent link">¶</a></h2>
+<h3 id="31">3.1 권한 변경 즉시 반영<a class="headerlink" href="#31" title="Permanent link">¶</a></h3>
+<p>JWT에 Space Role을 claim으로 담으면 토큰 만료 전까지 기존 권한이 남는다.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"sub"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usr_123"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"spaces"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"spc_10"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ADMIN"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"spc_20"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MEMBER"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"exp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1760000000</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>예를 들어 <code>spc_10</code>에서 사용자를 <code>ADMIN</code>에서 <code>VIEWER</code>로 낮춰도, 이미 발급된 JWT는 만료 전까지 <code>ADMIN</code> claim을 가진다. 이를 막으려면 매 요청마다 DB 또는 revocation/version 저장소를 확인해야 한다.</p>
+<p>그렇게 되면 JWT의 핵심 장점인 stateless 검증 이점이 약해진다. 반면 opaque session token은 처음부터 서버 세션 상태 조회를 전제로 하므로, 권한 변경 반영과 설계 방향이 충돌하지 않는다.</p>
+<h3 id="32-space-role">3.2 Space별 Role 모델과의 적합성<a class="headerlink" href="#32-space-role" title="Permanent link">¶</a></h3>
+<p>CloudSharp의 권한은 전역 <code>User.role</code> 하나로 끝나지 않는다.</p>
+<pre class="mermaid-source"><code>flowchart LR
+    User["User"] --&gt; M1["SpaceMember: Space A / ADMIN"]
+    User --&gt; M2["SpaceMember: Space B / VIEWER"]
+    User --&gt; M3["SpaceMember: Space C / MEMBER"]</code></pre>
+<p>이 구조에서는 모든 Space Role을 토큰에 넣는 방식이 불리하다.</p>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>문제</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>모든 Space Role을 JWT에 포함</td>
+<td>토큰 크기 증가, 권한 변경 시 stale claim 발생</td>
+</tr>
+<tr>
+<td>현재 Space Role만 JWT에 포함</td>
+<td>Space 전환마다 재발급 필요</td>
+</tr>
+<tr>
+<td>userId만 JWT에 포함</td>
+<td>결국 DB에서 Space 권한을 조회해야 하므로 opaque token과 이점 차이가 작음</td>
+</tr>
+</tbody>
+</table>
+<p>따라서 토큰은 <code>userId</code>를 찾는 키로만 사용하고, 권한은 최신 <code>SpaceMember</code>를 조회하는 편이 단순하다.</p>
+<h3 id="33">3.3 로그아웃과 강제 차단<a class="headerlink" href="#33" title="Permanent link">¶</a></h3>
+<p>사용자 세션에서는 아래 기능이 필요하다.</p>
+<ul>
+<li>현재 기기 로그아웃</li>
+<li>전체 기기 로그아웃</li>
+<li>탈취 의심 세션 차단</li>
+<li>계정 정지 시 즉시 차단</li>
+<li>비밀번호 변경 후 기존 세션 만료</li>
+</ul>
+<p>self-contained JWT는 발급 후 만료 전까지 독립적으로 유효하기 때문에 이런 기능을 구현하려면 blacklist, token version, session id 저장소가 필요하다. 이 저장소를 운영할 거라면 처음부터 <code>UserSession</code>을 진실 원천으로 두는 opaque 방식이 더 직접적이다.</p>
+<h3 id="34">3.4 토큰 정보 노출 최소화<a class="headerlink" href="#34" title="Permanent link">¶</a></h3>
+<p>일반적인 JWT payload는 암호화가 아니라 인코딩이다. 토큰을 가진 주체는 payload를 읽을 수 있다.</p>
+<p>CloudSharp에서 JWT에 Space 목록, Role, 정책, 플랜, 권한 플래그 등을 넣으면 다음 정보가 클라이언트와 로그에 노출될 수 있다.</p>
+<ul>
+<li>사용자가 속한 Space 식별자</li>
+<li>Space별 Role</li>
+<li>시스템 Role</li>
+<li>권한 정책 버전</li>
+<li>계정 상태 힌트</li>
+</ul>
+<p>opaque token은 무작위 문자열이므로 토큰 자체에서 의미 있는 정보를 얻을 수 없다.</p>
+<h3 id="35-aspnet-core">3.5 ASP.NET Core 구현 적합성<a class="headerlink" href="#35-aspnet-core" title="Permanent link">¶</a></h3>
+<p>ASP.NET Core는 인증과 인가를 분리한다. 인증 핸들러가 <code>ClaimsPrincipal</code>을 만들고, 인가 정책 또는 핸들러가 리소스 접근 여부를 판단한다.</p>
+<p>CloudSharp는 이 구조에 잘 맞는다.</p>
+<ul>
+<li>인증 핸들러: opaque token을 검증하고 <code>UserId</code>, <code>SystemRole</code>, <code>SessionId</code> claim만 생성</li>
+<li>인가 핸들러: 요청의 <code>spaceId</code>와 작업 요구 권한을 기준으로 <code>SpaceMember</code> 최신 상태 조회</li>
+<li>유스케이스: 권한 검증 결과를 바탕으로 비즈니스 규칙 실행</li>
+</ul>
+<hr/>
+<h2 id="4">4. 인증 모델<a class="headerlink" href="#4" title="Permanent link">¶</a></h2>
+<h3 id="41">4.1 인증 원칙<a class="headerlink" href="#41" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>원칙</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>세션 토큰은 opaque 값이다</td>
+<td>토큰 자체에는 사용자 정보나 권한 정보를 담지 않는다</td>
+</tr>
+<tr>
+<td>원문 토큰은 저장하지 않는다</td>
+<td>Redis에도 토큰 해시만 저장한다</td>
+</tr>
+<tr>
+<td>인증은 사용자 식별까지만 담당한다</td>
+<td>Space 접근 가능 여부는 인가 계층에서 판단한다</td>
+</tr>
+<tr>
+<td>세션은 서버에서 revoke 가능해야 한다</td>
+<td>로그아웃, 계정 정지, 보안 사고에 즉시 대응한다</td>
+</tr>
+<tr>
+<td>세션 수명은 idle timeout과 absolute timeout을 함께 둔다</td>
+<td>장기 방치 세션과 무기한 세션을 모두 방지한다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-redis-usersession">4.2 Redis UserSession 모델<a class="headerlink" href="#42-redis-usersession" title="Permanent link">¶</a></h3>
+<p>MVP에서는 <code>UserSession</code>을 <strong>Redis에 저장</strong>한다. Redis가 사용자 세션의 진실 원천이며, PostgreSQL에는 필요 시 로그인/로그아웃/revoke 같은 보안 이벤트를 감사 로그로만 남긴다.</p>
+<pre class="mermaid-source"><code>flowchart LR
+    Token["opaque token"] --&gt; Hash["token_hash"]
+    Hash --&gt; SessionKey["auth:session:{token_hash}"]
+    SessionKey --&gt; User["user_id"]
+    User --&gt; IndexKey["auth:user_sessions:{user_id}"]</code></pre>
+<p>권장 Redis key는 다음과 같다.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth:session:{token_hash}</code></td>
+<td>Hash</td>
+<td>단일 세션 본문</td>
+</tr>
+<tr>
+<td><code>auth:user_sessions:{user_id}</code></td>
+<td>Set</td>
+<td>특정 사용자의 활성 세션 인덱스</td>
+</tr>
+<tr>
+<td><code>auth:revoked_session:{token_hash}</code></td>
+<td>String</td>
+<td>짧은 TTL의 revoke marker, 선택 사항</td>
+</tr>
+</tbody>
+</table>
+<p><code>auth:session:{token_hash}</code> Hash 필드는 다음과 같다.</p>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session_id</code></td>
+<td>내부 세션 ID</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>인증된 사용자</td>
+</tr>
+<tr>
+<td><code>token_hash</code></td>
+<td>세션 토큰 원문이 아닌 해시</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>ACTIVE</code>, <code>REVOKED</code>, <code>EXPIRED</code></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>세션 생성 시각</td>
+</tr>
+<tr>
+<td><code>last_seen_at</code></td>
+<td>마지막 사용 시각</td>
+</tr>
+<tr>
+<td><code>idle_expires_at</code></td>
+<td>미사용 만료 시각</td>
+</tr>
+<tr>
+<td><code>absolute_expires_at</code></td>
+<td>절대 만료 시각</td>
+</tr>
+<tr>
+<td><code>revoked_at</code></td>
+<td>명시적 revoke 시각</td>
+</tr>
+<tr>
+<td><code>revoked_reason</code></td>
+<td><code>LOGOUT</code>, <code>PASSWORD_CHANGED</code>, <code>ADMIN_REVOKED</code>, <code>ACCOUNT_DISABLED</code> 등</td>
+</tr>
+<tr>
+<td><code>user_agent_hash</code></td>
+<td>기기 식별 보조값</td>
+</tr>
+<tr>
+<td><code>ip_address</code></td>
+<td>감사 로그 및 이상 징후 분석용</td>
+</tr>
+</tbody>
+</table>
+<p>Redis TTL은 <code>idle_expires_at</code>에 맞춘다. <code>absolute_expires_at</code>은 Hash 필드로 저장하고 인증 시 별도로 검사한다. Sliding renewal이 발생하면 Hash의 <code>last_seen_at</code>, <code>idle_expires_at</code>을 갱신하고 Redis key TTL도 함께 연장한다.</p>
+<p>사용자 단위 revoke를 위해 <code>auth:user_sessions:{user_id}</code> Set에 활성 세션의 <code>token_hash</code>를 등록한다. 로그아웃, 비밀번호 재설정, 계정 정지, 관리자 강제 로그아웃 시 이 Set을 순회해 관련 세션 key를 삭제하거나 <code>status = REVOKED</code>로 갱신한다.</p>
+<h3 id="43">4.3 토큰 생성 규칙<a class="headerlink" href="#43" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>권장</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>엔트로피</td>
+<td>최소 256-bit 이상</td>
+</tr>
+<tr>
+<td>생성 API</td>
+<td><code>RandomNumberGenerator.GetBytes</code></td>
+</tr>
+<tr>
+<td>외부 표현</td>
+<td>base64url 또는 유사한 URL-safe 인코딩</td>
+</tr>
+<tr>
+<td>Redis key용 해시</td>
+<td>HMAC-SHA-256 권장</td>
+</tr>
+<tr>
+<td>저장</td>
+<td>원문 저장 금지, <code>token_hash</code>만 저장</td>
+</tr>
+<tr>
+<td>비교</td>
+<td>상수 시간 비교 사용</td>
+</tr>
+<tr>
+<td>로그</td>
+<td>토큰 원문 기록 금지, 필요 시 앞/뒤 일부도 남기지 않는다</td>
+</tr>
+</tbody>
+</table>
+<p>토큰 원문은 UUID를 기반으로 만들지 않는다. UUID v4를 SHA-256으로 해싱해도 원래 엔트로피가 늘어나지는 않으며, UUID v1/v7처럼 시간 또는 순서 정보가 섞일 수 있는 형식은 세션 토큰에 부적합하다. 세션 토큰은 처음부터 CSPRNG로 충분한 길이의 난수를 생성한다.</p>
+<p>권장 생성 방식은 다음과 같다.</p>
+<div class="highlight"><pre><span></span><code>randomBytes = RandomNumberGenerator.GetBytes(32)
+accessToken = "cs_sess_" + base64url(randomBytes)
+tokenHash = base64url(HMAC-SHA-256(accessToken, serverSecret))
+redisKey = "auth:session:" + tokenHash
+</code></pre></div>
+<p>토큰 prefix는 아래처럼 둘 수 있다.</p>
+<div class="highlight"><pre><span></span><code>cs_sess_{random}
+</code></pre></div>
+<p>prefix는 운영자가 토큰 종류를 구분하기 위한 힌트일 뿐이며, 보안 판단 근거로 사용하지 않는다.</p>
+<p>ASP.NET Core 구현 예시는 다음과 같다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="nn">System.Security.Cryptography</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="nn">Microsoft.AspNetCore.WebUtilities</span><span class="p">;</span>
+
+<span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">SessionTokenFactory</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="kt">byte</span><span class="p">[]</span><span class="w"> </span><span class="n">_hashSecret</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">SessionTokenFactory</span><span class="p">(</span><span class="n">IConfiguration</span><span class="w"> </span><span class="n">configuration</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">encodedSecret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configuration</span><span class="p">[</span><span class="s">"Auth:SessionTokenHashSecret"</span><span class="p">]</span>
+<span class="w">            </span><span class="o">??</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">"Missing session token hash secret."</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">_hashSecret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WebEncoders</span><span class="p">.</span><span class="n">Base64UrlDecode</span><span class="p">(</span><span class="n">encodedSecret</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">CreateToken</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RandomNumberGenerator</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"cs_sess_"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">WebEncoders</span><span class="p">.</span><span class="n">Base64UrlEncode</span><span class="p">(</span><span class="n">bytes</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ComputeTokenHash</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">token</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="nn">var</span><span class="w"> </span><span class="n">hmac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HMACSHA256</span><span class="p">(</span><span class="n">_hashSecret</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hmac</span><span class="p">.</span><span class="n">ComputeHash</span><span class="p">(</span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">token</span><span class="p">));</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">WebEncoders</span><span class="p">.</span><span class="n">Base64UrlEncode</span><span class="p">(</span><span class="n">hash</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>Auth:SessionTokenHashSecret</code>은 운영 환경의 secret store에서 주입한다. 소스 코드, 이미지, 문서 저장소에 고정값으로 넣지 않는다.</p>
+<p>Redis 저장 예시는 다음과 같다.</p>
+<div class="highlight"><pre><span></span><code>HSET auth:session:{token_hash}
+  session_id {session_id}
+  user_id {user_id}
+  status ACTIVE
+  created_at {utc}
+  last_seen_at {utc}
+  idle_expires_at {utc}
+  absolute_expires_at {utc}
+
+EXPIREAT auth:session:{token_hash} {idle_expires_at_epoch}
+SADD auth:user_sessions:{user_id} {token_hash}
+</code></pre></div>
+<h3 id="44">4.4 세션 수명 정책<a class="headerlink" href="#44" title="Permanent link">¶</a></h3>
+<p>MVP 권장값은 다음과 같다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th style="text-align: right;">값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Idle timeout</td>
+<td style="text-align: right;">12시간</td>
+<td>사용이 없으면 만료</td>
+</tr>
+<tr>
+<td>Absolute timeout</td>
+<td style="text-align: right;">30일</td>
+<td>계속 사용해도 최대 수명 제한</td>
+</tr>
+<tr>
+<td>Remember me</td>
+<td style="text-align: right;">후순위</td>
+<td>MVP에서는 기본 세션만 둔다</td>
+</tr>
+<tr>
+<td>Sliding renewal</td>
+<td style="text-align: right;">허용</td>
+<td>idle 만료 시각만 연장하고 absolute 만료는 연장하지 않는다</td>
+</tr>
+</tbody>
+</table>
+<p>세션 만료 판정은 다음 조건 중 하나라도 만족하면 실패다.</p>
+<div class="highlight"><pre><span></span><code>status != ACTIVE
+now &gt;= idle_expires_at
+now &gt;= absolute_expires_at
+user.status != ACTIVE
+</code></pre></div>
+<hr/>
+<h2 id="5">5. 인가 모델<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<h3 id="51">5.1 인가 원칙<a class="headerlink" href="#51" title="Permanent link">¶</a></h3>
+<p>CloudSharp의 인가는 <code>UserSession</code>이 아니라 <code>SpaceMember</code>가 기준이다.</p>
+<table>
+<thead>
+<tr>
+<th>질문</th>
+<th>판단 기준</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>이 사용자가 로그인했는가?</td>
+<td><code>UserSession</code></td>
+</tr>
+<tr>
+<td>이 사용자가 이 Space에 접근할 수 있는가?</td>
+<td><code>SpaceMember.status = ACTIVE</code></td>
+</tr>
+<tr>
+<td>이 사용자가 업로드할 수 있는가?</td>
+<td><code>SpaceMember.role &gt;= MEMBER</code></td>
+</tr>
+<tr>
+<td>이 사용자가 멤버를 초대할 수 있는가?</td>
+<td><code>SpaceMember.role &gt;= ADMIN</code></td>
+</tr>
+<tr>
+<td>이 사용자가 Quota를 변경할 수 있는가?</td>
+<td><code>SpaceMember.role = OWNER</code></td>
+</tr>
+<tr>
+<td>시스템 관리자 API를 쓸 수 있는가?</td>
+<td><code>User.system_role = ADMIN</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-role">5.2 Role 매트릭스<a class="headerlink" href="#52-role" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>작업</th>
+<th style="text-align: right;">OWNER</th>
+<th style="text-align: right;">ADMIN</th>
+<th style="text-align: right;">MEMBER</th>
+<th style="text-align: right;">VIEWER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Space 조회</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+</tr>
+<tr>
+<td>파일/폴더 목록 조회</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+</tr>
+<tr>
+<td>다운로드 세션 발급</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+</tr>
+<tr>
+<td>업로드 세션 생성</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>파일/폴더 수정</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>공유 링크 생성</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>멤버 목록 조회</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>멤버 초대</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>Role 변경</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>Quota 변경</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr>
+<td>Space 삭제</td>
+<td style="text-align: right;">O</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+</tbody>
+</table>
+<p>Role 비교는 단순 숫자 비교로만 처리하지 않는다. 일부 작업은 예외 규칙이 있기 때문이다.</p>
+<p>예외 예시:</p>
+<ul>
+<li>마지막 <code>OWNER</code>는 제거할 수 없다.</li>
+<li><code>ADMIN</code>이 <code>OWNER</code>를 강등하거나 제거할 수 없다.</li>
+<li>자기 자신을 마지막 <code>OWNER</code>에서 해제할 수 없다.</li>
+<li>Space가 <code>ARCHIVED</code> 또는 <code>DELETED</code>이면 Role이 충분해도 쓰기 작업을 막는다.</li>
+</ul>
+<h3 id="53">5.3 권한 변경 반영 시점<a class="headerlink" href="#53" title="Permanent link">¶</a></h3>
+<p>사용자 세션 토큰은 권한 정보를 들고 있지 않으므로, 권한 변경은 다음 API 요청부터 반영된다.</p>
+<pre class="mermaid-source"><code>sequenceDiagram
+    participant Admin
+    participant API
+    participant DB
+    participant User
+
+    Admin-&gt;&gt;API: PATCH /spaces/{spaceId}/members/{memberId}
+    API-&gt;&gt;DB: SpaceMember.role = VIEWER
+    API--&gt;&gt;Admin: 200 OK
+
+    User-&gt;&gt;API: POST /spaces/{spaceId}/files/{fileId}/download-sessions
+    API-&gt;&gt;Redis: UserSession 조회
+    API-&gt;&gt;DB: SpaceMember 최신 Role 조회
+    API--&gt;&gt;User: 허용 또는 거부</code></pre>
+<p>단, 이미 발급된 다운로드 세션 토큰은 별도 정책에 따라 TTL 내 유효할 수 있다. 이 예외는 다운로드 스트리밍 호환성을 위한 것이며, 일반 API 인가 원칙과 분리한다.</p>
+<hr/>
+<h2 id="6-aspnet-core">6. ASP.NET Core 구현 가이드<a class="headerlink" href="#6-aspnet-core" title="Permanent link">¶</a></h2>
+<h3 id="61">6.1 구성 방향<a class="headerlink" href="#61" title="Permanent link">¶</a></h3>
+<p>ASP.NET Core에서는 커스텀 인증 스킴을 등록한다.</p>
+<div class="highlight"><pre><span></span><code><span class="n">builder</span><span class="p">.</span><span class="n">Services</span>
+<span class="w">    </span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="s">"CloudSharpSession"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">AddScheme</span><span class="o">&lt;</span><span class="n">AuthenticationSchemeOptions</span><span class="p">,</span><span class="w"> </span><span class="n">CloudSharpSessionAuthenticationHandler</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="s">"CloudSharpSession"</span><span class="p">,</span>
+<span class="w">        </span><span class="n">options</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">});</span>
+
+<span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">options</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">options</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">"AuthenticatedUser"</span><span class="p">,</span><span class="w"> </span><span class="n">policy</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">policy</span><span class="p">.</span><span class="n">RequireAuthenticatedUser</span><span class="p">();</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">});</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="n">Build</span><span class="p">();</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseAuthentication</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">UseAuthorization</span><span class="p">();</span>
+</code></pre></div>
+<p>Minimal API 또는 endpoint group에서는 기본적으로 인증을 요구한다.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">api</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app</span><span class="p">.</span><span class="n">MapGroup</span><span class="p">(</span><span class="s">"/api/v1"</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">RequireAuthorization</span><span class="p">(</span><span class="s">"AuthenticatedUser"</span><span class="p">);</span>
+</code></pre></div>
+<p>로그인, 회원가입, 외부 공유 API는 명시적으로 익명 접근을 허용한다.</p>
+<div class="highlight"><pre><span></span><code><span class="n">app</span><span class="p">.</span><span class="n">MapPost</span><span class="p">(</span><span class="s">"/api/v1/auth/login"</span><span class="p">,</span><span class="w"> </span><span class="n">Login</span><span class="p">).</span><span class="n">AllowAnonymous</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">MapPost</span><span class="p">(</span><span class="s">"/api/v1/auth/register"</span><span class="p">,</span><span class="w"> </span><span class="n">Register</span><span class="p">).</span><span class="n">AllowAnonymous</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">MapGroup</span><span class="p">(</span><span class="s">"/public/v1"</span><span class="p">).</span><span class="n">AllowAnonymous</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="62-authenticationhandler">6.2 AuthenticationHandler 책임<a class="headerlink" href="#62-authenticationhandler" title="Permanent link">¶</a></h3>
+<p><code>CloudSharpSessionAuthenticationHandler</code>는 다음 책임만 가진다.</p>
+<ol>
+<li><code>Authorization</code> 헤더 존재 여부 확인</li>
+<li><code>Bearer</code> 형식 확인</li>
+<li>opaque token 해시 계산</li>
+<li>Redis <code>UserSession</code> 조회</li>
+<li>세션 상태와 만료 확인</li>
+<li>DB의 사용자 상태 및 전역 <code>system_role</code> 확인</li>
+<li>최소 claim만 담은 <code>ClaimsPrincipal</code> 생성</li>
+</ol>
+<p>인증 핸들러에서 Space 권한을 판단하지 않는다. 인증 핸들러는 현재 요청이 어떤 Space 자원을 다루는지 모를 수 있고, Space 권한 판단은 리소스 기반 인가에 가깝기 때문이다.</p>
+<p>세션은 Redis에 있지만, <code>User.status</code>와 <code>User.system_role</code>은 사용자 테이블의 최신 값을 기준으로 판단한다. 계정 정지나 전역 관리자 권한 변경이 즉시 반영되어야 하기 때문이다. 필요 시 사용자 상태만 짧게 캐시할 수 있으나, 계정 상태 변경 시 반드시 무효화해야 한다.</p>
+<p>생성할 claim은 최소화한다.</p>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sub</code></td>
+<td>사용자 ID</td>
+</tr>
+<tr>
+<td><code>sid</code></td>
+<td>세션 ID</td>
+</tr>
+<tr>
+<td><code>system_role</code></td>
+<td>전역 관리자 여부</td>
+</tr>
+</tbody>
+</table>
+<p>넣지 않는 claim:</p>
+<ul>
+<li>Space 목록</li>
+<li>Space별 Role</li>
+<li>파일 접근 권한</li>
+<li>Quota 권한</li>
+<li>공유 링크 권한</li>
+</ul>
+<h3 id="63">6.3 인증 핸들러 예시<a class="headerlink" href="#63" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CloudSharpSessionAuthenticationHandler</span>
+<span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="n">AuthenticationHandler</span><span class="o">&lt;</span><span class="n">AuthenticationSchemeOptions</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">IUserSessionStore</span><span class="w"> </span><span class="n">_sessions</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">CloudSharpSessionAuthenticationHandler</span><span class="p">(</span>
+<span class="w">        </span><span class="n">IOptionsMonitor</span><span class="o">&lt;</span><span class="n">AuthenticationSchemeOptions</span><span class="o">&gt;</span><span class="w"> </span><span class="n">options</span><span class="p">,</span>
+<span class="w">        </span><span class="n">ILoggerFactory</span><span class="w"> </span><span class="n">logger</span><span class="p">,</span>
+<span class="w">        </span><span class="n">UrlEncoder</span><span class="w"> </span><span class="n">encoder</span><span class="p">,</span>
+<span class="w">        </span><span class="n">IUserSessionStore</span><span class="w"> </span><span class="n">sessions</span><span class="p">)</span>
+<span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="k">base</span><span class="p">(</span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="n">logger</span><span class="p">,</span><span class="w"> </span><span class="n">encoder</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_sessions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sessions</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">AuthenticateResult</span><span class="o">&gt;</span><span class="w"> </span><span class="n">HandleAuthenticateAsync</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Request</span><span class="p">.</span><span class="n">Headers</span><span class="p">.</span><span class="n">Authorization</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">AuthenticateResult</span><span class="p">.</span><span class="n">NoResult</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">header</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">(</span><span class="s">"Bearer "</span><span class="p">,</span><span class="w"> </span><span class="n">StringComparison</span><span class="p">.</span><span class="n">OrdinalIgnoreCase</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">AuthenticateResult</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Invalid authorization scheme."</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">rawToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">header</span><span class="p">[</span><span class="s">"Bearer "</span><span class="p">.</span><span class="n">Length</span><span class="p">..].</span><span class="n">Trim</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">rawToken</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">AuthenticateResult</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Missing session token."</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_sessions</span><span class="p">.</span><span class="n">FindActiveSessionAsync</span><span class="p">(</span>
+<span class="w">            </span><span class="n">rawToken</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Context</span><span class="p">.</span><span class="n">RequestAborted</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">session</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">AuthenticateResult</span><span class="p">.</span><span class="n">Fail</span><span class="p">(</span><span class="s">"Invalid or expired session."</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">claims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">[]</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="nf">Claim</span><span class="p">(</span><span class="n">ClaimTypes</span><span class="p">.</span><span class="n">NameIdentifier</span><span class="p">,</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="n">UserId</span><span class="p">.</span><span class="n">ToString</span><span class="p">()),</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="nf">Claim</span><span class="p">(</span><span class="s">"sub"</span><span class="p">,</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="n">UserId</span><span class="p">.</span><span class="n">ToString</span><span class="p">()),</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="nf">Claim</span><span class="p">(</span><span class="s">"sid"</span><span class="p">,</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="n">Id</span><span class="p">.</span><span class="n">ToString</span><span class="p">()),</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="nf">Claim</span><span class="p">(</span><span class="s">"system_role"</span><span class="p">,</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="n">SystemRole</span><span class="p">.</span><span class="n">ToString</span><span class="p">())</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ClaimsIdentity</span><span class="p">(</span><span class="n">claims</span><span class="p">,</span><span class="w"> </span><span class="n">Scheme</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">principal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ClaimsPrincipal</span><span class="p">(</span><span class="n">identity</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">ticket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AuthenticationTicket</span><span class="p">(</span><span class="n">principal</span><span class="p">,</span><span class="w"> </span><span class="n">Scheme</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">AuthenticateResult</span><span class="p">.</span><span class="n">Success</span><span class="p">(</span><span class="n">ticket</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="64-space">6.4 Space 권한 서비스<a class="headerlink" href="#64-space" title="Permanent link">¶</a></h3>
+<p>인가 판단은 별도 서비스로 둔다.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">ISpacePermissionService</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Task</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">HasPermissionAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">spaceId</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SpacePermission</span><span class="w"> </span><span class="n">permission</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>권한 서비스는 다음을 확인한다.</p>
+<ol>
+<li><code>Space.status = ACTIVE</code></li>
+<li><code>SpaceMember.user_id = userId</code></li>
+<li><code>SpaceMember.space_id = spaceId</code></li>
+<li><code>SpaceMember.status = ACTIVE</code></li>
+<li>요청 작업에 필요한 Role 충족</li>
+<li>작업별 예외 규칙 충족</li>
+</ol>
+<p>권한 enum 예시:</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">SpacePermission</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">ViewSpace</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ReadFiles</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DownloadFile</span><span class="p">,</span>
+<span class="w">    </span><span class="n">UploadFile</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ModifyFile</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CreateShareLink</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ViewMembers</span><span class="p">,</span>
+<span class="w">    </span><span class="n">InviteMember</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ChangeMemberRole</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ChangeQuota</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DeleteSpace</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="65-authorizationhandler">6.5 AuthorizationHandler 적용<a class="headerlink" href="#65-authorizationhandler" title="Permanent link">¶</a></h3>
+<p>고정된 전역 권한은 ASP.NET Core policy로 처리할 수 있다. 하지만 <code>spaceId</code>가 필요한 권한은 endpoint filter, resource-based authorization, 또는 유스케이스 내부 권한 서비스 호출 중 하나로 처리한다.</p>
+<p>MVP에서는 다음 방식을 권장한다.</p>
+<table>
+<thead>
+<tr>
+<th>계층</th>
+<th>책임</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AuthenticationHandler</td>
+<td>사용자 인증</td>
+</tr>
+<tr>
+<td>Endpoint / Filter</td>
+<td><code>spaceId</code>, <code>fileId</code>, <code>folderId</code> 같은 라우트 값 추출</td>
+</tr>
+<tr>
+<td>UseCase</td>
+<td>대상 리소스 로드 및 Space 소속 검증</td>
+</tr>
+<tr>
+<td>PermissionService</td>
+<td>최신 SpaceMember 기반 권한 판단</td>
+</tr>
+</tbody>
+</table>
+<p>Minimal API filter 예시:</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">RequireSpacePermissionFilter</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IEndpointFilter</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">SpacePermission</span><span class="w"> </span><span class="n">_permission</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nf">RequireSpacePermissionFilter</span><span class="p">(</span><span class="n">SpacePermission</span><span class="w"> </span><span class="n">permission</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_permission</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permission</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">ValueTask</span><span class="o">&lt;</span><span class="kt">object?</span><span class="o">&gt;</span><span class="w"> </span><span class="n">InvokeAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="n">EndpointFilterInvocationContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span>
+<span class="w">        </span><span class="n">EndpointFilterDelegate</span><span class="w"> </span><span class="n">next</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">http</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">GetUserId</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">spaceId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">http</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">RouteValues</span><span class="p">.</span><span class="n">GetSpaceId</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">http</span><span class="p">.</span><span class="n">RequestServices</span>
+<span class="w">            </span><span class="p">.</span><span class="n">GetRequiredService</span><span class="o">&lt;</span><span class="n">ISpacePermissionService</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">permissions</span><span class="p">.</span><span class="n">HasPermissionAsync</span><span class="p">(</span>
+<span class="w">            </span><span class="n">userId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">spaceId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">_permission</span><span class="p">,</span>
+<span class="w">            </span><span class="n">http</span><span class="p">.</span><span class="n">RequestAborted</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">allowed</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Results</span><span class="p">.</span><span class="n">Forbid</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>파일과 폴더처럼 <code>fileId</code>, <code>folderId</code>가 함께 들어오는 API는 유스케이스에서 리소스를 조회한 뒤 <code>resource.space_id == route.spaceId</code>를 검증해야 한다. 라우트의 <code>spaceId</code>만 믿고 파일 접근을 허용하면 안 된다.</p>
+<h3 id="66">6.6 로그인 흐름<a class="headerlink" href="#66" title="Permanent link">¶</a></h3>
+<pre class="mermaid-source"><code>sequenceDiagram
+    participant Client
+    participant API
+    participant DB
+
+    Client-&gt;&gt;API: POST /api/v1/auth/login
+    API-&gt;&gt;DB: User 조회
+    API-&gt;&gt;API: PasswordHasher 검증
+    API-&gt;&gt;API: opaque token 생성
+    API-&gt;&gt;Redis: UserSession 저장(token_hash)
+    API-&gt;&gt;DB: 로그인 감사 이벤트 저장
+    API--&gt;&gt;Client: accessToken, tokenType=Bearer, expiresInSeconds</code></pre>
+<p>로그인 응답 예시:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"accessToken"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cs_sess_..."</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"tokenType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bearer"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"expiresInSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">43200</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"usr_123"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user@example.com"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"User"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"systemRole"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>필드명은 기존 <code>AuthResponse.accessToken</code>을 유지해도 된다. 단, 의미는 JWT가 아니라 opaque session token이다.</p>
+<h3 id="67">6.7 로그아웃 흐름<a class="headerlink" href="#67" title="Permanent link">¶</a></h3>
+<p>현재 세션 로그아웃:</p>
+<div class="highlight"><pre><span></span><code>POST /api/v1/auth/logout
+Authorization: Bearer {sessionToken}
+</code></pre></div>
+<p>처리:</p>
+<ol>
+<li>토큰 인증</li>
+<li>Redis에서 현재 <code>token_hash</code>의 <code>auth:session:{token_hash}</code> 삭제 또는 <code>status = REVOKED</code> 갱신</li>
+<li><code>auth:user_sessions:{user_id}</code> Set에서 현재 세션 제거</li>
+<li>이후 같은 토큰은 인증 실패</li>
+</ol>
+<p>전체 기기 로그아웃은 후속 API로 분리한다.</p>
+<div class="highlight"><pre><span></span><code>POST /api/v1/auth/logout-all
+</code></pre></div>
+<p>처리:</p>
+<ul>
+<li>Redis의 <code>auth:user_sessions:{user_id}</code> Set을 기준으로 모든 활성 세션 revoke</li>
+<li>현재 요청 세션도 포함</li>
+</ul>
+<h3 id="68">6.8 비밀번호 변경 및 계정 정지<a class="headerlink" href="#68" title="Permanent link">¶</a></h3>
+<p>비밀번호 변경 시 정책:</p>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>처리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용자가 직접 비밀번호 변경</td>
+<td>현재 세션을 제외한 모든 세션 revoke 권장</td>
+</tr>
+<tr>
+<td>비밀번호 재설정</td>
+<td>모든 세션 revoke</td>
+</tr>
+<tr>
+<td>관리자 계정 정지</td>
+<td>모든 세션 즉시 인증 실패</td>
+</tr>
+<tr>
+<td>계정 삭제 또는 비활성화</td>
+<td>모든 세션 즉시 인증 실패</td>
+</tr>
+</tbody>
+</table>
+<p>세션을 직접 모두 업데이트하지 않아도, 인증 핸들러가 매번 <code>User.status</code>를 확인하면 계정 정지는 즉시 반영된다. 다만 감사와 관리 편의를 위해 Redis의 활성 세션도 <code>REVOKED</code>로 정리하거나 삭제하는 것을 권장한다.</p>
+<hr/>
+<h2 id="7-redis">7. Redis 및 캐시 전략<a class="headerlink" href="#7-redis" title="Permanent link">¶</a></h2>
+<h3 id="71">7.1 세션 저장소<a class="headerlink" href="#71" title="Permanent link">¶</a></h3>
+<p>MVP에서는 사용자 세션을 Redis에 저장한다. Redis는 세션 캐시가 아니라 세션의 primary store다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>권장</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>session key</td>
+<td><code>auth:session:{token_hash}</code></td>
+</tr>
+<tr>
+<td>user index key</td>
+<td><code>auth:user_sessions:{user_id}</code></td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>session_id</code>, <code>user_id</code>, <code>created_at</code>, <code>last_seen_at</code>, <code>idle_expires_at</code>, <code>absolute_expires_at</code>, <code>status</code></td>
+</tr>
+<tr>
+<td>TTL</td>
+<td><code>idle_expires_at</code>까지</td>
+</tr>
+<tr>
+<td>revoke 시</td>
+<td>session key 삭제 또는 <code>status = REVOKED</code>, user index에서 제거</td>
+</tr>
+<tr>
+<td>감사 이력</td>
+<td>PostgreSQL audit log에 이벤트성으로 저장</td>
+</tr>
+</tbody>
+</table>
+<p>로그아웃과 관리자 revoke는 Redis에 즉시 반영되어야 한다. PostgreSQL audit log 저장이 실패하더라도 세션 revoke 자체가 실패해서는 안 된다. 단, 감사 로그 실패는 운영 경고로 남긴다.</p>
+<h3 id="72-space">7.2 Space 권한 캐시<a class="headerlink" href="#72-space" title="Permanent link">¶</a></h3>
+<p>Space 권한은 자주 바뀌지 않을 수 있지만, 변경 즉시 반영 요구가 있으므로 캐시 사용에 주의한다.</p>
+<p>권장 우선순위:</p>
+<ol>
+<li>MVP: 매 요청 DB 조회</li>
+<li>필요 시: <code>(userId, spaceId)</code> 권한 캐시</li>
+<li>Role 변경/멤버 제거/Space 상태 변경 시 해당 캐시 즉시 삭제</li>
+<li>더 커지면 <code>membership_version</code> 또는 <code>space_permission_version</code> 도입</li>
+</ol>
+<p>권한 캐시 TTL만으로 stale 권한을 방치하지 않는다.</p>
+<hr/>
+<h2 id="8">8. 보안 운영 규칙<a class="headerlink" href="#8" title="Permanent link">¶</a></h2>
+<h3 id="81">8.1 필수 보안 규칙<a class="headerlink" href="#81" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>규칙</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTPS</td>
+<td>운영 환경에서는 HTTPS 필수</td>
+</tr>
+<tr>
+<td>토큰 저장</td>
+<td>원문 저장 금지</td>
+</tr>
+<tr>
+<td>토큰 로그</td>
+<td>access log, error log, audit log에 원문 기록 금지</td>
+</tr>
+<tr>
+<td>CORS</td>
+<td>허용 origin을 명시한다</td>
+</tr>
+<tr>
+<td>Rate limit</td>
+<td>로그인, 토큰 검증 실패, 공유 링크 검증에 적용</td>
+</tr>
+<tr>
+<td>Password hashing</td>
+<td>ASP.NET Core Identity <code>PasswordHasher&lt;TUser&gt;</code> 또는 동등 수준 사용</td>
+</tr>
+<tr>
+<td>Audit log</td>
+<td>로그인 성공/실패, 로그아웃, 세션 revoke, Role 변경 기록</td>
+</tr>
+<tr>
+<td>Error response</td>
+<td>인증 실패와 인가 실패를 구분하되 외부 공개 API는 정보 노출을 마스킹한다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="82-http">8.2 HTTP 상태 코드<a class="headerlink" href="#82-http" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>응답</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>인증 토큰 없음</td>
+<td><code>401 Unauthorized</code></td>
+</tr>
+<tr>
+<td>인증 토큰 위조 또는 만료</td>
+<td><code>401 Unauthorized</code></td>
+</tr>
+<tr>
+<td>로그인은 됐지만 내부 API 권한 없음</td>
+<td><code>403 Forbidden</code></td>
+</tr>
+<tr>
+<td>외부 공개 API에서 권한 없음 또는 리소스 없음</td>
+<td><code>404 Not Found</code></td>
+</tr>
+<tr>
+<td>Space 내부 리소스가 없거나 접근 불가 마스킹 필요</td>
+<td>API별 정책에 따라 <code>404</code> 가능</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-rate-limiting">8.3 Rate limiting<a class="headerlink" href="#83-rate-limiting" title="Permanent link">¶</a></h3>
+<p>ASP.NET Core rate limiting middleware를 사용할 경우 <code>AddRateLimiter</code>와 <code>UseRateLimiter</code>를 함께 구성한다.</p>
+<p>적용 대상:</p>
+<ul>
+<li><code>/api/v1/auth/login</code></li>
+<li><code>/api/v1/auth/register</code></li>
+<li><code>/api/v1/auth/password-reset*</code></li>
+<li><code>/public/v1/share-links/{shareToken}/verify</code></li>
+<li>인증 실패가 반복되는 IP 또는 계정</li>
+</ul>
+<hr/>
+<h2 id="9-api">9. API 문서 표현 기준<a class="headerlink" href="#9-api" title="Permanent link">¶</a></h2>
+<p>API 문서와 설계 문서에서는 사용자 인증 방식을 아래 표현으로 통일한다.</p>
+<table>
+<thead>
+<tr>
+<th>지양 표현</th>
+<th>표준 표현</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization: Bearer {JWT}</code></td>
+<td><code>Authorization: Bearer {opaque_session_token}</code></td>
+</tr>
+<tr>
+<td><code>JWT 발급</code></td>
+<td><code>사용자 세션 토큰 발급</code></td>
+</tr>
+<tr>
+<td><code>bearerFormat: JWT</code></td>
+<td><code>bearerFormat: opaque</code> 또는 생략</td>
+</tr>
+<tr>
+<td><code>인증 토큰</code></td>
+<td>문맥에 따라 <code>사용자 세션 토큰</code>으로 명확화</td>
+</tr>
+</tbody>
+</table>
+<p>OpenAPI의 security scheme은 아래처럼 둔다.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">components</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">securitySchemes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">bearerAuth</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">      </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bearer</span>
+<span class="w">      </span><span class="nt">bearerFormat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">opaque</span>
+</code></pre></div>
+<hr/>
+<h2 id="10">10. 구현 체크리스트<a class="headerlink" href="#10" title="Permanent link">¶</a></h2>
+<h3 id="_2">인증<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> Redis <code>auth:session:{token_hash}</code> key schema 정의</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> Redis <code>auth:user_sessions:{user_id}</code> 인덱스 정의</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> opaque token 생성기 구현</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> token hash 저장 방식 확정</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> <code>CloudSharpSessionAuthenticationHandler</code> 구현</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> 로그인 성공 시 Redis에 <code>UserSession</code> 저장</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> 로그아웃 시 현재 Redis 세션 revoke</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> 계정 정지 시 모든 세션 차단</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> 비밀번호 재설정 시 모든 세션 revoke</li>
+</ul>
+<h3 id="_3">인가<a class="headerlink" href="#_3" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> <code>SpacePermission</code> enum 정의</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> Role별 permission 매핑 정의</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> <code>ISpacePermissionService</code> 구현</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"><span class="task-list-indicator"></span></input></label> Space 상태와 SpaceMember 상태를 함께 검증</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> 마지막 Owner 보호 규칙 구현</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> 파일/폴더 API에서 리소스의 <code>space_id</code> 검증</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> 다운로드 세션 발급 시 최신 권한 검증</li>
+</ul>
+<h3 id="_4">운영<a class="headerlink" href="#_4" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> 토큰 원문 로그 마스킹</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> 로그인 rate limit 적용</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> 인증 실패 audit log 기록</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> Role 변경 audit log 기록</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> Redis 만료 세션 인덱스 정리 배치 추가</li>
+<li class="task-list-item"><label class="task-list-control"><input disabled="" type="checkbox"/><span class="task-list-indicator"></span></label> API/OpenAPI 문서에서 사용자 인증 방식을 opaque session token으로 유지</li>
+</ul>
+<hr/>
+<h2 id="11">11. 참고 자료<a class="headerlink" href="#11" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/">ASP.NET Core Authentication 개요</a></li>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie">ASP.NET Core cookie authentication</a></li>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/authorization-net-microservices-web-applications">ASP.NET Core authorization policies</a></li>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/breaking-changes/8/addratelimiter-requirement">ASP.NET Core rate limiting middleware 변경 사항</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>
