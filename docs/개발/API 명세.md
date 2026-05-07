@@ -26,6 +26,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|
 | `구현됨` | 현재 API 앱에서 외부 클라이언트가 호출할 수 있도록 매핑됨 |
 | `내부 구현됨` | 내부 인증 정책 또는 tusd hook 전용으로 매핑됨 |
+| `deprecated 구현됨` | 하위 호환을 위해 매핑되어 있으나 신규 클라이언트 사용은 권장하지 않음 |
 | `예정` | MVP 계약 초안이며 아직 `CloudSharp.Api` 엔드포인트가 없음 |
 
 ## 2. 공통 계약
@@ -142,7 +143,8 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `POST` | `/api/v1/auth/register` | 계정 생성 및 세션 토큰 발급 | `SFR-001` | `구현됨` |
 | `POST` | `/api/v1/auth/login` | 사용자 세션 토큰 발급 | `SFR-002` | `구현됨` |
 | `POST` | `/api/v1/auth/logout` | 현재 토큰 무효화 | `SFR-003` | `구현됨` |
-| `POST` | `/api/v1/me` | 내 프로필 조회 | `SFR-005` | `구현됨` |
+| `GET` | `/api/v1/me` | 내 프로필 조회 | `SFR-005` | `구현됨` |
+| `POST` | `/api/v1/me` | 내 프로필 조회 legacy endpoint | `SFR-005` | `deprecated 구현됨` |
 
 **요청/응답 핵심 필드**
 
@@ -154,6 +156,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `UserProfile` | `id`, `email`, `username?`, `displayName`, `systemRole`, `createdAt` |
 
 `AuthResponse.accessToken`은 권한 claim을 담은 self-contained token이 아니라 opaque session token이다. 토큰 원문은 클라이언트에 한 번만 반환하고, 서버는 Redis에 `token_hash` 기반 세션만 저장한다.
+`POST /api/v1/me` 는 하위 호환을 위해 남아 있는 legacy endpoint 이며 신규 클라이언트는 `GET /api/v1/me` 를 사용한다.
 
 ### 4.2 Space 및 quota
 
@@ -162,10 +165,10 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `GET` | `/api/v1/spaces` | 내가 속한 Space 목록 조회 | `VIEWER` | `SFR-006` | `구현됨` |
 | `POST` | `/api/v1/spaces` | Space 생성 | 로그인 사용자 | `SFR-007` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}` | Space 상세 조회 | `VIEWER` | `SFR-008` | `구현됨` |
-| `PATCH` | `/api/v1/spaces/{spaceSlug}` | 이름/설명 변경 | `ADMIN` | `SFR-009` | `예정` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}` | 소프트 삭제 또는 비활성화 | `OWNER` | `SFR-010` | `예정` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/quota` | quota 조회 | `ADMIN` | `SFR-016`, `SFR-041` | `예정` |
-| `PATCH` | `/api/v1/spaces/{spaceSlug}/quota` | quota 변경 | `OWNER` | `SFR-017` | `예정` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}` | 이름/설명 변경 | `ADMIN` | `SFR-009` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}` | 소프트 삭제 또는 비활성화 | `OWNER` | `SFR-010` | `구현됨` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/quota` | quota 조회 | `VIEWER` | `SFR-016`, `SFR-041` | `구현됨` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/quota` | quota 변경 | `OWNER` | `SFR-017` | `구현됨` |
 
 **계약 요약**
 
@@ -184,7 +187,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|---|
 | `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 생성 | `ADMIN` | `SFR-011` | `예정` |
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` | `예정` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 제거 | `ADMIN` | `SFR-015` | `예정` |
 
@@ -202,12 +205,13 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `POST` | `/api/v1/spaces/{spaceSlug}/folders` | 폴더 생성 | `MEMBER` | `SFR-019` | `구현됨` |
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/folders/{folderId}` | 폴더명 변경 또는 이동 | `MEMBER` | `SFR-020`, `SFR-021` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/folders/{folderId}` | 폴더 삭제 | `MEMBER` | `SFR-022` | `구현됨` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/search` | 파일/폴더 기본 검색 | `VIEWER` | `SFR-031` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/search` | 파일/폴더 기본 검색 | `VIEWER` | `SFR-031` | `구현됨` |
 
 **계약 요약**
 
 - 루트 탐색은 `folderId = root` 를 사용한다.
 - 현재 구현된 목록 정렬 쿼리는 `sortBy = Name | Size | UpdatedAt`, `sortDirection = Asc | Desc` 이다.
+- 현재 구현된 검색 쿼리는 `q` 필수, `type = all | file | folder`, `sortBy = name | size | updatedAt | updated_at`, `sortDir = asc | desc`, `page` 기본값 `1`, `pageSize` 기본값 `50` 및 최대 `100` 이다.
 - `parentFolderId` 는 요청에서 문자열로 받으며, 숫자 문자열 또는 `null` 만 유효하다.
 - `PATCH /folders/{folderId}` 는 `name` 과 `parentFolderId` 를 동시에 받을 수 있다.
 - 폴더 삭제 정책은 기본적으로 소프트 삭제이며, 하위 항목 존재 시 `409 Conflict` 또는 비동기 삭제 정책 중 하나로 처리한다.
@@ -216,8 +220,8 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
-| `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` | `예정` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` | `예정` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` | `구현됨` |
 | `POST` | `/api/v1/spaces/{spaceSlug}/upload-sessions` | 업로드 세션 생성 | `MEMBER` 이상 + `UploadFile` 권한 | `SFR-023`, `SFR-042` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/upload-sessions/{token}` | 업로드 세션 상태 조회 | `MEMBER` 이상 + `UploadFile` 권한 | `SFR-024`, `SFR-025` | `구현됨` |
 | `POST` | `/api/internal/uploads/uploading` | tus 전송 시작/진행 상태 반영 | 내부 인증 | `SFR-024` | `내부 구현됨` |
@@ -280,9 +284,9 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
-| `POST` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions` | 다운로드 세션 발급 | `VIEWER` | `SFR-026` | `예정` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/preview` | 미리보기 정보 또는 내용 조회 | `VIEWER` | `SFR-037~040` | `예정` |
-| `GET` | `/public/v1/download-sessions/{sessionToken}/stream` | 실제 스트리밍 | 공개 | `SFR-026`, `SFR-036` | `예정` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions` | 다운로드 세션 발급 | `VIEWER` | `SFR-026` | `구현됨` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/preview` | 미리보기 정보 또는 내용 조회 | `VIEWER` | `SFR-037~040` | `구현됨` |
+| `GET` | `/public/v1/download-sessions/{sessionToken}/stream` | 실제 스트리밍 | 공개 | `SFR-026`, `SFR-036` | `구현됨` |
 
 **미리보기 응답 규칙**
 
