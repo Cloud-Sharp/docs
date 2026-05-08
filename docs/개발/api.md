@@ -33,7 +33,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 ### 2.1 인증과 권한
 
-| Role | Space 조회 | 업로드 | 파일/폴더 수정 | 공유 링크 생성 | 멤버 초대/변경 | Quota 변경 | Space 삭제 |
+| Role | Space 조회 | 업로드 | 파일/폴더 수정 | 공유 링크 생성 | 초대 링크/멤버 변경 | Quota 변경 | Space 삭제 |
 |---|---|---|---|---|---|---|---|
 | `OWNER` | O | O | O | O | O | O | O |
 | `ADMIN` | O | O | O | O | O | X | X |
@@ -112,7 +112,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SFR-004` | 내부 인증 API 공통 계약 |
 | `SFR-005` | `POST /api/v1/me` |
 | `SFR-006~010` | `GET/POST/PATCH/DELETE /api/v1/spaces*` |
-| `SFR-011~015` | Space 초대/멤버 API |
+| `SFR-011~015` | Space 링크 초대/멤버 API |
 | `SFR-016~017` | `GET/PATCH /api/v1/spaces/{spaceSlug}/quota` |
 | `SFR-018~022` | 폴더 목록/생성/수정/삭제 API |
 | `SFR-023` | `POST /api/v1/spaces/{spaceSlug}/upload-sessions` |
@@ -185,7 +185,10 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
-| `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 생성 | `ADMIN` | `SFR-011` | `예정` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 생성 | `ADMIN` | `SFR-011` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 목록 조회 | `ADMIN` | `SFR-011` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/invites/{inviteId}` | Space 초대 링크 상세 조회 | `ADMIN` | `SFR-011` | `예정` |
+| `GET` | `/api/v1/invites/{inviteToken}` | 수락 전 초대 상세 조회 | 로그인 사용자 | `SFR-012` | `예정` |
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` | `예정` |
@@ -193,8 +196,13 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 **계약 요약**
 
-- 초대 생성 시 `inviteeUserId` 또는 `inviteeEmail` 중 하나는 필수다.
-- 초대 수락 시 `inviteId` 또는 `inviteToken` 중 정확히 하나를 제공한다.
+- 초대 생성 요청은 `expiresAt`만 선택적으로 받는다. 수락 기본 Role은 `VIEWER`로 고정한다.
+- 초대 링크는 만료 전까지 여러 사용자가 재사용할 수 있다.
+- 서버는 초대 토큰 원문을 저장하지 않고 `token_hash`만 저장한다. `inviteToken`과 `inviteUrl`은 생성 응답에서만 반환한다.
+- 관리용 초대 목록/상세 조회는 토큰 원문과 URL을 재노출하지 않고 `id`, `spaceId`, `inviterUserId`, `expiresAt`, `isExpired`, `createdAt`, `updatedAt`만 반환한다.
+- 수락 전 초대 상세 조회는 `inviteToken` path parameter를 사용하며 Space 이름/slug, 만료 여부, 이미 멤버인지 여부, 수락 시 부여될 `VIEWER` Role을 반환한다.
+- 초대 수락 요청은 `inviteToken`만 받는다.
+- 명시적 초대 폐기는 상태 변경이 아니라 row 삭제로 처리한다.
 - `OWNER` 제거, `OWNER`를 `OWNER` 외 Role로 강등, 자기 자신을 마지막 `OWNER`에서 제거하는 동작은 금지한다.
 
 ### 4.4 폴더 탐색 및 검색
@@ -385,7 +393,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - 업로드 finalize 성공/실패
 - 파일 삭제
 - 공유 링크 생성/수정/폐기
-- Space 초대 생성/수락
+- Space 초대 링크 생성/폐기/수락
 - Space Role 변경
 - 공유 링크 기반 다운로드 시도/완료
 
