@@ -3,6 +3,21 @@
 > 실제 `CloudSharp.Api` endpoint 매핑과 OpenAPI/API 계약의 차이를 맞춘 변경 이력을 기록한다.
 
 
+# 2026-05-08 Space 초대 재설계
+
+- Space 초대 방식이 특정 사용자 지정 초대에서 링크 기반 초대로 변경됩니다.
+- 초대 생성 API는 원문 inviteToken을 생성 응답에서만 1회 반환합니다.
+- 초대 생성/조회 응답에서 inviteUrl 필드는 제거됩니다.
+- 초대 응답의 id는 문자열이 아니라 정수값입니다.
+- 관리용 초대 목록 조회 API는 초대 링크 메타데이터만 반환하며, 원문 토큰은 재노출하지 않습니다.
+- 관리용 초대 상세 조회 API는 inviteId 기반 라우팅을 사용하지 않습니다.
+- 초대 상세 조회는 GET /api/v1/invites/{inviteToken}으로 토큰 기준만 지원합니다.
+- 초대 수락은 POST /api/v1/invites/accept에서 inviteToken을 받아 처리합니다.
+- 토큰 기반 상세 조회/수락 시 서버는 전달받은 토큰을 해시한 뒤 token_hash로 초대 링크를 조회합니다.
+- 초대 수락 기본 Role은 VIEWER로 고정됩니다.
+- 만료 여부는 expiresAt 기준으로 판단하며, null이면 만료 없음으로 처리합니다.
+- 초대 폐기는 상태 변경이 아니라 초대 row 삭제 방식으로 처리됩니다.
+
 ## 2026-05-07 - API 계약/구현 상태 정합화
 
 ### Added
@@ -30,7 +45,7 @@
 - Space invite 생성/수락, 멤버 Role 변경/제거 API는 아직 예정 상태다.
 - ShareLink 내부/공개 API와 관리자 Space 사용량 조회 API는 계약 초안만 유지한다.
 
-## 2026-05-07 - OpenAPI 구현 기준 1차 보정
+## 2026-05-03 - OpenAPI 구현 기준 1차 보정
 
 ### Summary
 

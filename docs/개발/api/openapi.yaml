@@ -1757,6 +1757,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/invites/{inviteToken}:
+    delete:
+      tags:
+        - Invites
+      summary: Space 초대 링크 폐기
+      description: 명시적 폐기는 초대 토큰 원문을 해시해 조회한 뒤 row 삭제로 처리하며, 삭제된 링크는 조회와 수락 모두에서 존재하지 않는 초대로 취급한다.
+      x-implementation-status: planned
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/inviteToken'
+      responses:
+        '204':
+          description: 폐기 성공
+        '403':
+          description: 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Space 또는 초대 링크 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/invites/{inviteToken}:
     get:
       tags:

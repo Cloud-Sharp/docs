@@ -187,6 +187,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|---|
 | `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 생성 | `ADMIN` | `SFR-011` | `예정` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 목록 조회 | `ADMIN` | `SFR-011` | `예정` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/invites/{inviteToken}` | Space 초대 링크 폐기 | `ADMIN` | `SFR-011` | `예정` |
 | `GET` | `/api/v1/invites/{inviteToken}` | 수락 전 초대 상세 조회 | 로그인 사용자 | `SFR-012` | `예정` |
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
@@ -201,7 +202,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - 관리용 초대 목록 조회는 토큰 원문을 재노출하지 않고 `id`, `spaceId`, `inviterUserId`, `expiresAt`, `isExpired`, `createdAt`, `updatedAt`만 반환한다. `id`는 `integer(int64)`이다.
 - 수락 전 초대 상세 조회는 `inviteToken` path parameter를 사용하며 Space 이름/slug, 만료 여부, 이미 멤버인지 여부, 수락 시 부여될 `VIEWER` Role을 반환한다.
 - 초대 수락 요청은 `inviteToken`만 받는다.
-- 명시적 초대 폐기는 상태 변경이 아니라 row 삭제로 처리한다.
+- 명시적 초대 폐기는 `inviteToken` path parameter를 사용하며, 서버가 토큰 원문을 해시해 찾은 row를 삭제한다. 삭제된 링크는 조회/수락 모두에서 존재하지 않는 초대로 취급한다.
 - `OWNER` 제거, `OWNER`를 `OWNER` 외 Role로 강등, 자기 자신을 마지막 `OWNER`에서 제거하는 동작은 금지한다.
 
 ### 4.4 폴더 탐색 및 검색
