@@ -187,7 +187,6 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|---|
 | `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 생성 | `ADMIN` | `SFR-011` | `예정` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 목록 조회 | `ADMIN` | `SFR-011` | `예정` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/invites/{inviteId}` | Space 초대 링크 상세 조회 | `ADMIN` | `SFR-011` | `예정` |
 | `GET` | `/api/v1/invites/{inviteToken}` | 수락 전 초대 상세 조회 | 로그인 사용자 | `SFR-012` | `예정` |
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
@@ -198,8 +197,8 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 - 초대 생성 요청은 `expiresAt`만 선택적으로 받는다. 수락 기본 Role은 `VIEWER`로 고정한다.
 - 초대 링크는 만료 전까지 여러 사용자가 재사용할 수 있다.
-- 서버는 초대 토큰 원문을 저장하지 않고 `token_hash`만 저장한다. `inviteToken`과 `inviteUrl`은 생성 응답에서만 반환한다.
-- 관리용 초대 목록/상세 조회는 토큰 원문과 URL을 재노출하지 않고 `id`, `spaceId`, `inviterUserId`, `expiresAt`, `isExpired`, `createdAt`, `updatedAt`만 반환한다.
+- 서버는 초대 토큰 원문을 저장하지 않고 `token_hash`만 저장한다. `inviteToken`은 생성 응답에서만 반환한다.
+- 관리용 초대 목록 조회는 토큰 원문을 재노출하지 않고 `id`, `spaceId`, `inviterUserId`, `expiresAt`, `isExpired`, `createdAt`, `updatedAt`만 반환한다. `id`는 `integer(int64)`이다.
 - 수락 전 초대 상세 조회는 `inviteToken` path parameter를 사용하며 Space 이름/slug, 만료 여부, 이미 멤버인지 여부, 수락 시 부여될 `VIEWER` Role을 반환한다.
 - 초대 수락 요청은 `inviteToken`만 받는다.
 - 명시적 초대 폐기는 상태 변경이 아니라 row 삭제로 처리한다.

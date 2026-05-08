@@ -99,13 +99,6 @@ components:
       description: Space 멤버 식별자
       schema:
         type: string
-    inviteId:
-      name: inviteId
-      in: path
-      required: true
-      description: Space 초대 링크 식별자
-      schema:
-        type: string
     inviteToken:
       name: inviteToken
       in: path
@@ -453,7 +446,8 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         spaceId:
           type: integer
           format: int64
@@ -463,10 +457,6 @@ components:
           type: integer
           format: int64
         inviteToken:
-          type: string
-          nullable: true
-          description: 생성 응답에서만 반환된다. 관리용 조회에서는 null 또는 미포함.
-        inviteUrl:
           type: string
           nullable: true
           description: 생성 응답에서만 반환된다. 관리용 조회에서는 null 또는 미포함.
@@ -502,7 +492,8 @@ components:
       type: object
       properties:
         inviteId:
-          type: string
+          type: integer
+          format: int64
         spaceId:
           type: integer
           format: int64
@@ -1762,34 +1753,6 @@ paths:
                 $ref: '#/components/schemas/Invite'
         '403':
           description: 권한 없음
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceSlug}/invites/{inviteId}:
-    get:
-      tags:
-        - Invites
-      summary: Space 초대 링크 상세 조회
-      x-implementation-status: planned
-      parameters:
-        - $ref: '#/components/parameters/spaceSlug'
-        - $ref: '#/components/parameters/inviteId'
-      responses:
-        '200':
-          description: 초대 링크 상세 조회 성공
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invite'
-        '403':
-          description: 권한 없음
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: 초대 링크 없음
           content:
             application/json:
               schema:
