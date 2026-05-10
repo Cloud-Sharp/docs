@@ -2,6 +2,39 @@
 
 > 실제 `CloudSharp.Api` endpoint 매핑과 OpenAPI/API 계약의 차이를 맞춘 변경 이력을 기록한다.
 
+# 2026-05-10 Space Member Leave/Kick API 추가
+
+- `DELETE /api/v1/spaces/{spaceSlug}/leave` 추가
+  - 현재 인증된 사용자가 해당 Space에서 직접 나간다.
+  - 성공 시 `204 No Content`.
+  - OWNER는 나갈 수 없으며 `MEMBER_OWNER_REMOVAL_NOT_ALLOWED` 오류를 반환한다.
+  - 내부적으로 현재 사용자의 `AuthorizedSpaceContext.SpaceMemberId`를 기준으로 멤버십을 제거한다.
+
+- `DELETE /api/v1/spaces/{spaceSlug}/members/{memberId}` 추가
+  - OWNER/ADMIN이 Space 멤버를 제거한다.
+  - 성공 시 `204 No Content`.
+  - `memberId`가 잘못된 형식이면 `400 Bad Request`.
+  - 대상 멤버가 없거나 다른 Space 소속이면 `404 Not Found`.
+  - OWNER는 제거할 수 없으며 `MEMBER_OWNER_REMOVAL_NOT_ALLOWED` 오류를 반환한다.
+
+### 권한 변경
+
+- `SpacePermission.RemoveMember` 추가
+  - OWNER, ADMIN만 보유.
+  - MEMBER, VIEWER는 멤버 제거 불가.
+
+### 계약 문서 반영
+
+- `docs/.llm/design/api.md`
+  - `/leave` 추가
+  - `/members/{memberId}` DELETE를 `구현됨`으로 변경
+  - 멤버 나가기/제거는 `LEFT + deletedAt` 소프트 제거임을 명시
+
+- `docs/.llm/design/openapi.yaml`
+  - `/api/v1/spaces/{spaceSlug}/leave` 추가
+  - `/api/v1/spaces/{spaceSlug}/members/{memberId}` DELETE 상태를 `implemented`로 변경
+  - 주요 실패 응답 `400`, `401`, `403`, `404`, `409`, `422`, `500` 반영
+
 
 # 2026-05-08 Space 초대 재설계
 
