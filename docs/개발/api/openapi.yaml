@@ -26,6 +26,7 @@ x-tagGroups:
       - Files
       - Search
       - Preview
+      - Trash
       - UploadSessions
       - Downloads
   - name: Sharing
@@ -50,6 +51,7 @@ tags:
   - name: Files
   - name: Search
   - name: Preview
+  - name: Trash
   - name: UploadSessions
   - name: Downloads
   - name: Share Links
@@ -777,14 +779,70 @@ components:
         - scanStatus
         - createdAt
         - updatedAt
-    UpdateFileRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        parentFolderId:
-          type: string
-          nullable: true
+      TrashFileItem:
+        type: object
+        properties:
+          id:
+            type: string
+          spaceId:
+            type: integer
+            format: int64
+            description: 외부 응답에 노출되는 Space 식별자. bigint
+            example: 123
+          folderId:
+            type: string
+          displayName:
+            type: string
+          sizeBytes:
+            type: integer
+          mimeType:
+            type: string
+            nullable: true
+          fileStatus:
+            type: string
+            enum:
+              - DELETED
+          deletedAt:
+            type: string
+            format: date-time
+          updatedAt:
+            type: string
+            format: date-time
+        required:
+          - id
+          - spaceId
+          - folderId
+          - displayName
+          - sizeBytes
+          - fileStatus
+          - deletedAt
+          - updatedAt
+      TrashFilesResponse:
+        type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/TrashFileItem'
+          page:
+            $ref: '#/components/schemas/PageInfo'
+        required:
+          - items
+          - page
+      RestoreTrashFileRequest:
+        type: object
+        properties:
+          targetFolderId:
+            type: string
+            nullable: true
+      UpdateFileRequest:
+        type: object
+        properties:
+          name:
+            type: string
+          parentFolderId:
+            type: string
+            nullable: true
     CreateUploadSessionRequest:
       type: object
       properties:
@@ -1762,7 +1820,7 @@ paths:
       tags:
         - Invites
       summary: Space 초대 링크 폐기
-      description: 명시적 폐기는 초대 토큰 원문을 해시해 조회한 뒤 row 삭제로 처리하며, 삭제된 링크는 조회와 수락 모두에서 존재하지 않는 초대로 취급한다.
+      description: 명시적 폐기는 초대 토큰 원문으로 조회한 뒤 row 삭제로 처리하며, 삭제된 링크는 조회와 수락 모두에서 존재하지 않는 초대로 취급한다.
       x-implementation-status: planned
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
@@ -1843,6 +1901,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpaceMemberListResponse'
+  /api/v1/spaces/{spaceSlug}/leave:
+    delete:
+      tags:
+        - Members
+      summary: 현재 사용자가 Space에서 나가기
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      responses:
+        '204':
+          description: 나가기 성공
+        '401':
+          description: 인증되지 않음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Space 접근 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 멤버를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 멤버 저장 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: OWNER는 나갈 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/spaces/{spaceSlug}/members/{memberId}:
     patch:
       tags:
@@ -1875,15 +1980,51 @@ paths:
       tags:
         - Members
       summary: Space 멤버 제거
-      x-implementation-status: planned
+      x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/memberId'
       responses:
         '204':
           description: 제거 성공
+        '400':
+          description: memberId 형식 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증되지 않음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '403':
-          description: 마지막 OWNER 제거 시도 등
+          description: Space 접근 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 멤버를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 멤버 저장 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: OWNER 제거 시도
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 오류
           content:
             application/json:
               schema:
@@ -2259,7 +2400,92 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
+    /api/v1/spaces/{spaceSlug}/trash/files:
+      get:
+        tags:
+          - Trash
+        summary: 휴지통 파일 목록 조회
+        x-implementation-status: planned
+        parameters:
+          - $ref: '#/components/parameters/spaceSlug'
+          - $ref: '#/components/parameters/page'
+          - $ref: '#/components/parameters/pageSize'
+          - name: sortBy
+            in: query
+            schema:
+              type: string
+              enum:
+                - deletedAt
+                - name
+                - size
+              default: deletedAt
+          - $ref: '#/components/parameters/sortDir'
+        responses:
+          '200':
+            description: 휴지통 목록 조회 성공
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TrashFilesResponse'
+          '404':
+            description: 접근 불가 또는 공간 없음
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+    /api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore:
+      post:
+        tags:
+          - Trash
+        summary: 휴지통 파일 복원
+        x-implementation-status: planned
+        parameters:
+          - $ref: '#/components/parameters/spaceSlug'
+          - $ref: '#/components/parameters/fileId'
+        requestBody:
+          required: false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestoreTrashFileRequest'
+        responses:
+          '200':
+            description: 복원 성공
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FileResource'
+          '404':
+            description: 파일 없음, 휴지통 아님, 또는 접근 불가
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+          '409':
+            description: 복원 충돌
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+    /api/v1/spaces/{spaceSlug}/trash/files/{fileId}:
+      delete:
+        tags:
+          - Trash
+        summary: 휴지통 파일 영구삭제
+        x-implementation-status: planned
+        parameters:
+          - $ref: '#/components/parameters/spaceSlug'
+          - $ref: '#/components/parameters/fileId'
+        responses:
+          '204':
+            description: 영구삭제 성공
+          '404':
+            description: 파일 없음, 휴지통 아님, 또는 접근 불가
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+    /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
     post:
       tags:
         - Files

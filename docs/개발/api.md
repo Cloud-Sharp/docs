@@ -129,6 +129,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SFR-041~042` | Space quota 조회 + 업로드 세션 생성 전 사전 검증 |
 | `SFR-043` | `GET /api/v1/admin/spaces/usage` |
 | `SFR-044~045` | `FileItem.metadata`, `previewStatus`, `scanStatus`, `tags` |
+| `SFR-049~051` | `GET/POST/DELETE /api/v1/spaces/{spaceSlug}/trash/files*` |
 | `SFR-046` | 업로드 완료 이벤트 계약 |
 | `SFR-047` | MCP/AI 확장 예정 계약 |
 | `SFR-048` | 감사 로그 정책 섹션 |
@@ -190,20 +191,23 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/invites/{inviteToken}` | Space 초대 링크 폐기 | `ADMIN` | `SFR-011` | `예정` |
 | `GET` | `/api/v1/invites/{inviteToken}` | 수락 전 초대 상세 조회 | 로그인 사용자 | `SFR-012` | `예정` |
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/leave` | 현재 사용자가 Space에서 나가기 | `VIEWER` | `SFR-015` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` | `예정` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 제거 | `ADMIN` | `SFR-015` | `예정` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 제거 | `ADMIN` | `SFR-015` | `구현됨` |
 
 **계약 요약**
 
 - 초대 생성 요청은 `expiresAt`만 선택적으로 받는다. 수락 기본 Role은 `VIEWER`로 고정한다.
 - 초대 링크는 만료 전까지 여러 사용자가 재사용할 수 있다.
-- 서버는 초대 토큰 원문을 저장하지 않고 `token_hash`만 저장한다. `inviteToken`은 생성 응답에서만 반환한다.
+- 서버는 초대 토큰 원문을 저장한다. 현재 물리 컬럼명은 `token_hash`를 유지하지만 값은 원문 초대 토큰이다.
 - 관리용 초대 목록 조회는 토큰 원문을 재노출하지 않고 `id`, `spaceId`, `inviterUserId`, `expiresAt`, `isExpired`, `createdAt`, `updatedAt`만 반환한다. `id`는 `integer(int64)`이다.
 - 수락 전 초대 상세 조회는 `inviteToken` path parameter를 사용하며 Space 이름/slug, 만료 여부, 이미 멤버인지 여부, 수락 시 부여될 `VIEWER` Role을 반환한다.
 - 초대 수락 요청은 `inviteToken`만 받는다.
-- 명시적 초대 폐기는 `inviteToken` path parameter를 사용하며, 서버가 토큰 원문을 해시해 찾은 row를 삭제한다. 삭제된 링크는 조회/수락 모두에서 존재하지 않는 초대로 취급한다.
+- 명시적 초대 폐기는 `inviteToken` path parameter를 사용하며, 서버가 토큰 원문으로 찾은 row를 삭제한다. 삭제된 링크는 조회/수락 모두에서 존재하지 않는 초대로 취급한다.
+- 멤버 나가기와 제거는 `SpaceMember.status = LEFT`, `deletedAt = now`로 처리하는 소프트 제거이다.
 - `OWNER` 제거, `OWNER`를 `OWNER` 외 Role로 강등, 자기 자신을 마지막 `OWNER`에서 제거하는 동작은 금지한다.
+- `OWNER`는 `/leave`로 직접 나갈 수 없고, 멤버 제거 API의 대상도 될 수 없다.
 
 ### 4.4 폴더 탐색 및 검색
 
@@ -230,6 +234,9 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|---|
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` | `구현됨` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `예정` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `예정` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `예정` |
 | `POST` | `/api/v1/spaces/{spaceSlug}/upload-sessions` | 업로드 세션 생성 | `MEMBER` 이상 + `UploadFile` 권한 | `SFR-023`, `SFR-042` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/upload-sessions/{token}` | 업로드 세션 상태 조회 | `MEMBER` 이상 + `UploadFile` 권한 | `SFR-024`, `SFR-025` | `구현됨` |
 | `POST` | `/api/internal/uploads/uploading` | tus 전송 시작/진행 상태 반영 | 내부 인증 | `SFR-024` | `내부 구현됨` |
@@ -285,10 +292,43 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 **후처리 정책**
 
 - `scanStatus = PENDING` 이어도 기본 다운로드는 허용한다.
-- `scanStatus = FAILED` 또는 감염 탐지 시 `fileStatus = QUARANTINED` 로 전환하고 다운로드를 차단한다.
-- `previewStatus = FAILED` 는 미리보기 실패일 뿐 다운로드 차단 사유가 아니다.
+  - `scanStatus = FAILED` 또는 감염 탐지 시 `fileStatus = QUARANTINED` 로 전환하고 다운로드를 차단한다.
+  - `previewStatus = FAILED` 는 미리보기 실패일 뿐 다운로드 차단 사유가 아니다.
 
-### 4.6 다운로드 및 미리보기
+### 4.6 휴지통
+
+| Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
+|---|---|---|---|---|---|
+| `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `예정` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `예정` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `예정` |
+
+**휴지통 목록 응답 규칙**
+
+| 필드 | 의미 |
+|---|---|
+| `items` | `Deleted` 상태의 파일 목록 |
+| `page` | 페이징 정보 |
+| `deletedAt` | 삭제 시각 |
+| `displayName` | 삭제 당시 파일명 |
+| `folderId` | 삭제 전 원래 폴더 ID |
+| `sizeBytes` | 파일 크기 |
+
+**복원 요청 규칙**
+
+| 필드 | 의미 |
+|---|---|
+| `targetFolderId` | 선택 사항. 생략 시 원래 폴더로 복원 시도 |
+
+**복원/영구삭제 동작**
+
+- 복원은 `DeletedAt = null`, `FileStatus = Active` 로 되돌린다.
+- `targetFolderId` 가 없으면 원래 폴더가 유효할 때 그 위치로 복원한다.
+- 이름 충돌, 원래 폴더 없음, 접근 불가 상태는 실패로 처리한다.
+- 영구삭제는 storage object 와 DB row 를 모두 정리한다.
+- storage object 가 이미 없어도 purge 는 실패로 보지 않는다.
+
+### 4.7 다운로드 및 미리보기
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
@@ -311,7 +351,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - `Range` 요청은 지원하되 single-range 만 지원한다.
 - 외부 공개 다운로드는 잘못된 토큰, 권한 없음, 비활성 리소스, 격리 상태를 `404` 로 마스킹한다.
 
-### 4.7 공유 링크
+### 4.8 공유 링크
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
@@ -330,7 +370,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - `browse` 는 파일 공유면 파일 메타데이터를, 폴더 공유면 폴더 자식 목록을 반환한다.
 - `download-sessions` 는 파일 공유 또는 폴더 공유 안의 특정 파일을 대상으로 다운로드 세션을 발급한다.
 
-### 4.8 관리자, 이벤트, 확장 예정 계약
+### 4.9 관리자, 이벤트, 확장 예정 계약
 
 | 항목 | 계약 | 구현 상태 |
 |---|---|---|
