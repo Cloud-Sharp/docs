@@ -2,6 +2,23 @@
 
 > 실제 `CloudSharp.Api` endpoint 매핑과 OpenAPI/API 계약의 차이를 맞춘 변경 이력을 기록한다.
 
+
+# 2026-05-13 - SSE 실시간 이벤트 계약 문서화
+
+### Added
+
+- `GET /api/v1/events/stream` SSE endpoint를 `docs/.llm/design/api.md`와 `docs/.llm/design/openapi.yaml`에 추가했다.
+- OpenAPI tag 목록과 tag group에 `Events`를 추가했다.
+- `RealtimeEventEnvelope` 및 eventType별 payload schema를 OpenAPI components에 추가했다.
+- `docs/.llm/design/strategies/sse-realtime-fanout.md`를 현재 구현 기준으로 확장해 이벤트 카탈로그, 수신자 라우팅, payload 필드, frame 예시를 문서화했다.
+- 프론트엔드 연동용 `docs/.llm/wiki/frontend-sse-integration.md`를 추가하고, native `EventSource` 대신 `@microsoft/fetch-event-source` 사용을 기준으로 문서화했다.
+
+### Changed
+
+- 기존 업로드 완료 이벤트 초안은 유지하되, 실제 구현된 실시간 업로드 성공 알림은 `FileUploaded` SSE 이벤트를 기준으로 설명했다.
+- SSE 연결 계약에 `text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`, 30초 `:keepalive` frame, 단일 writer loop 정책을 명시했다.
+
+
 # 2026-05-10 Space Member Leave/Kick API 추가
 
 - `DELETE /api/v1/spaces/{spaceSlug}/leave` 추가

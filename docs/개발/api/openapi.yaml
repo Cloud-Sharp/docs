@@ -37,6 +37,7 @@ x-tagGroups:
     tags:
       - Health
       - Admin
+      - Events
       - Uploads
       - Internal Uploads
       - TusdHooks
@@ -57,6 +58,7 @@ tags:
   - name: Share Links
   - name: Public Share
   - name: Admin
+  - name: Events
   - name: Uploads
   - name: Internal Uploads
   - name: TusdHooks
@@ -779,70 +781,70 @@ components:
         - scanStatus
         - createdAt
         - updatedAt
-    TrashFileItem:
-      type: object
-      properties:
-        id:
-          type: string
-        spaceId:
-          type: integer
-          format: int64
-          description: 외부 응답에 노출되는 Space 식별자. bigint
-          example: 123
-        folderId:
-          type: string
-        displayName:
-          type: string
-        sizeBytes:
-          type: integer
-        mimeType:
-          type: string
-          nullable: true
-        fileStatus:
-          type: string
-          enum:
-            - DELETED
-        deletedAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-        - id
-        - spaceId
-        - folderId
-        - displayName
-        - sizeBytes
-        - fileStatus
-        - deletedAt
-        - updatedAt
-    TrashFilesResponse:
-      type: object
-      properties:
-        items:
-          type: array
+      TrashFileItem:
+        type: object
+        properties:
+          id:
+            type: string
+          spaceId:
+            type: integer
+            format: int64
+            description: 외부 응답에 노출되는 Space 식별자. bigint
+            example: 123
+          folderId:
+            type: string
+          displayName:
+            type: string
+          sizeBytes:
+            type: integer
+          mimeType:
+            type: string
+            nullable: true
+          fileStatus:
+            type: string
+            enum:
+              - DELETED
+          deletedAt:
+            type: string
+            format: date-time
+          updatedAt:
+            type: string
+            format: date-time
+        required:
+          - id
+          - spaceId
+          - folderId
+          - displayName
+          - sizeBytes
+          - fileStatus
+          - deletedAt
+          - updatedAt
+      TrashFilesResponse:
+        type: object
+        properties:
           items:
-            $ref: '#/components/schemas/TrashFileItem'
-        page:
-          $ref: '#/components/schemas/PageInfo'
-      required:
-        - items
-        - page
-    RestoreTrashFileRequest:
-      type: object
-      properties:
-        targetFolderId:
-          type: string
-          nullable: true
-    UpdateFileRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        parentFolderId:
-          type: string
-          nullable: true
+            type: array
+            items:
+              $ref: '#/components/schemas/TrashFileItem'
+          page:
+            $ref: '#/components/schemas/PageInfo'
+        required:
+          - items
+          - page
+      RestoreTrashFileRequest:
+        type: object
+        properties:
+          targetFolderId:
+            type: string
+            nullable: true
+      UpdateFileRequest:
+        type: object
+        properties:
+          name:
+            type: string
+          parentFolderId:
+            type: string
+            nullable: true
     CreateUploadSessionRequest:
       type: object
       properties:
@@ -1462,6 +1464,431 @@ components:
       required:
         - items
         - page
+    RealtimeEventEnvelope:
+      type: object
+      description: |
+        SSE `data`에 들어가는 공통 이벤트 envelope. SSE `event` 이름은 `eventType`과 동일하다.
+        `payload`는 `eventType`별 schema 중 하나다.
+      properties:
+        eventId:
+          type: string
+          format: uuid
+        eventType:
+          type: string
+          enum:
+            - SpaceCreated
+            - SpaceUpdated
+            - SpaceQuotaChanged
+            - SpaceDeleted
+            - MemberAdded
+            - MemberRemoved
+            - MemberRoleChanged
+            - SpaceInviteCreated
+            - SpaceInviteRevoked
+            - SpaceInviteAccepted
+            - FileUploaded
+            - UploadFinalizeFailed
+            - FileRenamed
+            - FileMoved
+            - FileDeleted
+            - FolderCreated
+            - FolderRenamed
+            - FolderMoved
+            - FolderDeleted
+            - ShareLinkCreated
+            - ShareLinkUpdated
+            - ShareLinkRevoked
+        eventVersion:
+          type: integer
+          example: 1
+        occurredAt:
+          type: string
+          format: date-time
+        spaceId:
+          type: integer
+          format: int64
+          nullable: true
+        actorUserId:
+          type: integer
+          format: int64
+          nullable: true
+        aggregateType:
+          type: string
+          nullable: true
+          enum:
+            - Space
+            - SpaceMember
+            - SpaceInvite
+            - FileItem
+            - Folder
+            - ShareLink
+            - UploadSession
+        aggregateId:
+          type: integer
+          format: int64
+          nullable: true
+        payload:
+          oneOf:
+            - $ref: '#/components/schemas/RealtimeSpaceEventPayload'
+            - $ref: '#/components/schemas/RealtimeSpaceQuotaChangedPayload'
+            - $ref: '#/components/schemas/RealtimeMemberEventPayload'
+            - $ref: '#/components/schemas/RealtimeSpaceInviteEventPayload'
+            - $ref: '#/components/schemas/RealtimeSpaceInviteAcceptedPayload'
+            - $ref: '#/components/schemas/RealtimeFileEventPayload'
+            - $ref: '#/components/schemas/RealtimeUploadFinalizeFailedPayload'
+            - $ref: '#/components/schemas/RealtimeFolderEventPayload'
+            - $ref: '#/components/schemas/RealtimeShareLinkEventPayload'
+      required:
+        - eventId
+        - eventType
+        - eventVersion
+        - occurredAt
+        - payload
+    RealtimeSpaceEventPayload:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        storageAllowedBytes:
+          type: integer
+          format: int64
+          nullable: true
+        storageUsedBytes:
+          type: integer
+          format: int64
+        storageReservedBytes:
+          type: integer
+          format: int64
+        status:
+          type: string
+        ownerUserId:
+          type: integer
+          format: int64
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - spaceId
+        - slug
+        - name
+        - storageUsedBytes
+        - storageReservedBytes
+        - status
+        - ownerUserId
+        - updatedAt
+    RealtimeSpaceQuotaChangedPayload:
+      type: object
+      properties:
+        spaceId:
+          type: integer
+          format: int64
+        storageAllowedBytes:
+          type: integer
+          format: int64
+          nullable: true
+        storageUsedBytes:
+          type: integer
+          format: int64
+        storageReservedBytes:
+          type: integer
+          format: int64
+        availableBytes:
+          type: integer
+          format: int64
+          nullable: true
+        usageRate:
+          type: number
+          format: double
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - spaceId
+        - storageUsedBytes
+        - storageReservedBytes
+        - usageRate
+        - updatedAt
+    RealtimeMemberEventPayload:
+      type: object
+      properties:
+        memberId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        role:
+          type: string
+        status:
+          type: string
+        joinedAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - memberId
+        - spaceId
+        - userId
+        - role
+        - status
+        - updatedAt
+    RealtimeSpaceInviteEventPayload:
+      type: object
+      properties:
+        inviteId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        inviterUserId:
+          type: integer
+          format: int64
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - inviteId
+        - spaceId
+        - inviterUserId
+        - updatedAt
+    RealtimeSpaceInviteAcceptedPayload:
+      type: object
+      properties:
+        inviteId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        inviterUserId:
+          type: integer
+          format: int64
+        acceptedUserId:
+          type: integer
+          format: int64
+        memberId:
+          type: integer
+          format: int64
+        role:
+          type: string
+        acceptedAt:
+          type: string
+          format: date-time
+      required:
+        - inviteId
+        - spaceId
+        - inviterUserId
+        - acceptedUserId
+        - memberId
+        - role
+        - acceptedAt
+    RealtimeFileEventPayload:
+      type: object
+      properties:
+        fileItemId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        folderId:
+          type: integer
+          format: int64
+        createdByUserId:
+          type: integer
+          format: int64
+        displayName:
+          type: string
+        storageProvider:
+          type: string
+        storageKey:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        mimeType:
+          type: string
+          nullable: true
+        checksumSha256:
+          type: string
+          nullable: true
+        fileStatus:
+          type: string
+        previewStatus:
+          type: string
+        scanStatus:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - fileItemId
+        - spaceId
+        - folderId
+        - createdByUserId
+        - displayName
+        - storageProvider
+        - storageKey
+        - sizeBytes
+        - fileStatus
+        - previewStatus
+        - scanStatus
+        - updatedAt
+    RealtimeUploadFinalizeFailedPayload:
+      type: object
+      properties:
+        uploadSessionId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        requesterUserId:
+          type: integer
+          format: int64
+        targetFolderId:
+          type: integer
+          format: int64
+        originalName:
+          type: string
+        expectedSize:
+          type: integer
+          format: int64
+        tusUploadId:
+          type: string
+          nullable: true
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        releasedReservedStorage:
+          type: boolean
+        failedAt:
+          type: string
+          format: date-time
+      required:
+        - uploadSessionId
+        - spaceId
+        - requesterUserId
+        - targetFolderId
+        - originalName
+        - expectedSize
+        - errorCode
+        - errorMessage
+        - releasedReservedStorage
+        - failedAt
+    RealtimeFolderEventPayload:
+      type: object
+      properties:
+        folderId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        parentFolderId:
+          type: integer
+          format: int64
+          nullable: true
+        createdByUserId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        fullPath:
+          type: string
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - folderId
+        - spaceId
+        - createdByUserId
+        - name
+        - updatedAt
+    RealtimeShareLinkEventPayload:
+      type: object
+      properties:
+        shareLinkId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        createdByUserId:
+          type: integer
+          format: int64
+        targetType:
+          type: string
+        fileItemId:
+          type: integer
+          format: int64
+          nullable: true
+        folderId:
+          type: integer
+          format: int64
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: string
+        hasPassword:
+          type: boolean
+        allowDownload:
+          type: boolean
+        allowPreview:
+          type: boolean
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        maxDownloadCount:
+          type: integer
+          nullable: true
+        downloadAttemptCount:
+          type: integer
+        downloadCompletedCount:
+          type: integer
+        revokedAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - shareLinkId
+        - spaceId
+        - createdByUserId
+        - targetType
+        - status
+        - hasPassword
+        - allowDownload
+        - allowPreview
+        - downloadAttemptCount
+        - downloadCompletedCount
+        - updatedAt
     UploadCompletedEvent:
       type: object
       properties:
@@ -1508,6 +1935,58 @@ paths:
       responses:
         '200':
           description: API is healthy
+  /api/v1/events/stream:
+    get:
+      tags:
+        - Events
+      summary: 인증 사용자 실시간 이벤트 스트림 구독
+      description: |
+        Server-Sent Events(SSE)로 Space, member, file, folder, upload, share link 변경 이벤트를 전달한다.
+        응답은 장시간 열린 상태로 유지되며, 이벤트가 없으면 30초마다 `:keepalive` comment frame을 전송한다.
+        SSE `event` 이름은 `data.eventType`과 동일하다.
+      x-implementation-status: implemented
+      responses:
+        '200':
+          description: SSE stream opened
+          headers:
+            Cache-Control:
+              description: 캐시 방지. 현재 값은 `no-cache`.
+              schema:
+                type: string
+                example: no-cache
+            Connection:
+              description: 장기 연결 유지. 현재 값은 `keep-alive`.
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: |
+                  SSE frame stream. 각 업무 이벤트는 `event: {eventType}` line과 JSON `data` line을 포함한다.
+                  `data` JSON은 `RealtimeEventEnvelope` schema를 따른다. keep-alive는 `:keepalive` comment frame이다.
+              examples:
+                fileUploaded:
+                  summary: FileUploaded event frame
+                  value: |
+                    event: FileUploaded
+                    data: {"eventId":"1a8593de-c0e0-4fa4-9e86-c0e4e209a0d2","eventType":"FileUploaded","eventVersion":1,"occurredAt":"2026-05-13T03:15:00Z","spaceId":10,"actorUserId":7,"aggregateType":"FileItem","aggregateId":55,"payload":{"fileItemId":55,"spaceId":10,"folderId":2,"createdByUserId":7,"displayName":"report.pdf","storageProvider":"local","storageKey":"spaces/10/objects/aa/bb/report.pdf","sizeBytes":1048576,"mimeType":"application/pdf","checksumSha256":null,"fileStatus":"Active","previewStatus":"Pending","scanStatus":"Pending","updatedAt":"2026-05-13T03:15:00Z"}}
+                uploadFinalizeFailed:
+                  summary: UploadFinalizeFailed event frame
+                  value: |
+                    event: UploadFinalizeFailed
+                    data: {"eventId":"4ad84a9f-1790-4eb7-b6ed-916cdd776652","eventType":"UploadFinalizeFailed","eventVersion":1,"occurredAt":"2026-05-13T03:20:00Z","spaceId":10,"actorUserId":7,"aggregateType":"UploadSession","aggregateId":99,"payload":{"uploadSessionId":99,"spaceId":10,"requesterUserId":7,"targetFolderId":2,"originalName":"report.pdf","expectedSize":1048576,"tusUploadId":"abc123","errorCode":"FILE_NAME_CONFLICT","errorMessage":"File name already exists.","releasedReservedStorage":true,"failedAt":"2026-05-13T03:20:00Z"}}
+                keepAlive:
+                  summary: Keep-alive comment frame
+                  value: |
+                    :keepalive
+        '401':
+          description: 인증 필요 또는 세션 토큰 만료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/auth/register:
     post:
       tags:
@@ -1773,7 +2252,7 @@ paths:
       tags:
         - Invites
       summary: Space 초대 링크 목록 조회
-      x-implementation-status: planned
+          x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
       responses:
@@ -1793,7 +2272,7 @@ paths:
       tags:
         - Invites
       summary: Space 초대 링크 생성
-      x-implementation-status: planned
+          x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
       requestBody:
@@ -1821,7 +2300,7 @@ paths:
         - Invites
       summary: Space 초대 링크 폐기
       description: 명시적 폐기는 초대 토큰 원문으로 조회한 뒤 row 삭제로 처리하며, 삭제된 링크는 조회와 수락 모두에서 존재하지 않는 초대로 취급한다.
-      x-implementation-status: planned
+          x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/inviteToken'
@@ -1953,7 +2432,7 @@ paths:
       tags:
         - Members
       summary: Space 멤버 Role 변경
-      x-implementation-status: planned
+      x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/memberId'
@@ -2400,92 +2879,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceSlug}/trash/files:
-    get:
-      tags:
-        - Trash
-      summary: 휴지통 파일 목록 조회
-      x-implementation-status: planned
-      parameters:
-        - $ref: '#/components/parameters/spaceSlug'
-        - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/pageSize'
-        - name: sortBy
-          in: query
-          schema:
-            type: string
-            enum:
-              - deletedAt
-              - name
-              - size
-            default: deletedAt
-        - $ref: '#/components/parameters/sortDir'
-      responses:
-        '200':
-          description: 휴지통 목록 조회 성공
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrashFilesResponse'
-        '404':
-          description: 접근 불가 또는 공간 없음
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore:
-    post:
-      tags:
-        - Trash
-      summary: 휴지통 파일 복원
-      x-implementation-status: planned
-      parameters:
-        - $ref: '#/components/parameters/spaceSlug'
-        - $ref: '#/components/parameters/fileId'
-      requestBody:
-        required: false
-        content:
-          application/json:
+    /api/v1/spaces/{spaceSlug}/trash/files:
+      get:
+        tags:
+          - Trash
+        summary: 휴지통 파일 목록 조회
+        x-implementation-status: implemented
+        parameters:
+          - $ref: '#/components/parameters/spaceSlug'
+          - $ref: '#/components/parameters/page'
+          - $ref: '#/components/parameters/pageSize'
+          - name: sortBy
+            in: query
             schema:
-              $ref: '#/components/schemas/RestoreTrashFileRequest'
-      responses:
-        '200':
-          description: 복원 성공
+              type: string
+              enum:
+                - deletedAt
+                - name
+                - size
+              default: deletedAt
+          - $ref: '#/components/parameters/sortDir'
+        responses:
+          '200':
+            description: 휴지통 목록 조회 성공
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TrashFilesResponse'
+          '404':
+            description: 접근 불가 또는 공간 없음
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+    /api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore:
+      post:
+        tags:
+          - Trash
+        summary: 휴지통 파일 복원
+        x-implementation-status: implemented
+        parameters:
+          - $ref: '#/components/parameters/spaceSlug'
+          - $ref: '#/components/parameters/fileId'
+        requestBody:
+          required: false
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FileResource'
-        '404':
-          description: 파일 없음, 휴지통 아님, 또는 접근 불가
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '409':
-          description: 복원 충돌
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceSlug}/trash/files/{fileId}:
-    delete:
-      tags:
-        - Trash
-      summary: 휴지통 파일 영구삭제
-      x-implementation-status: planned
-      parameters:
-        - $ref: '#/components/parameters/spaceSlug'
-        - $ref: '#/components/parameters/fileId'
-      responses:
-        '204':
-          description: 영구삭제 성공
-        '404':
-          description: 파일 없음, 휴지통 아님, 또는 접근 불가
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
+                $ref: '#/components/schemas/RestoreTrashFileRequest'
+        responses:
+          '200':
+            description: 복원 성공
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FileResource'
+          '404':
+            description: 파일 없음, 휴지통 아님, 또는 접근 불가
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+          '409':
+            description: 복원 충돌 또는 이미 활성 상태, 파일명 충돌, 복원 실패
+            x-error-codes:
+              - FILE_NAME_CONFLICT
+              - FILE_ALREADY_ACTIVE
+              - FILE_RESTORE_FAILED
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+    /api/v1/spaces/{spaceSlug}/trash/files/{fileId}:
+      delete:
+        tags:
+          - Trash
+        summary: 휴지통 파일 영구삭제
+        x-implementation-status: implemented
+        parameters:
+          - $ref: '#/components/parameters/spaceSlug'
+          - $ref: '#/components/parameters/fileId'
+        responses:
+          '204':
+            description: 영구삭제 성공
+          '404':
+            description: 파일 없음, 휴지통 아님, 또는 접근 불가
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+    /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
     post:
       tags:
         - Files
