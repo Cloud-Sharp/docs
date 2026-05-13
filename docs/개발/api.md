@@ -13,6 +13,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | 인증 방식 | `Authorization: Bearer {opaque_session_token}` |
 | 기본 데이터 형식 | `application/json` |
 | 파일 다운로드 응답 | `application/octet-stream` 또는 서버 판별 MIME |
+| 실시간 이벤트 응답 | `text/event-stream` |
 | API 리소스 ID | 응답의 `id`, `fileId` 등은 외부 계약 기준 문자열로 취급 |
 | Space URL 식별자 | `/api/v1/spaces/{spaceSlug}` 의 `spaceSlug` |
 | 시간 표기 | UTC 기준 ISO 8601 문자열 |
@@ -130,7 +131,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SFR-043` | `GET /api/v1/admin/spaces/usage` |
 | `SFR-044~045` | `FileItem.metadata`, `previewStatus`, `scanStatus`, `tags` |
 | `SFR-049~051` | `GET/POST/DELETE /api/v1/spaces/{spaceSlug}/trash/files*` |
-| `SFR-046` | 업로드 완료 이벤트 계약 |
+| `SFR-046` | `FileUploaded` SSE 이벤트 및 내부 finalize 이벤트 기록 |
 | `SFR-047` | MCP/AI 확장 예정 계약 |
 | `SFR-048` | 감사 로그 정책 섹션 |
 
@@ -193,7 +194,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/leave` | 현재 사용자가 Space에서 나가기 | `VIEWER` | `SFR-015` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
-| `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` | `예정` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 제거 | `ADMIN` | `SFR-015` | `구현됨` |
 
 **계약 요약**
@@ -375,7 +376,8 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | 항목 | 계약 | 구현 상태 |
 |---|---|---|
 | 관리자 조회 | `GET /api/v1/admin/spaces/usage` | `예정` |
-| 업로드 완료 이벤트 | `UploadCompletedEvent` JSON 스키마 | `예정` |
+| 실시간 이벤트 스트림 | `GET /api/v1/events/stream` | `구현됨` |
+| SSE 이벤트 envelope | `RealtimeEventEnvelope` JSON 스키마 | `구현됨` |
 | MCP/AI 자연어 탐색 | MVP 비보장, 추후 별도 경로로 확장 | `예정` |
 | 감사 로그 | 외부 공개 API 없음, 서버 내부 운영 계약 | `예정` |
 
@@ -391,7 +393,58 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - `storageReservedBytes`
 - `usageRate`
 
-**업로드 완료 이벤트**
+**실시간 이벤트 스트림**
+
+```http
+GET /api/v1/events/stream
+Authorization: Bearer {opaque_session_token}
+Accept: text/event-stream
+```
+
+성공 시 `200 OK`와 함께 `Content-Type: text/event-stream`, `Cache-Control: no-cache`, `Connection: keep-alive`를 반환한다. 서버는 연결 직후 헤더를 즉시 전송하고, 이벤트가 없으면 30초마다 `:keepalive` comment frame을 전송한다.
+
+SSE frame은 `event` 이름과 JSON `data`를 함께 제공한다.
+
+```text
+event: FileUploaded
+data: {"eventId":"...","eventType":"FileUploaded","eventVersion":1,"occurredAt":"2026-05-13T03:15:00Z","spaceId":10,"actorUserId":7,"aggregateType":"FileItem","aggregateId":55,"payload":{}}
+
+```
+
+`data` envelope 공통 필드:
+
+| 필드 | 설명 |
+|---|---|
+| `eventId` | outbox 이벤트 UUID |
+| `eventType` | SSE event 이름과 동일한 이벤트 타입 |
+| `eventVersion` | 이벤트 schema version. 현재 `1` |
+| `occurredAt` | 이벤트 발생 시각 |
+| `spaceId` | Space 범위 이벤트의 Space ID |
+| `actorUserId` | 행위자 user ID. 내부 처리 이벤트는 `null` 가능 |
+| `aggregateType` | 변경 aggregate 종류 |
+| `aggregateId` | 변경 aggregate ID |
+| `payload` | eventType별 payload |
+
+현재 발행되는 SSE 이벤트:
+
+| eventType | payload | 수신자 |
+|---|---|---|
+| `SpaceCreated`, `SpaceUpdated`, `SpaceDeleted` | `SpaceEventPayload` | Space active members |
+| `SpaceQuotaChanged` | `SpaceQuotaChangedPayload` | Space active members |
+| `MemberAdded`, `MemberRoleChanged` | `MemberEventPayload` | Space active members |
+| `MemberRemoved` | `MemberEventPayload` | Space active members + 제거된 user |
+| `SpaceInviteCreated`, `SpaceInviteRevoked` | `SpaceInviteEventPayload` | Space active members |
+| `SpaceInviteAccepted` | `SpaceInviteAcceptedPayload` | Space active members |
+| `FileUploaded`, `FileRenamed`, `FileMoved`, `FileDeleted` | `FileEventPayload` | Space active members |
+| `UploadFinalizeFailed` | `UploadFinalizeFailedPayload` | 업로드 요청자 user |
+| `FolderCreated`, `FolderRenamed`, `FolderMoved`, `FolderDeleted` | `FolderEventPayload` | Space active members |
+| `ShareLinkCreated`, `ShareLinkUpdated`, `ShareLinkRevoked` | `ShareLinkEventPayload` | Space active members |
+
+이벤트별 payload 필드의 상세 계약은 [SSE 실시간 이벤트 fan-out 전략](strategies/sse-realtime-fanout.md)을 기준으로 한다.
+
+**기존 업로드 완료 이벤트 초안**
+
+아래 `UploadCompletedEvent`는 초기 초안으로 보존한다. 현재 구현 기준 업로드 성공 실시간 알림은 `FileUploaded` SSE 이벤트이며, 상세 payload는 `FileEventPayload`를 따른다.
 
 ```json
 {
@@ -440,5 +493,6 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 ## 6. OpenAPI 포함 범위
 
 - ReDoc 문서의 OpenAPI 초안은 MVP에서 실제로 노출할 HTTP 계약만 포함한다.
-- tus 전송 자체와 업로드 완료 이벤트 발행, 감사 로그 기록, MCP/AI 자연어 탐색은 부가 계약으로 문서화하고 OpenAPI path 에는 강제 포함하지 않는다.
+- tus 전송 자체와 감사 로그 기록, MCP/AI 자연어 탐색은 부가 계약으로 문서화하고 OpenAPI path 에는 강제 포함하지 않는다.
+- SSE endpoint인 `GET /api/v1/events/stream`은 실제 HTTP 계약이므로 OpenAPI path에 포함한다.
 - 자세한 request/response schema 는 `docs/개발/api/openapi.yaml` 을 기준으로 본다.

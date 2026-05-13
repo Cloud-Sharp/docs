@@ -781,70 +781,70 @@ components:
         - scanStatus
         - createdAt
         - updatedAt
-      TrashFileItem:
-        type: object
-        properties:
-          id:
-            type: string
-          spaceId:
-            type: integer
-            format: int64
-            description: 외부 응답에 노출되는 Space 식별자. bigint
-            example: 123
-          folderId:
-            type: string
-          displayName:
-            type: string
-          sizeBytes:
-            type: integer
-          mimeType:
-            type: string
-            nullable: true
-          fileStatus:
-            type: string
-            enum:
-              - DELETED
-          deletedAt:
-            type: string
-            format: date-time
-          updatedAt:
-            type: string
-            format: date-time
-        required:
-          - id
-          - spaceId
-          - folderId
-          - displayName
-          - sizeBytes
-          - fileStatus
-          - deletedAt
-          - updatedAt
-      TrashFilesResponse:
-        type: object
-        properties:
+    TrashFileItem:
+      type: object
+      properties:
+        id:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: 외부 응답에 노출되는 Space 식별자. bigint
+          example: 123
+        folderId:
+          type: string
+        displayName:
+          type: string
+        sizeBytes:
+          type: integer
+        mimeType:
+          type: string
+          nullable: true
+        fileStatus:
+          type: string
+          enum:
+            - DELETED
+        deletedAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - spaceId
+        - folderId
+        - displayName
+        - sizeBytes
+        - fileStatus
+        - deletedAt
+        - updatedAt
+    TrashFilesResponse:
+      type: object
+      properties:
+        items:
+          type: array
           items:
-            type: array
-            items:
-              $ref: '#/components/schemas/TrashFileItem'
-          page:
-            $ref: '#/components/schemas/PageInfo'
-        required:
-          - items
-          - page
-      RestoreTrashFileRequest:
-        type: object
-        properties:
-          targetFolderId:
-            type: string
-            nullable: true
-      UpdateFileRequest:
-        type: object
-        properties:
-          name:
-            type: string
-          parentFolderId:
-            type: string
-            nullable: true
+            $ref: '#/components/schemas/TrashFileItem'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - items
+        - page
+    RestoreTrashFileRequest:
+      type: object
+      properties:
+        targetFolderId:
+          type: string
+          nullable: true
+    UpdateFileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        parentFolderId:
+          type: string
+          nullable: true
     CreateUploadSessionRequest:
       type: object
       properties:
