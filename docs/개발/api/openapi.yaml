@@ -2252,7 +2252,7 @@ paths:
       tags:
         - Invites
       summary: Space 초대 링크 목록 조회
-          x-implementation-status: implemented
+      x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
       responses:
@@ -2272,7 +2272,7 @@ paths:
       tags:
         - Invites
       summary: Space 초대 링크 생성
-          x-implementation-status: implemented
+      x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
       requestBody:
@@ -2300,7 +2300,7 @@ paths:
         - Invites
       summary: Space 초대 링크 폐기
       description: 명시적 폐기는 초대 토큰 원문으로 조회한 뒤 row 삭제로 처리하며, 삭제된 링크는 조회와 수락 모두에서 존재하지 않는 초대로 취급한다.
-          x-implementation-status: implemented
+      x-implementation-status: implemented
       parameters:
         - $ref: '#/components/parameters/spaceSlug'
         - $ref: '#/components/parameters/inviteToken'
@@ -2879,96 +2879,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-    /api/v1/spaces/{spaceSlug}/trash/files:
-      get:
-        tags:
-          - Trash
-        summary: 휴지통 파일 목록 조회
-        x-implementation-status: implemented
-        parameters:
-          - $ref: '#/components/parameters/spaceSlug'
-          - $ref: '#/components/parameters/page'
-          - $ref: '#/components/parameters/pageSize'
-          - name: sortBy
-            in: query
-            schema:
-              type: string
-              enum:
-                - deletedAt
-                - name
-                - size
-              default: deletedAt
-          - $ref: '#/components/parameters/sortDir'
-        responses:
-          '200':
-            description: 휴지통 목록 조회 성공
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/TrashFilesResponse'
-          '404':
-            description: 접근 불가 또는 공간 없음
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResponse'
-    /api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore:
-      post:
-        tags:
-          - Trash
-        summary: 휴지통 파일 복원
-        x-implementation-status: implemented
-        parameters:
-          - $ref: '#/components/parameters/spaceSlug'
-          - $ref: '#/components/parameters/fileId'
-        requestBody:
-          required: false
+  /api/v1/spaces/{spaceSlug}/trash/files:
+    get:
+      tags:
+        - Trash
+      summary: 휴지통 파일 목록 조회
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum:
+              - deletedAt
+              - name
+              - size
+            default: deletedAt
+        - $ref: '#/components/parameters/sortDir'
+      responses:
+        '200':
+          description: 휴지통 목록 조회 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestoreTrashFileRequest'
-        responses:
-          '200':
-            description: 복원 성공
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/FileResource'
-          '404':
-            description: 파일 없음, 휴지통 아님, 또는 접근 불가
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResponse'
-          '409':
-            description: 복원 충돌 또는 이미 활성 상태, 파일명 충돌, 복원 실패
-            x-error-codes:
-              - FILE_NAME_CONFLICT
-              - FILE_ALREADY_ACTIVE
-              - FILE_RESTORE_FAILED
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResponse'
-    /api/v1/spaces/{spaceSlug}/trash/files/{fileId}:
-      delete:
-        tags:
-          - Trash
-        summary: 휴지통 파일 영구삭제
-        x-implementation-status: implemented
-        parameters:
-          - $ref: '#/components/parameters/spaceSlug'
-          - $ref: '#/components/parameters/fileId'
-        responses:
-          '204':
-            description: 영구삭제 성공
-          '404':
-            description: 파일 없음, 휴지통 아님, 또는 접근 불가
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResponse'
-    /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
+                $ref: '#/components/schemas/TrashFilesResponse'
+        '404':
+          description: 접근 불가 또는 공간 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore:
+    post:
+      tags:
+        - Trash
+      summary: 휴지통 파일 복원
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestoreTrashFileRequest'
+      responses:
+        '200':
+          description: 복원 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResource'
+        '404':
+          description: 파일 없음, 휴지통 아님, 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 복원 충돌 또는 이미 활성 상태, 파일명 충돌, 복원 실패
+          x-error-codes:
+            - FILE_NAME_CONFLICT
+            - FILE_ALREADY_ACTIVE
+            - FILE_RESTORE_FAILED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/trash/files/{fileId}:
+    delete:
+      tags:
+        - Trash
+      summary: 휴지통 파일 영구삭제
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '204':
+          description: 영구삭제 성공
+        '404':
+          description: 파일 없음, 휴지통 아님, 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions:
     post:
       tags:
         - Files
