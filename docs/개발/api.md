@@ -21,14 +21,14 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 ### 1.1 구현 상태 기준
 
-이 문서는 실제 백엔드 구현과 MVP 예정 계약을 함께 추적한다. `구현됨`은 `CloudSharp.Api`에 현재 매핑된 엔드포인트이고, `내부 구현됨`은 서비스 내부 또는 tusd hook 전용 엔드포인트이며, `예정`은 계약 초안만 남아 있는 API다.
+이 문서는 실제 백엔드 구현과 MVP 미구현 계약을 함께 추적한다. `구현됨`은 `CloudSharp.Api`에 현재 매핑된 엔드포인트이고, `내부 구현됨`은 서비스 내부 또는 tusd hook 전용 엔드포인트이며, `미구현`은 계약 초안만 남아 있는 API다.
 
 | 상태 | 의미 |
 |---|---|
 | `구현됨` | 현재 API 앱에서 외부 클라이언트가 호출할 수 있도록 매핑됨 |
 | `내부 구현됨` | 내부 인증 정책 또는 tusd hook 전용으로 매핑됨 |
 | `deprecated 구현됨` | 하위 호환을 위해 매핑되어 있으나 신규 클라이언트 사용은 권장하지 않음 |
-| `예정` | MVP 계약 초안이며 아직 `CloudSharp.Api` 엔드포인트가 없음 |
+| `미구현` | 계약 초안은 남아 있으나 아직 `CloudSharp.Api` 엔드포인트가 없음 |
 
 ## 2. 공통 계약
 
@@ -102,6 +102,10 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SHARE_LINK_PASSWORD_REQUIRED` | 비밀번호가 필요한 공유 링크 |
 | `SHARE_LINK_PASSWORD_INVALID` | 공유 링크 비밀번호 불일치 |
 | `UNSUPPORTED_PREVIEW_TYPE` | 미리보기 미지원 형식 |
+| `NOTIFICATION_NOT_FOUND` | 알림 또는 읽음 처리 대상 알림을 찾을 수 없음 |
+| `NOTIFICATION_INVALID_TARGET` | 알림 대상 범위가 유효하지 않음 |
+| `NOTIFICATION_INVALID_LAST_READ_NOTIFICATION_ID` | 마지막 읽은 알림 ID가 유효하지 않음 |
+| `NOTIFICATION_SAVE_CONFLICT` | 알림 저장 중 중복 또는 동시성 충돌 |
 
 ## 3. 기능 요구사항 추적표
 
@@ -128,11 +132,11 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SFR-036` | `POST /public/v1/share-links/{shareToken}/browse`, `.../download-sessions` |
 | `SFR-037~040` | `GET /api/v1/spaces/{spaceSlug}/files/{fileId}/preview` |
 | `SFR-041~042` | Space quota 조회 + 업로드 세션 생성 전 사전 검증 |
-| `SFR-043` | `GET /api/v1/admin/spaces/usage` |
+| `SFR-043` | `GET /api/v1/admin/spaces`, `GET /api/v1/admin/spaces/{spaceId}/usage` |
 | `SFR-044~045` | `FileItem.metadata`, `previewStatus`, `scanStatus`, `tags` |
 | `SFR-049~051` | `GET/POST/DELETE /api/v1/spaces/{spaceSlug}/trash/files*` |
 | `SFR-046` | `FileUploaded` SSE 이벤트 및 내부 finalize 이벤트 기록 |
-| `SFR-047` | MCP/AI 확장 예정 계약 |
+| `SFR-047` | MCP/AI 확장 미구현 계약 |
 | `SFR-048` | 감사 로그 정책 섹션 |
 
 ## 4. 도메인별 API
@@ -187,11 +191,11 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
-| `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 생성 | `ADMIN` | `SFR-011` | `예정` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 목록 조회 | `ADMIN` | `SFR-011` | `예정` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/invites/{inviteToken}` | Space 초대 링크 폐기 | `ADMIN` | `SFR-011` | `예정` |
-| `GET` | `/api/v1/invites/{inviteToken}` | 수락 전 초대 상세 조회 | 로그인 사용자 | `SFR-012` | `예정` |
-| `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `예정` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 생성 | `ADMIN` | `SFR-011` | `구현됨` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/invites` | Space 초대 링크 목록 조회 | `ADMIN` | `SFR-011` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/invites/{inviteToken}` | Space 초대 링크 폐기 | `ADMIN` | `SFR-011` | `구현됨` |
+| `GET` | `/api/v1/invites/{inviteToken}` | 수락 전 초대 상세 조회 | 로그인 사용자 | `SFR-012` | `구현됨` |
+| `POST` | `/api/v1/invites/accept` | 초대 수락 | 로그인 사용자 | `SFR-012` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/leave` | 현재 사용자가 Space에서 나가기 | `VIEWER` | `SFR-015` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/members` | 멤버 목록 조회 | `ADMIN` | `SFR-013` | `구현됨` |
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/members/{memberId}` | 멤버 Role 변경 | `ADMIN` | `SFR-014` | `구현됨` |
@@ -235,9 +239,9 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|---|
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` | `구현됨` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `예정` |
-| `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `예정` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `구현됨` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `구현됨` |
 | `POST` | `/api/v1/spaces/{spaceSlug}/upload-sessions` | 업로드 세션 생성 | `MEMBER` 이상 + `UploadFile` 권한 | `SFR-023`, `SFR-042` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/upload-sessions/{token}` | 업로드 세션 상태 조회 | `MEMBER` 이상 + `UploadFile` 권한 | `SFR-024`, `SFR-025` | `구현됨` |
 | `POST` | `/api/internal/uploads/uploading` | tus 전송 시작/진행 상태 반영 | 내부 인증 | `SFR-024` | `내부 구현됨` |
@@ -300,9 +304,9 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
-| `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `예정` |
-| `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `예정` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `구현됨` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `구현됨` |
 
 **휴지통 목록 응답 규칙**
 
@@ -314,6 +318,8 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `displayName` | 삭제 당시 파일명 |
 | `folderId` | 삭제 전 원래 폴더 ID |
 | `sizeBytes` | 파일 크기 |
+
+현재 구현된 목록 쿼리는 `page` 기본값 `1`, `pageSize` 기본값 `50` 및 최대 `100`, `sortBy = deletedAt | deleted_at | name | size`, `sortDir = asc | desc` 이다.
 
 **복원 요청 규칙**
 
@@ -356,30 +362,148 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
-| `POST` | `/api/v1/share-links` | 공유 링크 생성 | `MEMBER` | `SFR-032` | `예정` |
-| `PATCH` | `/api/v1/share-links/{shareLinkId}` | 링크 옵션 수정 | `MEMBER` | `SFR-033` | `예정` |
-| `DELETE` | `/api/v1/share-links/{shareLinkId}` | 링크 비활성화/폐기 | `MEMBER` | `SFR-034` | `예정` |
-| `POST` | `/public/v1/share-links/{shareToken}/verify` | 링크 유효성 검사 | 공개 | `SFR-035` | `예정` |
-| `POST` | `/public/v1/share-links/{shareToken}/browse` | 파일/폴더 열람 정보 조회 | 공개 | `SFR-036` | `예정` |
-| `POST` | `/public/v1/share-links/{shareToken}/download-sessions` | 공유 링크 기반 다운로드 세션 발급 | 공개 | `SFR-036` | `예정` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/share-links` | Space 공유 링크 목록 조회 | `VIEWER` | `SFR-032~034` | `구현됨` |
+| `POST` | `/api/v1/share-links` | 공유 링크 생성 | `MEMBER` | `SFR-032` | `구현됨` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}` | 링크 옵션 수정 | `MEMBER` | `SFR-033` | `구현됨` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}/status` | 링크 상태 변경 | `MEMBER` | `SFR-033`, `SFR-034` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}` | 링크 폐기 | `MEMBER` | `SFR-034` | `구현됨` |
+| `PATCH` | `/api/v1/share-links/{shareLinkId}` | 링크 옵션 수정 legacy 초안 | `MEMBER` | `SFR-033` | `미구현` |
+| `DELETE` | `/api/v1/share-links/{shareLinkId}` | 링크 비활성화/폐기 legacy 초안 | `MEMBER` | `SFR-034` | `미구현` |
+| `POST` | `/public/v1/share-links/{shareToken}/verify` | 링크 유효성 검사 | 공개 | `SFR-035` | `구현됨` |
+| `POST` | `/public/v1/share-links/{shareToken}/browse` | 파일/폴더 열람 정보 조회 | 공개 | `SFR-036` | `구현됨` |
+| `POST` | `/public/v1/share-links/{shareToken}/download-sessions` | 공유 링크 기반 다운로드 세션 발급 | 공개 | `SFR-036` | `구현됨` |
 
 **계약 요약**
 
-- 내부 생성/수정 API는 `targetType = FILE | FOLDER` 와 `fileId` 또는 `folderId` 중 하나를 받는다.
+- 생성 API는 `/api/v1/share-links` 이며 요청 body에 `spaceId`, `targetType = FILE | FOLDER` 와 `fileId` 또는 `folderId` 중 하나를 받는다.
+- 관리 API는 Space 범위 경로(`/api/v1/spaces/{spaceSlug}/share-links*`)를 사용한다.
+- 목록 조회는 `active = true | false`, `sort = createdAt | created_at | expiresAt | expires_at | title`, `order = asc | desc` 만 허용한다.
+- 상태 변경은 옵션 수정 API가 아니라 `PATCH /api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}/status` 를 사용하며 현재 구현 상태값은 `ACTIVE`, `DISABLED` 이다.
 - 공개 API는 비밀번호 제출을 위해 모두 `POST` 를 사용한다.
-- 비밀번호가 있는 링크는 `verify` 호출에 비밀번호를 보내면 `requiresPassword = false` 상태의 메타데이터를 받는다.
+- 비밀번호가 있는 링크는 `verify` 호출에 비밀번호를 보내며, 현재 응답은 `shareLink`, `canBrowse`, `canDownload`, `canPreview`, `targetName`, `targetType`를 반환한다.
 - `browse` 는 파일 공유면 파일 메타데이터를, 폴더 공유면 폴더 자식 목록을 반환한다.
 - `download-sessions` 는 파일 공유 또는 폴더 공유 안의 특정 파일을 대상으로 다운로드 세션을 발급한다.
 
-### 4.9 관리자, 이벤트, 확장 예정 계약
+### 4.9 Notification inbox
+
+| Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
+|---|---|---|---|---|---|
+| `GET` | `/api/v1/notifications` | 현재 사용자가 볼 수 있는 영속 알림 목록 조회 | 로그인 사용자 | 전략 문서 기반 확장 계약 | `구현됨` |
+| `GET` | `/api/v1/notifications/unread-count` | 현재 사용자의 미확인 알림 수 조회 | 로그인 사용자 | 전략 문서 기반 확장 계약 | `구현됨` |
+| `POST` | `/api/v1/notifications/read-position` | 사용자별 마지막 읽은 알림 위치 갱신 | 로그인 사용자 | 전략 문서 기반 확장 계약 | `구현됨` |
+
+**목록 조회**
+
+```http
+GET /api/v1/notifications?limit=20&cursor=123&unreadOnly=false
+Authorization: Bearer {opaque_session_token}
+```
+
+Query parameters:
+
+| 이름 | 타입 | 필수 | 설명 |
+|---|---|:---:|---|
+| `limit` | `integer` | N | 현재 구현 기본 `20`, 최대 `100` |
+| `cursor` | `integer(int64)` | N | 이전 페이지 마지막 `notification.id`. 없으면 최신 페이지 |
+| `unreadOnly` | `boolean` | N | 기본 `false` |
+| `spaceId` | `integer(int64)` | N | Space별 알림 필터 초안. 현재 API 요청 모델에는 없음, `미구현` |
+
+Response:
+
+```json
+{
+  "items": [
+    {
+      "id": 123,
+      "notificationId": "3d50b852-5fd6-4918-8e97-423d31c10d72",
+      "type": "FileUploaded",
+      "payload": {},
+      "recipientUserId": null,
+      "spaceId": 10,
+      "actorUserId": 7,
+      "aggregateType": "FileItem",
+      "aggregateId": 55,
+      "occurredAt": "2026-05-14T03:15:00Z",
+      "createdAt": "2026-05-14T03:15:01Z",
+      "expiresAt": null,
+      "isUnread": true
+    }
+  ],
+  "nextCursor": 123
+}
+```
+
+**Unread count**
+
+```http
+GET /api/v1/notifications/unread-count
+Authorization: Bearer {opaque_session_token}
+```
+
+현재 구현은 전체 visible unread count를 반환한다. `spaceId` 기반 count 필터는 초안만 있고 API 요청 모델에는 아직 없다.
+
+```json
+{
+  "count": 12
+}
+```
+
+**Read position 갱신**
+
+```http
+POST /api/v1/notifications/read-position
+Authorization: Bearer {opaque_session_token}
+Content-Type: application/json
+```
+
+Request:
+
+```json
+{
+  "lastReadNotificationId": 123
+}
+```
+
+Response:
+
+```json
+{
+  "lastReadNotificationId": 123,
+  "lastReadAt": "2026-05-14T03:20:00Z"
+}
+```
+
+**계약 요약**
+
+- 모든 Notification endpoint는 인증이 필요하며, 응답은 domain/EF entity가 아니라 DTO만 반환한다.
+- 알림 제목과 메시지는 서버가 저장하지 않고 클라이언트가 `type`과 `payload`로 렌더링한다.
+- visible notification은 개인 알림(`recipientUserId = currentUserId`)과 현재 active membership을 가진 Space 알림의 합집합이다.
+- `spaceId` query parameter 기반 Space별 필터는 초안만 있고 현재 요청 모델에는 없다.
+- 목록 조회는 `id DESC` 기준 cursor paging을 사용한다. `cursor`가 있으면 `id < cursor` 조건을 적용하고, `nextCursor`는 반환된 마지막 row의 `id`다.
+- unread 판정은 read position row가 없을 때 `lastReadNotificationId = 0`으로 간주하고, visible notification의 `id > lastReadNotificationId`이면 unread다.
+- read position은 사용자별 전체 inbox cursor 1개만 관리한다.
+- read position 갱신 시 `lastReadNotificationId`가 현재 사용자에게 visible한지 확인한다. 존재하지 않거나 visible하지 않으면 `404 Not Found`다.
+- 기존 값보다 작은 `lastReadNotificationId`로 되돌리는 요청은 성공으로 처리하되 저장하지 않는다.
+- 현재 구현 기준 목록 조회의 실패 상태는 `400`, `401`, `500`, unread count는 `401`, `500`, read position 갱신은 `400`, `401`, `404`, `500`을 반환할 수 있다.
+
+### 4.10 관리자, 이벤트, 확장 미구현 계약
 
 | 항목 | 계약 | 구현 상태 |
 |---|---|---|
-| 관리자 조회 | `GET /api/v1/admin/spaces/usage` | `예정` |
+| 관리자 API 접근 확인 | `GET /api/v1/admin` | `구현됨` |
+| 관리자 사용자 목록 | `GET /api/v1/admin/users` | `구현됨` |
+| 관리자 사용자 상세 | `GET /api/v1/admin/users/{userId}` | `구현됨` |
+| 관리자 사용자 상태 변경 | `PATCH /api/v1/admin/users/{userId}/status` | `구현됨` |
+| 관리자 Space 목록 | `GET /api/v1/admin/spaces` | `구현됨` |
+| 관리자 Space 사용량 상세 | `GET /api/v1/admin/spaces/{spaceId}/usage` | `구현됨` |
+| 관리자 Space quota 변경 | `PATCH /api/v1/admin/spaces/{spaceId}/quota` | `구현됨` |
+| 관리자 Space 상태 변경 | `PATCH /api/v1/admin/spaces/{spaceId}/status` | `구현됨` |
+| 관리자 전체 Space usage 목록 초안 | `GET /api/v1/admin/spaces/usage` | `미구현` |
 | 실시간 이벤트 스트림 | `GET /api/v1/events/stream` | `구현됨` |
 | SSE 이벤트 envelope | `RealtimeEventEnvelope` JSON 스키마 | `구현됨` |
-| MCP/AI 자연어 탐색 | MVP 비보장, 추후 별도 경로로 확장 | `예정` |
-| 감사 로그 | 외부 공개 API 없음, 서버 내부 운영 계약 | `예정` |
+| MCP token 발급 | `POST /api/v1/mcp-tokens` | `구현됨` |
+| MCP/AI 자연어 탐색 | MVP 비보장, 추후 별도 경로로 확장 | `미구현` |
+| 감사 로그 | 외부 공개 API 없음, 서버 내부 운영 계약 | `미구현` |
 
 **관리자 조회 응답 핵심 필드**
 
