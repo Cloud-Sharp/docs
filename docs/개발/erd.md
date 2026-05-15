@@ -1,117 +1,128 @@
-# Cloud# — Space 중심 통합 ERD 설계서
+# CloudSharp ERD 설계서
 
-## 1. 문서 개요
+## 1. 문서 기준
 
-본 문서는 Cloud#의 파일 서비스 데이터 모델을 **Space 중심 구조**로 재정의한 통합 ERD 설계서다.  
-기존 설계의 강점인 `UploadSession → FileReservation → FileItem` 업로드 파이프라인과 `ShareLink → DownloadSession` 다운로드 파이프라인은 유지하되, 기존의 `User 소유 파일 구조`를 `Space 소유 구조`로 전환한다. 이를 통해 팀/프로젝트 단위의 독립 저장 공간, 멤버십 기반 권한, Space 단위 Quota, 파일/폴더 외부 공유를 하나의 모델로 일관되게 표현한다.
+이 문서는 현재 백엔드 EF Core 엔티티와 configuration을 기준으로 정리한 ERD다. 기준 코드는 `CloudSharp.Infrastructure/Persistence/Entities`와 `CloudSharp.Infrastructure/Persistence/Configurations`이다.
 
----
-
-## 2. 핵심 설계 원칙
-
-|원칙|설명|
+| 항목 | 기준 |
 |---|---|
-|Space 중심 소유 구조|파일, 폴더, 공유 링크는 User가 아니라 Space에 소속된다|
-|행위자와 소유자 분리|생성자/요청자는 User로 남기고, 실질 소유 주체는 Space로 둔다|
-|권한은 Membership 기반|권한 판단의 기본 단위는 `Space Membership`이며 Role은 Space 전체 범위에 적용한다|
-|Quota는 Space 단위|`storage_used_bytes`, `storage_reserved_bytes`, `storage_allowed_bytes`는 Space 기준으로 관리한다|
-|업로드와 저장 확정 분리|전송 완료와 최종 파일 생성은 분리하며 `FINALIZING` 상태를 유지한다|
-|자원 선점 분리|업로드 전송 상태는 `UploadSession`, 파일명/용량 선점은 `FileReservation`이 담당한다|
-|외부 공유와 내부 협업 분리|외부 공유는 `ShareLink`, 내부 협업은 `SpaceMember`와 `SpaceInvite`로 처리한다|
-|파일/폴더 공유 지원|공유 링크는 파일뿐 아니라 폴더도 대상으로 가질 수 있어야 한다|
-|단명 다운로드 세션|실제 스트리밍은 `DownloadSession` 기반의 짧은 TTL 세션으로 처리한다|
+| DbContext | `CloudSharpDbContext` |
+| 실제 테이블 소스 | `*Entity.cs` |
+| 컬럼, 인덱스, 제약 조건 소스 | `*EntityConfiguration.cs` |
+| 시간 타입 | `DateTimeOffset`은 PostgreSQL 기준 `timestamp with time zone` |
+| JSON 타입 | PostgreSQL 기준 `jsonb`, 테스트 provider에서는 문자열 변환 |
+| 삭제 동작 기본 | 명시된 관계 대부분 `NoAction`, 알림 일부만 `Cascade`, `SetNull`, `Restrict` |
 
-이 원칙은 기획 문서의 Space, SpaceMember, Share Link, Space 단위 Quota 요구와 기존 설계 문서의 업로드/다운로드 상태 모델을 통합한 것이다.
+## 2. 현재 테이블 목록
 
----
+| 테이블 | 엔티티 | 설명 |
+|---|---|---|
+| `users` | `UserEntity` | 계정, 인증 정보, 시스템 역할, 사용자 상태 |
+| `spaces` | `SpaceEntity` | 파일 저장과 공유의 최상위 공간, Space quota |
+| `space_members` | `SpaceMemberEntity` | User와 Space의 멤버십 및 Space role |
+| `space_invites` | `SpaceInviteEntity` | Space 링크 초대 |
+| `folders` | `FolderEntity` | Space 내부 폴더 트리 |
+| `file_items` | `FileItemEntity` | 최종 저장 완료된 파일 메타데이터 |
+| `file_purge_requests` | `FilePurgeRequestEntity` | 휴지통 purge 작업 요청 기록 |
+| `upload_sessions` | `UploadSessionEntity` | tus 업로드 세션 상태 |
+| `file_reservations` | `FileReservationEntity` | 업로드 전 파일명과 용량 예약 |
+| `share_links` | `ShareLinkEntity` | 외부 공유 링크 정책 |
+| `share_link_targets` | `ShareLinkTargetEntity` | 공유 링크 대상 파일 또는 폴더 |
+| `download_sessions` | `DownloadSessionEntity` | 다운로드 세션 토큰 기록 |
+| `outbox_events` | `OutboxEventEntity` | 도메인 이벤트 outbox |
+| `notifications` | `NotificationEntity` | 사용자 또는 Space visible notification |
+| `notification_read_positions` | `NotificationReadPositionEntity` | 사용자별 notification 읽음 위치 |
+| `mcp_tokens` | `McpTokenEntity` | MCP access token 발급 및 폐기 이력 |
 
-## 3. 주요 엔티티 개요
+## 3. Enum 타입
 
-|엔티티|설명|
+`CloudSharpDbContext`는 PostgreSQL 사용 시 아래 enum을 등록한다.
+
+| DB enum | 값 |
 |---|---|
-|`User`|계정 주체, 인증 정보, 시스템 레벨 역할|
-|`Space`|파일 저장과 공유의 최상위 독립 공간|
-|`SpaceMember`|사용자와 Space의 소속 관계 및 역할|
-|`SpaceInvite`|Space 링크 초대 흐름 관리|
-|`Folder`|Space 내부 폴더 트리|
-|`FileItem`|최종 저장 완료된 파일 메타데이터|
-|`UploadSession`|tus 기반 업로드 전송 상태 추적|
-|`FileReservation`|파일명 및 용량 선점|
-|`ShareLink`|외부 공유 링크 정책 단위|
-|`ShareLinkTarget`|공유 링크와 파일/폴더의 연결|
-|`DownloadSession`|실제 다운로드용 단명 세션|
+| `system_role_t` | `ADMIN`, `USER` |
+| `user_status_t` | `ACTIVE`, `DISABLED`, `LOCKED` |
+| `space_status_t` | `ACTIVE`, `ARCHIVED`, `DELETED` |
+| `space_member_role_t` | `OWNER`, `ADMIN`, `MEMBER`, `VIEWER` |
+| `space_member_status_t` | `ACTIVE`, `INVITED`, `SUSPENDED`, `LEFT` |
+| `file_status_t` | `ACTIVE`, `DELETED`, `CORRUPTED`, `QUARANTINED` |
+| `preview_status_t` | `PENDING`, `PROCESSING`, `DONE`, `FAILED`, `UNSUPPORTED` |
+| `scan_status_t` | `PENDING`, `PASSED`, `FAILED`, `QUARANTINED` |
+| `upload_session_status_t` | `CREATED`, `UPLOADING`, `FINALIZING`, `COMPLETED`, `FAILED`, `ABORTED`, `EXPIRED` |
+| `file_reservation_status_t` | `RESERVED`, `ACTIVE`, `CONSUMED`, `CANCELLED`, `EXPIRED`, `FAILED` |
+| `share_link_status_t` | `ACTIVE`, `DISABLED`, `EXPIRED`, `REVOKED` |
+| `share_link_target_type_t` | `FILE`, `FOLDER` |
+| `download_subject_type_t` | `USER`, `SHARE_LINK` |
+| `download_session_status_t` | `ISSUED`, `EXPIRED` |
+| `mcp_token_status_t` | `ACTIVE`, `REVOKED` |
 
-기획 문서에서 Space는 파일/폴더 구조, 멤버, Role, Quota, 공유 링크 정책을 갖는 독립 단위로 정의되고, 기존 설계 문서는 업로드/다운로드 파이프라인용 핵심 엔티티를 이미 갖고 있다. 본 설계는 이를 하나로 합친 형태다.
-
----
-
-## 4. 통합 ERD
+## 4. ERD
 
 ```mermaid
 erDiagram
-
-    USER {
+    USERS {
         BIGINT id PK
         VARCHAR email UK
         VARCHAR password_hash
-        VARCHAR user_name "max 100"
+        VARCHAR user_name
         VARCHAR display_name
-        ENUM system_role "ADMIN | USER"
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-        TIMESTAMP deleted_at
+        ENUM system_role
+        ENUM status
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
     }
 
-    SPACE {
+    SPACES {
         BIGINT id PK
         BIGINT created_by_user_id FK
         VARCHAR name
         VARCHAR slug UK
         TEXT description
-        BIGINT storage_allowed_bytes "NULL = unlimited"
+        BIGINT storage_allowed_bytes
         BIGINT storage_used_bytes
         BIGINT storage_reserved_bytes
-        ENUM status "ACTIVE | ARCHIVED | DELETED"
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-        TIMESTAMP deleted_at
+        ENUM status
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
     }
 
-    SPACE_MEMBER {
+    SPACE_MEMBERS {
         BIGINT id PK
         BIGINT space_id FK
         BIGINT user_id FK
-        ENUM role "OWNER | ADMIN | MEMBER | VIEWER"
-        ENUM status "ACTIVE | INVITED | SUSPENDED | LEFT"
-        TIMESTAMP joined_at
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-        TIMESTAMP deleted_at
+        ENUM role
+        ENUM status
+        TIMESTAMPTZ joined_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
     }
 
-    SPACE_INVITE {
+    SPACE_INVITES {
         BIGINT id PK
         BIGINT space_id FK
         BIGINT inviter_user_id FK
         VARCHAR token_hash UK
-        TIMESTAMP expires_at
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
     }
 
-    FOLDER {
+    FOLDERS {
         BIGINT id PK
         BIGINT space_id FK
         BIGINT parent_folder_id FK
         BIGINT created_by_user_id FK
         VARCHAR name
-        VARCHAR full_path
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-        TIMESTAMP deleted_at
+        TEXT full_path
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
     }
 
-    FILE_ITEM {
+    FILE_ITEMS {
         BIGINT id PK
         BIGINT space_id FK
         BIGINT folder_id FK
@@ -119,26 +130,37 @@ erDiagram
         VARCHAR display_name
         VARCHAR normalized_name
         VARCHAR storage_key UK
+        VARCHAR storage_provider
         BIGINT size_bytes
         VARCHAR mime_type
         VARCHAR checksum_sha256
-        ENUM file_status "ACTIVE | DELETED | CORRUPTED | QUARANTINED"
-        ENUM preview_status "PENDING | PROCESSING | DONE | FAILED | UNSUPPORTED"
-        ENUM scan_status "PENDING | PASSED | FAILED | QUARANTINED"
-        JSON metadata_json
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-        TIMESTAMP deleted_at
+        ENUM file_status
+        ENUM preview_status
+        ENUM scan_status
+        JSONB metadata_json
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
     }
 
-    UPLOAD_SESSION {
+    FILE_PURGE_REQUESTS {
+        BIGINT file_id PK
+        BIGINT space_id
+        VARCHAR storage_provider
+        VARCHAR storage_key
+        TIMESTAMPTZ requested_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ completed_at
+    }
+
+    UPLOAD_SESSIONS {
         BIGINT id PK
         BIGINT requester_user_id FK
         BIGINT space_id FK
         BIGINT target_folder_id FK
         VARCHAR token UK
         VARCHAR tus_upload_id UK
-        ENUM status "CREATED | UPLOADING | FINALIZING | COMPLETED | FAILED | ABORTED | EXPIRED"
+        ENUM status
         BIGINT expected_size
         BIGINT received_size
         VARCHAR original_name
@@ -153,13 +175,13 @@ erDiagram
         TEXT last_error_message
         TIMESTAMPTZ finalizing_started_at
         TIMESTAMPTZ finalized_at
-        TIMESTAMP created_at
-        TIMESTAMP expires_at
-        TIMESTAMP completed_at
-        TIMESTAMP last_activity_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ completed_at
+        TIMESTAMPTZ last_activity_at
     }
 
-    FILE_RESERVATION {
+    FILE_RESERVATIONS {
         BIGINT id PK
         BIGINT requester_user_id FK
         BIGINT space_id FK
@@ -170,746 +192,597 @@ erDiagram
         VARCHAR normalized_name
         BIGINT expected_size
         BIGINT reserved_bytes
-        ENUM status "RESERVED | ACTIVE | CONSUMED | CANCELLED | EXPIRED | FAILED"
-        TIMESTAMP expires_at
-        TIMESTAMP consumed_at
-        TIMESTAMP released_at
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        BOOLEAN is_reserved
+        ENUM status
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ consumed_at
+        TIMESTAMPTZ released_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
     }
 
-    SHARE_LINK {
+    SHARE_LINKS {
         BIGINT id PK
         BIGINT space_id FK
         BIGINT created_by_user_id FK
         VARCHAR token_hash UK
         VARCHAR title
         VARCHAR password_hash
-        ENUM status "ACTIVE | DISABLED | EXPIRED | REVOKED"
+        ENUM status
         BOOLEAN allow_download
         BOOLEAN allow_preview
-        TIMESTAMP expires_at
+        TIMESTAMPTZ expires_at
         INTEGER max_download_count
         INTEGER download_attempt_count
         INTEGER download_completed_count
-        TIMESTAMP last_accessed_at
-        TIMESTAMP revoked_at
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
+        TIMESTAMPTZ last_accessed_at
+        TIMESTAMPTZ revoked_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
     }
 
-    SHARE_LINK_TARGET {
+    SHARE_LINK_TARGETS {
         BIGINT id PK
         BIGINT share_link_id FK
-        ENUM target_type "FILE | FOLDER"
+        ENUM target_type
         BIGINT file_item_id FK
         BIGINT folder_id FK
-        TIMESTAMP created_at
-        TIMESTAMP deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ deleted_at
     }
 
-    DOWNLOAD_SESSION {
+    DOWNLOAD_SESSIONS {
         BIGINT id PK
         BIGINT file_item_id FK
         BIGINT share_link_id FK
         BIGINT requester_user_id FK
         VARCHAR session_token_hash UK
-        ENUM subject_type "USER | SHARE_LINK"
-        ENUM status "ISSUED | EXPIRED"
-        TIMESTAMP expires_at
-        TIMESTAMP last_used_at
-        TIMESTAMP created_at
+        ENUM subject_type
+        ENUM status
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ last_used_at
+        TIMESTAMPTZ created_at
     }
 
-    USER ||--o{ SPACE : creates
-    USER ||--o{ SPACE_MEMBER : joins
-    SPACE ||--o{ SPACE_MEMBER : has
+    OUTBOX_EVENTS {
+        BIGINT id PK
+        UUID event_id UK
+        VARCHAR event_type
+        INTEGER event_version
+        VARCHAR aggregate_type
+        BIGINT aggregate_id
+        BIGINT space_id FK
+        BIGINT actor_user_id FK
+        JSONB payload
+        JSONB headers
+        VARCHAR status
+        INTEGER attempts
+        INTEGER max_attempts
+        TIMESTAMPTZ occurred_at
+        TIMESTAMPTZ enqueued_at
+        TIMESTAMPTZ available_at
+        VARCHAR worker_id
+        TIMESTAMPTZ worker_locked_at
+        TIMESTAMPTZ worker_lock_expires_at
+        TIMESTAMPTZ published_at
+        VARCHAR last_error_code
+        TEXT last_error_message
+    }
 
-    SPACE ||--o{ SPACE_INVITE : issues
-    USER ||--o{ SPACE_INVITE : sends
+    NOTIFICATIONS {
+        BIGINT id PK
+        UUID notification_id UK
+        VARCHAR type
+        JSONB payload
+        BIGINT recipient_user_id FK
+        BIGINT space_id FK
+        BIGINT actor_user_id FK
+        VARCHAR aggregate_type
+        BIGINT aggregate_id
+        BIGINT outbox_event_id FK
+        TIMESTAMPTZ occurred_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ expires_at
+    }
 
-    SPACE ||--o{ FOLDER : owns
-    FOLDER ||--o{ FOLDER : parent_of
-    USER ||--o{ FOLDER : creates
+    NOTIFICATION_READ_POSITIONS {
+        BIGINT id PK
+        BIGINT user_id FK
+        BIGINT last_read_notification_id FK
+        TIMESTAMPTZ last_read_at
+        TIMESTAMPTZ updated_at
+    }
 
-    SPACE ||--o{ FILE_ITEM : owns
-    FOLDER ||--o{ FILE_ITEM : contains
-    USER ||--o{ FILE_ITEM : creates
+    MCP_TOKENS {
+        BIGINT id PK
+        BIGINT owner_user_id FK
+        VARCHAR name
+        VARCHAR token_hash UK
+        ENUM status
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ last_used_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ revoked_at
+        BIGINT revoked_by_user_id FK
+    }
 
-    SPACE ||--o{ UPLOAD_SESSION : scopes
-    USER ||--o{ UPLOAD_SESSION : requests
-    FOLDER ||--o{ UPLOAD_SESSION : upload_target
+    USERS ||--o{ SPACES : creates
+    USERS ||--o{ SPACE_MEMBERS : joins
+    SPACES ||--o{ SPACE_MEMBERS : has
 
-    SPACE ||--o{ FILE_RESERVATION : scopes
-    USER ||--o{ FILE_RESERVATION : requests
-    FOLDER ||--o{ FILE_RESERVATION : reserved_in
-    UPLOAD_SESSION ||--|| FILE_RESERVATION : paired
-    UPLOAD_SESSION ||--o| FILE_ITEM : creates
-    FILE_RESERVATION ||--o| FILE_ITEM : consumed_to
+    SPACES ||--o{ SPACE_INVITES : has
+    USERS ||--o{ SPACE_INVITES : sends
 
-    SPACE ||--o{ SHARE_LINK : owns
-    USER ||--o{ SHARE_LINK : creates
-    SHARE_LINK ||--o{ SHARE_LINK_TARGET : maps
-    FILE_ITEM ||--o{ SHARE_LINK_TARGET : shared_file
-    FOLDER ||--o{ SHARE_LINK_TARGET : shared_folder
+    SPACES ||--o{ FOLDERS : owns
+    FOLDERS ||--o{ FOLDERS : parent_of
+    USERS ||--o{ FOLDERS : creates
 
-    FILE_ITEM ||--o{ DOWNLOAD_SESSION : streamed_by
-    SHARE_LINK ||--o{ DOWNLOAD_SESSION : grants
-    USER ||--o{ DOWNLOAD_SESSION : requests
+    SPACES ||--o{ FILE_ITEMS : owns
+    FOLDERS ||--o{ FILE_ITEMS : contains
+    USERS ||--o{ FILE_ITEMS : creates
+
+    SPACES ||--o{ UPLOAD_SESSIONS : scopes
+    USERS ||--o{ UPLOAD_SESSIONS : requests
+    FOLDERS ||--o{ UPLOAD_SESSIONS : target
+    FILE_ITEMS ||--o{ UPLOAD_SESSIONS : result
+
+    SPACES ||--o{ FILE_RESERVATIONS : scopes
+    USERS ||--o{ FILE_RESERVATIONS : requests
+    FOLDERS ||--o{ FILE_RESERVATIONS : reserves_in
+    UPLOAD_SESSIONS ||--|| FILE_RESERVATIONS : pairs
+    FILE_ITEMS ||--o{ FILE_RESERVATIONS : consumes
+
+    SPACES ||--o{ SHARE_LINKS : owns
+    USERS ||--o{ SHARE_LINKS : creates
+    SHARE_LINKS ||--o{ SHARE_LINK_TARGETS : has
+    FILE_ITEMS ||--o{ SHARE_LINK_TARGETS : shared_file
+    FOLDERS ||--o{ SHARE_LINK_TARGETS : shared_folder
+
+    FILE_ITEMS ||--o{ DOWNLOAD_SESSIONS : streamed_by
+    SHARE_LINKS ||--o{ DOWNLOAD_SESSIONS : grants
+    USERS ||--o{ DOWNLOAD_SESSIONS : requests
+
+    SPACES ||--o{ OUTBOX_EVENTS : scopes
+    USERS ||--o{ OUTBOX_EVENTS : acts
+
+    USERS ||--o{ NOTIFICATIONS : receives
+    SPACES ||--o{ NOTIFICATIONS : targets
+    USERS ||--o{ NOTIFICATIONS : acts
+    OUTBOX_EVENTS ||--o| NOTIFICATIONS : projects
+    USERS ||--o{ NOTIFICATION_READ_POSITIONS : reads
+    NOTIFICATIONS ||--o{ NOTIFICATION_READ_POSITIONS : cursor
+
+    USERS ||--o{ MCP_TOKENS : owns
+    USERS ||--o{ MCP_TOKENS : revokes
 ```
 
-이 ERD의 핵심은 `Space`가 파일/폴더/공유의 기준 단위가 되고, `User`는 생성자·요청자·멤버로 참여하는 구조라는 점이다. 이는 기획 문서의 “파일은 User 소유 개념보다 Space 소속 개념이 더 중요하다”는 정의와 일치한다. 또한 기존 설계 문서의 `UploadSession ↔ FileReservation ↔ FileItem`, `ShareLink ↔ DownloadSession` 관계를 그대로 계승한다.
+`file_purge_requests.file_id`와 `space_id`는 현재 엔티티상 purge 작업을 위한 식별자로 보관되며 EF 관계는 구성되어 있지 않다.
 
----
+## 5. 엔티티 상세
 
-## 5. 관계 요약
+### 5.1 `users`
 
-|관계|카디널리티|설명|
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `email` | VARCHAR(320) | N | UNIQUE |
+| `password_hash` | VARCHAR(255) | N |  |
+| `user_name` | VARCHAR(100) | Y |  |
+| `display_name` | VARCHAR(100) | Y |  |
+| `system_role` | `system_role_t` | N | default `USER` |
+| `status` | `user_status_t` | N | default `ACTIVE` |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `deleted_at` | TIMESTAMPTZ | Y |  |
+
+### 5.2 `spaces`
+
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `created_by_user_id` | BIGINT | N | FK `users.id`, `NoAction`, indexed |
+| `name` | VARCHAR(200) | N |  |
+| `slug` | VARCHAR(36) | N | UNIQUE |
+| `description` | TEXT | Y |  |
+| `storage_allowed_bytes` | BIGINT | Y | `NULL` means unlimited |
+| `storage_used_bytes` | BIGINT | N | default `0` |
+| `storage_reserved_bytes` | BIGINT | N | default `0` |
+| `status` | `space_status_t` | N | default `ACTIVE` |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `deleted_at` | TIMESTAMPTZ | Y |  |
+
+Checks:
+
+| 이름 | 조건 |
+|---|---|
+| `chk_spaces_storage_allowed_non_negative` | `storage_allowed_bytes IS NULL OR storage_allowed_bytes >= 0` |
+| `chk_spaces_storage_used_non_negative` | `storage_used_bytes >= 0` |
+| `chk_spaces_storage_reserved_non_negative` | `storage_reserved_bytes >= 0` |
+
+### 5.3 `space_members`
+
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction` |
+| `user_id` | BIGINT | N | FK `users.id`, `NoAction`, indexed |
+| `role` | `space_member_role_t` | N |  |
+| `status` | `space_member_status_t` | N | default `INVITED` |
+| `joined_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `deleted_at` | TIMESTAMPTZ | Y |  |
+
+Indexes:
+
+| 이름 | 컬럼 | 조건 |
 |---|---|---|
-|`User → Space`|1 : N|한 사용자는 여러 Space를 생성 가능|
-|`Space → SpaceMember`|1 : N|하나의 Space는 여러 멤버를 가짐|
-|`User → SpaceMember`|1 : N|한 사용자는 여러 Space에 참여 가능|
-|`Space → Folder`|1 : N|하나의 Space는 여러 폴더를 가짐|
-|`Folder → Folder`|1 : N|폴더는 하위 폴더를 가짐|
-|`Space → FileItem`|1 : N|하나의 Space는 여러 파일을 가짐|
-|`Folder → FileItem`|1 : N|하나의 폴더는 여러 파일을 포함|
-|`Space → UploadSession`|1 : N|업로드 세션은 특정 Space 범위에 속함|
-|`UploadSession → FileReservation`|1 : 1|업로드 세션과 예약은 1:1 대응|
-|`UploadSession → FileItem`|1 : 0..1|완료된 세션만 최종 파일 생성|
-|`FileReservation → FileItem`|1 : 0..1|소비된 예약만 파일과 연결|
-|`Space → ShareLink`|1 : N|공유 링크는 특정 Space에 속함|
-|`ShareLink → ShareLinkTarget`|1 : N|하나의 링크는 여러 대상 연결 가능|
-|`FileItem → ShareLinkTarget`|1 : N|하나의 파일은 여러 링크로 공유 가능|
-|`Folder → ShareLinkTarget`|1 : N|하나의 폴더도 여러 링크로 공유 가능|
-|`FileItem → DownloadSession`|1 : N|하나의 파일은 여러 다운로드 세션을 가질 수 있음|
-|`ShareLink → DownloadSession`|1 : N|링크 기반 다운로드는 여러 세션 발급 가능|
+| `ux_space_members_active` | `(space_id, user_id)` | UNIQUE where `deleted_at IS NULL AND status IN ('ACTIVE', 'INVITED', 'SUSPENDED')` |
+| `idx_space_members_user_id` | `user_id` |  |
 
-기획 문서는 외부 공유와 내부 협업을 분리하고, 공유 링크의 대상이 파일 또는 폴더가 될 수 있어야 한다고 설명한다. 기존 설계는 파일 공유 중심이었으므로, 이를 `ShareLinkTarget`으로 일반화했다.
+### 5.4 `space_invites`
 
----
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction`, indexed |
+| `inviter_user_id` | BIGINT | N | FK `users.id`, `NoAction` |
+| `token_hash` | VARCHAR(255) | N | UNIQUE |
+| `expires_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
 
-## 6. 엔티티 상세
+현재 API 계약상 초대 토큰 원문을 이 컬럼에 저장하지만 물리 컬럼명은 `token_hash`를 유지한다.
 
-### 6.1 User
+### 5.5 `folders`
 
-> 서비스의 계정 주체이자 인증 대상이다.  
-> 파일의 소유 주체는 아니며, 생성자·요청자·멤버 역할로 참여한다.
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction` |
+| `parent_folder_id` | BIGINT | Y | self FK `folders.id`, `NoAction` |
+| `created_by_user_id` | BIGINT | N | FK `users.id`, `NoAction` |
+| `name` | VARCHAR(255) | N |  |
+| `full_path` | TEXT | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `deleted_at` | TIMESTAMPTZ | Y |  |
 
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`email`|VARCHAR|NOT NULL|로그인 식별자, UNIQUE|
-|`password_hash`|VARCHAR|NOT NULL|해시된 비밀번호|
-|`user_name`|VARCHAR(100)|NULL|사용자 이름|
-|`display_name`|VARCHAR|NULL|사용자 표시 이름|
-|`system_role`|ENUM|NOT NULL|`ADMIN \| USER`|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-|`deleted_at`|TIMESTAMP|NULL|소프트 삭제 일시|
+Checks and indexes:
 
-**설계 포인트**
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_folders_name_not_blank` | `BTRIM(name) <> ''` |
+| INDEX | `idx_folders_space_parent` | `(space_id, parent_folder_id)` |
+| UNIQUE | `ux_folders_space_root` | `space_id` where `parent_folder_id IS NULL AND deleted_at IS NULL` |
+| UNIQUE | `ux_folders_parent_name_active` | `(parent_folder_id, name)` where `deleted_at IS NULL AND parent_folder_id IS NOT NULL` |
 
-- 기존 설계의 `storage_used_bytes`, `storage_reserved_bytes`, `storage_allowed_bytes`는 User가 아니라 Space로 이동한다.
-    
-- User는 전역 관리자 여부 같은 시스템 레벨 역할만 가진다.
-    
-- 실질적인 파일 접근 권한은 `SpaceMember`를 통해 판별한다.
-    
+### 5.6 `file_items`
 
----
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction` |
+| `folder_id` | BIGINT | N | FK `folders.id`, `NoAction` |
+| `created_by_user_id` | BIGINT | N | FK `users.id`, `NoAction` |
+| `display_name` | VARCHAR(255) | N |  |
+| `normalized_name` | VARCHAR(255) | N |  |
+| `storage_key` | VARCHAR(512) | N | UNIQUE |
+| `storage_provider` | VARCHAR(50) | N | default `local` |
+| `size_bytes` | BIGINT | N |  |
+| `mime_type` | VARCHAR(255) | Y |  |
+| `checksum_sha256` | VARCHAR(64) | Y | indexed |
+| `file_status` | `file_status_t` | N | default `ACTIVE` |
+| `preview_status` | `preview_status_t` | N | default `PENDING` |
+| `scan_status` | `scan_status_t` | N | default `PENDING` |
+| `metadata_json` | JSONB | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `deleted_at` | TIMESTAMPTZ | Y |  |
 
-### 6.2 Space
+Checks and indexes:
 
-> 파일 저장과 공유의 최상위 단위다.  
-> Quota, 멤버, 권한, 파일/폴더 트리, 공유 링크 정책의 기준점이다.
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_file_items_size_non_negative` | `size_bytes >= 0` |
+| UNIQUE | `ux_file_items_name_active` | `(space_id, folder_id, normalized_name)` where `deleted_at IS NULL AND file_status <> 'DELETED'` |
+| INDEX | `idx_file_items_space_folder` | `(space_id, folder_id)` |
+| INDEX | `idx_file_items_checksum_sha256` | `checksum_sha256` |
 
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`created_by_user_id`|FK → User|NOT NULL|Space 생성자|
-|`name`|VARCHAR|NOT NULL|Space 이름|
-|`slug`|VARCHAR|NOT NULL|URL/식별자용 슬러그, UNIQUE|
-|`description`|TEXT|NULL|설명|
-|`storage_allowed_bytes`|BIGINT|NULL|허용 용량, NULL = 무제한|
-|`storage_used_bytes`|BIGINT|NOT NULL|실제 사용량|
-|`storage_reserved_bytes`|BIGINT|NOT NULL|업로드 예약 용량|
-|`status`|ENUM|NOT NULL|`ACTIVE \| ARCHIVED \| DELETED`|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-|`deleted_at`|TIMESTAMP|NULL|소프트 삭제 일시|
+### 5.7 `file_purge_requests`
 
-**설계 포인트**
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `file_id` | BIGINT | N | PK, value generated never |
+| `space_id` | BIGINT | N | indexed, no EF FK |
+| `storage_provider` | VARCHAR(50) | N |  |
+| `storage_key` | VARCHAR(512) | N |  |
+| `requested_at` | TIMESTAMPTZ | N |  |
+| `updated_at` | TIMESTAMPTZ | N |  |
+| `completed_at` | TIMESTAMPTZ | Y | indexed |
 
-- Quota는 개인이 아니라 Space 단위로만 관리한다.
-    
-- 파일 업로드 허용 여부는 `allowed - used - reserved` 기준으로 판정한다.
-    
-- 동일 Space의 모든 멤버는 동일 Quota 풀을 공동 사용한다.
-    
+이 테이블은 purge worker용 작업 큐 성격이다. 현재 EF configuration에는 `file_items` 또는 `spaces` FK가 없다.
 
----
+### 5.8 `upload_sessions`
 
-### 6.3 SpaceMember
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `requester_user_id` | BIGINT | N | FK `users.id`, `NoAction`, indexed |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction` |
+| `target_folder_id` | BIGINT | N | FK `folders.id`, `NoAction`, indexed |
+| `token` | VARCHAR(255) | N | UNIQUE |
+| `tus_upload_id` | VARCHAR(255) | Y | UNIQUE |
+| `status` | `upload_session_status_t` | N | default `CREATED` |
+| `expected_size` | BIGINT | N |  |
+| `received_size` | BIGINT | N | default `0` |
+| `original_name` | VARCHAR(255) | N |  |
+| `normalized_name` | VARCHAR(255) | N |  |
+| `client_mime_type` | VARCHAR(255) | Y |  |
+| `storage_key_temp` | VARCHAR(512) | Y |  |
+| `storage_key` | VARCHAR(512) | Y |  |
+| `checksum_sha256` | VARCHAR(64) | Y |  |
+| `file_item_id` | BIGINT | Y | FK `file_items.id`, `NoAction` |
+| `finalize_attempts` | INTEGER | N | default `0` |
+| `last_error_code` | VARCHAR(100) | Y |  |
+| `last_error_message` | TEXT | Y |  |
+| `finalizing_started_at` | TIMESTAMPTZ | Y |  |
+| `finalized_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `expires_at` | TIMESTAMPTZ | Y |  |
+| `completed_at` | TIMESTAMPTZ | Y |  |
+| `last_activity_at` | TIMESTAMPTZ | N | default `NOW()` |
 
-> 사용자가 특정 Space에 속해 있음을 표현하는 멤버십 테이블이다.
+Checks and indexes:
 
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`space_id`|FK → Space|NOT NULL|소속 Space|
-|`user_id`|FK → User|NOT NULL|소속 사용자|
-|`role`|ENUM|NOT NULL|`OWNER \| ADMIN \| MEMBER \| VIEWER`|
-|`status`|ENUM|NOT NULL|`ACTIVE \| INVITED \| SUSPENDED \| LEFT`|
-|`joined_at`|TIMESTAMP|NULL|가입 일시|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-|`deleted_at`|TIMESTAMP|NULL|소프트 삭제 일시|
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_upload_sessions_expected_size_non_negative` | `expected_size >= 0` |
+| CHECK | `chk_upload_sessions_received_size_non_negative` | `received_size >= 0` |
+| CHECK | `chk_upload_sessions_received_size_lte_expected` | `received_size <= expected_size` |
+| CHECK | `chk_upload_sessions_finalize_attempts_non_negative` | `finalize_attempts >= 0` |
+| INDEX | `idx_upload_sessions_space_status` | `(space_id, status)` |
 
-**설계 포인트**
+### 5.9 `file_reservations`
 
-- 권한 판단의 기본 단위는 `Space Membership`이다.
-    
-- Role은 파일 개별 단위가 아니라 Space 전체 범위에 적용한다.
-    
-- MVP에서는 별도 Role 테이블보다 enum 기반 Role이 더 단순하고 적합하다.
-    
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `requester_user_id` | BIGINT | N | FK `users.id`, `NoAction` |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction` |
+| `target_folder_id` | BIGINT | N | FK `folders.id`, `NoAction`, indexed |
+| `upload_session_id` | BIGINT | N | FK `upload_sessions.id`, `NoAction`, UNIQUE |
+| `file_item_id` | BIGINT | Y | FK `file_items.id`, `NoAction` |
+| `reserved_name` | VARCHAR(255) | N |  |
+| `normalized_name` | VARCHAR(255) | N |  |
+| `expected_size` | BIGINT | N |  |
+| `reserved_bytes` | BIGINT | N |  |
+| `is_reserved` | BOOLEAN | N | default `false` |
+| `status` | `file_reservation_status_t` | N | default `RESERVED` |
+| `expires_at` | TIMESTAMPTZ | Y |  |
+| `consumed_at` | TIMESTAMPTZ | Y |  |
+| `released_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
 
----
+Checks and indexes:
 
-### 6.4 SpaceInvite
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_file_reservations_expected_size_non_negative` | `expected_size >= 0` |
+| CHECK | `chk_file_reservations_reserved_bytes_non_negative` | `reserved_bytes >= 0` |
+| UNIQUE | `ux_file_reservations_name_active` | `(space_id, target_folder_id, normalized_name)` where `status IN ('RESERVED', 'ACTIVE')` |
+| INDEX | `idx_file_reservations_space_status` | `(space_id, status)` |
 
-> Space 링크 초대를 관리한다. 특정 사용자나 이메일을 지정하지 않으며, 링크를 받은 로그인 사용자는 유효 기간 안에 수락해 `VIEWER` 멤버가 된다.
+### 5.10 `share_links`
 
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`space_id`|FK → Space|NOT NULL|대상 Space|
-|`inviter_user_id`|FK → User|NOT NULL|초대한 사용자|
-|`token_hash`|VARCHAR|NOT NULL|초대 토큰 해시, UNIQUE|
-|`expires_at`|TIMESTAMP|NULL|만료 시각|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `space_id` | BIGINT | N | FK `spaces.id`, `NoAction` |
+| `created_by_user_id` | BIGINT | N | FK `users.id`, `NoAction` |
+| `token_hash` | VARCHAR(255) | N | UNIQUE |
+| `title` | VARCHAR(255) | Y |  |
+| `password_hash` | VARCHAR(255) | Y |  |
+| `status` | `share_link_status_t` | N | default `ACTIVE` |
+| `allow_download` | BOOLEAN | N | default `true` |
+| `allow_preview` | BOOLEAN | N | default `true` |
+| `expires_at` | TIMESTAMPTZ | Y |  |
+| `max_download_count` | INTEGER | Y |  |
+| `download_attempt_count` | INTEGER | N | default `0` |
+| `download_completed_count` | INTEGER | N | default `0` |
+| `last_accessed_at` | TIMESTAMPTZ | Y |  |
+| `revoked_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
 
-**설계 포인트**
+Checks and indexes:
 
-- 내부 협업 흐름은 `ShareLink`가 아니라 링크 초대 수락을 통해 `SpaceMember`를 생성하는 방식으로 처리한다.
-    
-- 초대 링크는 만료 전까지 재사용 가능하며, 수락 시 기본 Role은 `VIEWER`로 고정한다.
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_share_links_max_download_count_non_negative` | `max_download_count IS NULL OR max_download_count >= 0` |
+| CHECK | `chk_share_links_attempt_count_non_negative` | `download_attempt_count >= 0` |
+| CHECK | `chk_share_links_completed_count_non_negative` | `download_completed_count >= 0` |
+| INDEX | `idx_share_links_space_status` | `(space_id, status)` |
 
-- 토큰 원문은 저장하지 않고 해시만 저장한다. 원문 토큰과 초대 URL은 생성 응답에서만 1회 반환한다.
+PostgreSQL에서는 shadow property `xmin`을 row version으로 사용한다.
 
-- 명시적 폐기는 상태 변경이 아니라 row 삭제로 처리한다.
-    
+### 5.11 `share_link_targets`
 
----
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `share_link_id` | BIGINT | N | FK `share_links.id`, `NoAction`, indexed |
+| `target_type` | `share_link_target_type_t` | N |  |
+| `file_item_id` | BIGINT | Y | FK `file_items.id`, `NoAction`, indexed |
+| `folder_id` | BIGINT | Y | FK `folders.id`, `NoAction`, indexed |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `deleted_at` | TIMESTAMPTZ | Y |  |
 
-### 6.5 Folder
+Check:
 
-> Space 내부의 논리적 폴더 트리를 표현한다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`space_id`|FK → Space|NOT NULL|소속 Space|
-|`parent_folder_id`|FK → Folder|NULL|부모 폴더, NULL = 루트|
-|`created_by_user_id`|FK → User|NOT NULL|생성자|
-|`name`|VARCHAR|NOT NULL|폴더 이름|
-|`full_path`|VARCHAR|NULL|전체 경로 캐시|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-|`deleted_at`|TIMESTAMP|NULL|소프트 삭제 일시|
-
-**설계 포인트**
-
-- 기존 `owner_user_id` 기반 폴더 구조를 `space_id` 기반 구조로 전환한다.
-    
-- `full_path`는 조회 최적화용 캐시다.
-    
-- 동일 Space 내 같은 부모 폴더 아래 동일 폴더명은 금지한다.
-    
-
----
-
-### 6.6 FileItem
-
-> 업로드 완료 후 최종 저장 확정된 파일 메타데이터다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`space_id`|FK → Space|NOT NULL|소속 Space|
-|`folder_id`|FK → Folder|NOT NULL|소속 폴더|
-|`created_by_user_id`|FK → User|NOT NULL|업로드/생성자|
-|`display_name`|VARCHAR|NOT NULL|사용자 표시 파일명|
-|`normalized_name`|VARCHAR|NOT NULL|충돌 비교용 정규화 이름|
-|`storage_key`|VARCHAR|NOT NULL|실제 저장소 객체 키, UNIQUE|
-|`size_bytes`|BIGINT|NOT NULL|파일 크기|
-|`mime_type`|VARCHAR|NULL|서버 기준 MIME 타입|
-|`checksum_sha256`|VARCHAR|NULL|무결성 해시|
-|`file_status`|ENUM|NOT NULL|파일 접근 상태|
-|`preview_status`|ENUM|NOT NULL|미리보기 상태|
-|`scan_status`|ENUM|NOT NULL|바이러스 스캔 상태|
-|`metadata_json`|JSON|NULL|가변 메타데이터|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-|`deleted_at`|TIMESTAMP|NULL|소프트 삭제 일시|
-
-**`file_status` 값**
-
-|값|의미|
+| 이름 | 조건 |
 |---|---|
-|`ACTIVE`|정상 접근 가능|
-|`DELETED`|삭제 처리됨|
-|`CORRUPTED`|손상 상태|
-|`QUARANTINED`|격리 상태, 다운로드 차단|
+| `chk_share_link_targets_target_match` | file target이면 `file_item_id`만 있고 folder target이면 `folder_id`만 있음 |
 
-**`preview_status` 값**
+### 5.12 `download_sessions`
 
-|값|의미|
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `file_item_id` | BIGINT | N | FK `file_items.id`, `NoAction`, indexed |
+| `share_link_id` | BIGINT | Y | FK `share_links.id`, `NoAction`, indexed |
+| `requester_user_id` | BIGINT | Y | FK `users.id`, `NoAction`, indexed |
+| `session_token_hash` | VARCHAR(255) | N | UNIQUE |
+| `subject_type` | `download_subject_type_t` | N |  |
+| `status` | `download_session_status_t` | N | default `ISSUED` |
+| `expires_at` | TIMESTAMPTZ | N | indexed |
+| `last_used_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+
+Check:
+
+| 이름 | 조건 |
 |---|---|
-|`PENDING`|생성 대기|
-|`PROCESSING`|생성 중|
-|`DONE`|생성 완료|
-|`FAILED`|생성 실패|
-|`UNSUPPORTED`|미지원 형식|
-
-**`scan_status` 값**
-
-|값|의미|
-|---|---|
-|`PENDING`|스캔 대기|
-|`PASSED`|스캔 통과|
-|`FAILED`|스캔 실패|
-|`QUARANTINED`|감염 또는 정책상 격리|
-
-**설계 포인트**
-
-- 파일의 소유자는 User가 아니라 Space다.
-    
-- 파일명과 실제 저장 키는 분리한다.
-    
-- 후처리 상태는 다운로드 허용/차단 정책과 연결된다.
-    
-
----
-
-### 6.7 UploadSession
-
-> tus 기반 업로드 전송 상태와 finalize 메타데이터를 추적한다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`requester_user_id`|FK → User|NOT NULL|업로드 요청자|
-|`space_id`|FK → Space|NOT NULL|대상 Space|
-|`target_folder_id`|FK → Folder|NOT NULL|업로드 대상 폴더|
-|`token`|VARCHAR|NOT NULL|외부 공개 식별자, UNIQUE|
-|`tus_upload_id`|VARCHAR|NULL|tus 저장소 ID, UNIQUE|
-|`status`|ENUM|NOT NULL|업로드 상태|
-|`expected_size`|BIGINT|NOT NULL|전체 파일 크기|
-|`received_size`|BIGINT|NOT NULL|현재 수신 크기|
-|`original_name`|VARCHAR|NOT NULL|원본 파일명|
-|`normalized_name`|VARCHAR|NOT NULL|정규화 파일명|
-|`client_mime_type`|VARCHAR|NULL|클라이언트 전달 MIME|
-|`storage_key_temp`|VARCHAR|NULL|임시 저장 경로|
-|`storage_key`|VARCHAR|NULL|최종 저장소 키|
-|`checksum_sha256`|VARCHAR|NULL|최종 검증 해시|
-|`file_item_id`|FK → FileItem|NULL|완료 후 생성된 파일|
-|`finalize_attempts`|INTEGER|NOT NULL|finalize 시도 횟수|
-|`last_error_code`|VARCHAR|NULL|마지막 실패 코드|
-|`last_error_message`|TEXT|NULL|마지막 실패 상세|
-|`finalizing_started_at`|TIMESTAMPTZ|NULL|FINALIZING 진입 시각|
-|`finalized_at`|TIMESTAMPTZ|NULL|저장 확정 완료 시각|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`expires_at`|TIMESTAMP|NULL|만료 시각|
-|`completed_at`|TIMESTAMP|NULL|완료 시각|
-|`last_activity_at`|TIMESTAMP|NOT NULL|마지막 활동 시각|
-
-**설계 포인트**
-
-- 기존 업로드 파이프라인의 상태 구조를 그대로 유지한다.
-    
-- `owner_user_id`는 `requester_user_id`로 의미를 바꾼다.
-    
-- Space 권한 검증은 세션 생성 시점과 finalize 시점에 모두 확인해야 한다.
-    
-
----
-
-### 6.8 FileReservation
-
-> 업로드 전 파일명과 용량을 선점한다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`requester_user_id`|FK → User|NOT NULL|예약 요청자|
-|`space_id`|FK → Space|NOT NULL|대상 Space|
-|`target_folder_id`|FK → Folder|NOT NULL|대상 폴더|
-|`upload_session_id`|FK → UploadSession|NOT NULL|연결된 업로드 세션|
-|`file_item_id`|FK → FileItem|NULL|최종 생성 파일|
-|`reserved_name`|VARCHAR|NOT NULL|예약 파일명|
-|`normalized_name`|VARCHAR|NOT NULL|정규화 파일명|
-|`expected_size`|BIGINT|NOT NULL|예상 파일 크기|
-|`reserved_bytes`|BIGINT|NOT NULL|선점 용량|
-|`status`|ENUM|NOT NULL|예약 상태|
-|`expires_at`|TIMESTAMP|NULL|만료 시각|
-|`consumed_at`|TIMESTAMP|NULL|FileItem 생성 반영 시각|
-|`released_at`|TIMESTAMP|NULL|예약 해제 시각|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-
-**`status` 값**
-
-|값|의미|
-|---|---|
-|`RESERVED`|선점 완료|
-|`ACTIVE`|업로드 진행 중|
-|`CONSUMED`|최종 파일 생성에 사용됨|
-|`CANCELLED`|사용자 취소|
-|`EXPIRED`|만료|
-|`FAILED`|finalize 실패|
-
-**설계 포인트**
-
-- quota는 User가 아니라 Space 기준으로 선점한다.
-    
-- 파일명 충돌 검사는 같은 Space/Folder 안의 활성 파일 및 활성 예약을 함께 봐야 한다.
-    
-- 성공 시 `CONSUMED`, 실패/취소/만료 시 용량을 반환한다.
-    
-
----
-
-### 6.9 ShareLink
-
-> 외부 사용자에게 파일이나 폴더를 공유하기 위한 링크 정책 단위다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`space_id`|FK → Space|NOT NULL|소속 Space|
-|`created_by_user_id`|FK → User|NOT NULL|생성자|
-|`token_hash`|VARCHAR|NOT NULL|공유 토큰 해시, UNIQUE|
-|`title`|VARCHAR|NULL|링크 제목|
-|`password_hash`|VARCHAR|NULL|비밀번호 해시|
-|`status`|ENUM|NOT NULL|링크 상태|
-|`allow_download`|BOOLEAN|NOT NULL|다운로드 허용 여부|
-|`allow_preview`|BOOLEAN|NOT NULL|미리보기 허용 여부|
-|`expires_at`|TIMESTAMP|NULL|만료 시각|
-|`max_download_count`|INTEGER|NULL|최대 허용 다운로드 횟수|
-|`download_attempt_count`|INTEGER|NOT NULL|시도 횟수|
-|`download_completed_count`|INTEGER|NOT NULL|완료 횟수|
-|`last_accessed_at`|TIMESTAMP|NULL|마지막 접근 시각|
-|`revoked_at`|TIMESTAMP|NULL|철회 시각|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-|`updated_at`|TIMESTAMP|NOT NULL|수정 일시|
-
-**`status` 값**
-
-|값|의미|
-|---|---|
-|`ACTIVE`|정상 사용 가능|
-|`DISABLED`|비활성화|
-|`EXPIRED`|만료|
-|`REVOKED`|명시적 폐기|
-
-**설계 포인트**
-
-- 공유 링크는 Space 내부 자원에 대해 생성되며, 외부 공유 전용이다.
-    
-- 토큰 원문 저장 대신 해시 저장을 권장한다.
-    
-- 내부 협업은 ShareLink가 아니라 멤버 초대로 처리한다.
-    
-
----
-
-### 6.10 ShareLinkTarget
-
-> 하나의 공유 링크와 실제 공유 대상을 연결한다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`share_link_id`|FK → ShareLink|NOT NULL|공유 링크|
-|`target_type`|ENUM|NOT NULL|`FILE \| FOLDER`|
-|`file_item_id`|FK → FileItem|NULL|파일 대상일 경우|
-|`folder_id`|FK → Folder|NULL|폴더 대상일 경우|
-|`created_at`|TIMESTAMP|NOT NULL|연결 생성 시각|
-|`deleted_at`|TIMESTAMP|NULL|연결 해제 시각|
-
-**설계 포인트**
-
-- 기존 설계의 `ShareLinkItem`은 파일만 공유했지만, 기획 요구에 맞춰 폴더까지 지원하도록 일반화했다.
-    
-- `target_type='FILE'`이면 `file_item_id` 필수, `target_type='FOLDER'`이면 `folder_id` 필수다.
-    
-
----
-
-### 6.11 DownloadSession
-
-> 실제 파일 스트리밍에 사용되는 단명 세션 토큰이다.
-
-|컬럼명|타입|Null|설명|
-|---|---|---|---|
-|`id`|BIGINT|NOT NULL|PK|
-|`file_item_id`|FK → FileItem|NOT NULL|다운로드 대상 파일|
-|`share_link_id`|FK → ShareLink|NULL|공유 링크 기반 요청일 경우|
-|`requester_user_id`|FK → User|NULL|인증 사용자 요청일 경우|
-|`session_token_hash`|VARCHAR|NOT NULL|세션 토큰 해시, UNIQUE|
-|`subject_type`|ENUM|NOT NULL|`USER \| SHARE_LINK`|
-|`status`|ENUM|NOT NULL|`ISSUED \| EXPIRED`|
-|`expires_at`|TIMESTAMP|NOT NULL|세션 만료 시각|
-|`last_used_at`|TIMESTAMP|NULL|마지막 사용 시각|
-|`created_at`|TIMESTAMP|NOT NULL|생성 일시|
-
-**설계 포인트**
-
-- 다운로드 자체는 짧은 TTL의 세션으로 처리한다.
-    
-- 인증 사용자 다운로드와 링크 기반 다운로드를 모두 수용한다.
-    
-- 세션은 파일과 요청 주체에 바인딩된다.
-    
-
----
-
-## 7. 제약 조건 요약
-
-### 7.1 User
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|UNIQUE|`email`|
-
-### 7.2 Space
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`created_by_user_id → User.id`|
-|UNIQUE|`slug`|
-|CHECK|`storage_used_bytes >= 0`|
-|CHECK|`storage_reserved_bytes >= 0`|
-
-### 7.3 SpaceMember
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`space_id → Space.id`|
-|FK|`user_id → User.id`|
-|UNIQUE|`(space_id, user_id)` 활성 데이터 기준|
-
-### 7.4 SpaceInvite
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`space_id → Space.id`|
-|FK|`inviter_user_id → User.id`|
-|UNIQUE|`token_hash`|
-
-### 7.5 Folder
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`space_id → Space.id`|
-|FK|`parent_folder_id → Folder.id`|
-|FK|`created_by_user_id → User.id`|
-|UNIQUE|`(space_id, parent_folder_id, name)` 활성 데이터 기준|
-
-### 7.6 FileItem
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`space_id → Space.id`|
-|FK|`folder_id → Folder.id`|
-|FK|`created_by_user_id → User.id`|
-|UNIQUE|`storage_key`|
-|UNIQUE|`(space_id, folder_id, normalized_name)` 활성 데이터 기준|
-|CHECK|`size_bytes >= 0`|
-
-### 7.7 UploadSession
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`requester_user_id → User.id`|
-|FK|`space_id → Space.id`|
-|FK|`target_folder_id → Folder.id`|
-|FK|`file_item_id → FileItem.id`|
-|UNIQUE|`token`|
-|UNIQUE|`tus_upload_id` NULL 제외|
-|CHECK|`expected_size >= 0`|
-|CHECK|`received_size >= 0`|
-|CHECK|`received_size <= expected_size`|
-
-### 7.8 FileReservation
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`requester_user_id → User.id`|
-|FK|`space_id → Space.id`|
-|FK|`target_folder_id → Folder.id`|
-|FK|`upload_session_id → UploadSession.id`|
-|FK|`file_item_id → FileItem.id`|
-|UNIQUE|`upload_session_id`|
-|UNIQUE|`(space_id, target_folder_id, normalized_name)` 활성 상태 기준|
-|CHECK|`expected_size >= 0`|
-|CHECK|`reserved_bytes >= 0`|
-
-### 7.9 ShareLink
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`space_id → Space.id`|
-|FK|`created_by_user_id → User.id`|
-|UNIQUE|`token_hash`|
-|CHECK|`download_attempt_count >= 0`|
-|CHECK|`download_completed_count >= 0`|
-|CHECK|`max_download_count IS NULL OR max_download_count >= 0`|
-
-### 7.10 ShareLinkTarget
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`share_link_id → ShareLink.id`|
-|FK|`file_item_id → FileItem.id` NULL 허용|
-|FK|`folder_id → Folder.id` NULL 허용|
-|CHECK|`target_type = 'FILE'`이면 `file_item_id` 필수|
-|CHECK|`target_type = 'FOLDER'`이면 `folder_id` 필수|
-
-### 7.11 DownloadSession
-
-|제약|내용|
-|---|---|
-|PK|`id`|
-|FK|`file_item_id → FileItem.id`|
-|FK|`share_link_id → ShareLink.id` NULL 허용|
-|FK|`requester_user_id → User.id` NULL 허용|
-|UNIQUE|`session_token_hash`|
-|CHECK|`subject_type = 'USER'`이면 `requester_user_id` 필수|
-|CHECK|`subject_type = 'SHARE_LINK'`이면 `share_link_id` 필수|
-
-기존 설계 문서의 제약 조건을 Space 기준으로 치환한 버전이다. 특히 파일명 중복과 용량 선점은 User가 아니라 동일 Space/Folder 범위에서 판단해야 한다.
-
----
-
-## 8. 상태 전이 요약
-
-### 8.1 UploadSession 상태
-
-```mermaid
-stateDiagram-v2
-    [*] --> CREATED
-    CREATED --> UPLOADING : 첫 청크 수신
-    CREATED --> ABORTED : 사용자 취소
-    CREATED --> EXPIRED : TTL 만료
-
-    UPLOADING --> FINALIZING : 전송 완료
-    UPLOADING --> FAILED : 전송 오류
-    UPLOADING --> ABORTED : 사용자 취소
-    UPLOADING --> EXPIRED : TTL 만료
-
-    FINALIZING --> COMPLETED : 저장 확정 성공
-    FINALIZING --> FAILED : 검증/저장 실패
-
-    COMPLETED --> [*]
-    FAILED --> [*]
-    ABORTED --> [*]
-    EXPIRED --> [*]
-```
-
-### 8.2 FileReservation 상태
-
-```mermaid
-stateDiagram-v2
-    [*] --> RESERVED
-    RESERVED --> ACTIVE : 업로드 시작
-    RESERVED --> CANCELLED : 사용자 취소
-    RESERVED --> EXPIRED : TTL 만료
-
-    ACTIVE --> CONSUMED : FileItem 생성 완료
-    ACTIVE --> FAILED : finalize 실패
-    ACTIVE --> CANCELLED : 사용자 취소
-    ACTIVE --> EXPIRED : TTL 만료
-
-    CONSUMED --> [*]
-    FAILED --> [*]
-    CANCELLED --> [*]
-    EXPIRED --> [*]
-```
-
-### 8.3 FileItem 후처리 상태
-
-```mermaid
-stateDiagram-v2
-    [*] --> PENDING
-    PENDING --> PROCESSING
-    PENDING --> UNSUPPORTED
-    PROCESSING --> DONE
-    PROCESSING --> FAILED
-```
-
-업로드 완료와 최종 파일 생성은 분리되며, `FINALIZING`은 임시 파일 검증과 최종 저장소 이동, DB 반영 사이를 잇는 핵심 상태다. 이 구조는 기존 설계 문서의 업로드 완료 처리 흐름을 그대로 유지한다.
-
----
-
-## 9. 업로드 완료 처리 흐름
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant API
-    participant TusStore as Tus 저장소
-    participant Storage as 최종 저장소
-    participant DB
-
-    Client->>API: 마지막 청크 전송 완료
-    API->>DB: UploadSession.status = FINALIZING
-
-    API->>TusStore: 임시 파일 검증
-    API->>Storage: 임시 파일 -> 최종 경로 이동
-
-    rect rgb(230,245,255)
-        Note over DB: 트랜잭션 시작
-        API->>DB: FileItem 생성
-        API->>DB: Space.storage_used_bytes += actual_size
-        API->>DB: Space.storage_reserved_bytes -= reserved_bytes
-        API->>DB: FileReservation.status = CONSUMED
-        API->>DB: UploadSession.status = COMPLETED
-        API->>DB: UploadSession.file_item_id 연결
-        API->>DB: FileReservation.file_item_id 연결
-        Note over DB: 트랜잭션 커밋
-    end
-
-    API->>Client: finalize 결과 반환
-```
-
-원래 설계에서는 `User.storage_used_bytes`, `User.storage_reserved_bytes`를 갱신했지만, Space 중심 구조에서는 이를 `Space` 기준으로 치환하는 것이 맞다. 나머지 처리 순서는 동일하게 유지해도 된다.
-
----
-
-## 10. 최종 정리
-
-이 통합 설계의 핵심은 **업로드/다운로드 파이프라인은 그대로 두고, 소유·권한·Quota의 기준축만 Space로 올리는 것**이다.  
-즉:
-
-- `User`는 계정과 행위자
-    
-- `Space`는 파일 저장과 공유의 최상위 독립 단위
-    
-- `SpaceMember`는 내부 권한 모델
-    
-- `ShareLink`는 외부 공유 모델
-    
-- `UploadSession / FileReservation / FileItem / DownloadSession`은 기존 파이프라인을 유지한 실행 모델
+| `chk_download_sessions_subject_match` | `USER`면 `requester_user_id`만 있고 `SHARE_LINK`면 `share_link_id`만 있음 |
+
+### 5.13 `outbox_events`
+
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `event_id` | UUID | N | UNIQUE |
+| `event_type` | VARCHAR(200) | N | indexed with `occurred_at` |
+| `event_version` | INTEGER | N | default `1` |
+| `aggregate_type` | VARCHAR(100) | Y | indexed with `aggregate_id`, `occurred_at` |
+| `aggregate_id` | BIGINT | Y |  |
+| `space_id` | BIGINT | Y | FK `spaces.id`, `SetNull` |
+| `actor_user_id` | BIGINT | Y | FK `users.id`, `SetNull` |
+| `payload` | JSONB | N |  |
+| `headers` | JSONB | N |  |
+| `status` | VARCHAR(30) | N | default `PENDING` |
+| `attempts` | INTEGER | N | default `0` |
+| `max_attempts` | INTEGER | N | default `10` |
+| `occurred_at` | TIMESTAMPTZ | N |  |
+| `enqueued_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `available_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `worker_id` | VARCHAR(100) | Y |  |
+| `worker_locked_at` | TIMESTAMPTZ | Y |  |
+| `worker_lock_expires_at` | TIMESTAMPTZ | Y | indexed for processing rows |
+| `published_at` | TIMESTAMPTZ | Y |  |
+| `last_error_code` | VARCHAR(100) | Y |  |
+| `last_error_message` | TEXT | Y |  |
+
+Checks and polling indexes:
+
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_outbox_events_attempts_non_negative` | `attempts >= 0` |
+| CHECK | `chk_outbox_events_max_attempts_positive` | `max_attempts > 0` |
+| CHECK | `chk_outbox_events_event_version_positive` | `event_version > 0` |
+| INDEX | `idx_outbox_events_polling` | `(available_at, id)` where `status IN ('PENDING', 'FAILED')` |
+| INDEX | `idx_outbox_events_worker_lock_expires_at` | `worker_lock_expires_at` where `status = 'PROCESSING'` |
+
+### 5.14 `notifications`
+
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `notification_id` | UUID | N | UNIQUE |
+| `type` | VARCHAR(100) | N | indexed with `occurred_at` |
+| `payload` | JSONB | N |  |
+| `recipient_user_id` | BIGINT | Y | FK `users.id`, `Cascade` |
+| `space_id` | BIGINT | Y | FK `spaces.id`, `Cascade` |
+| `actor_user_id` | BIGINT | Y | FK `users.id`, `SetNull` |
+| `aggregate_type` | VARCHAR(100) | Y |  |
+| `aggregate_id` | BIGINT | Y |  |
+| `outbox_event_id` | BIGINT | Y | FK `outbox_events.id`, `Restrict`, UNIQUE when not null |
+| `occurred_at` | TIMESTAMPTZ | N |  |
+| `created_at` | TIMESTAMPTZ | N | default `NOW()` |
+| `expires_at` | TIMESTAMPTZ | Y |  |
+
+Checks and indexes:
+
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_notifications_target_exclusive` | `recipient_user_id IS NULL OR space_id IS NULL` |
+| INDEX | `idx_notifications_recipient_id_desc` | `(recipient_user_id, id)` where `recipient_user_id IS NOT NULL` |
+| INDEX | `idx_notifications_space_id_desc` | `(space_id, id)` where `space_id IS NOT NULL` |
+| UNIQUE | `ux_notifications_outbox_event_id` | `outbox_event_id` where `outbox_event_id IS NOT NULL` |
+
+PostgreSQL에서는 shadow property `xmin`을 row version으로 사용한다.
+
+### 5.15 `notification_read_positions`
+
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `user_id` | BIGINT | N | FK `users.id`, `Cascade`, UNIQUE |
+| `last_read_notification_id` | BIGINT | N | FK `notifications.id`, `Restrict` |
+| `last_read_at` | TIMESTAMPTZ | N |  |
+| `updated_at` | TIMESTAMPTZ | N | default `NOW()` |
+
+PostgreSQL에서는 shadow property `xmin`을 row version으로 사용한다.
+
+### 5.16 `mcp_tokens`
+
+| 컬럼 | 타입 | Null | 제약/기본값 |
+|---|---|---:|---|
+| `id` | BIGINT | N | PK, identity |
+| `owner_user_id` | BIGINT | N | FK `users.id`, `NoAction` |
+| `name` | VARCHAR(100) | N |  |
+| `token_hash` | VARCHAR(255) | N | UNIQUE |
+| `status` | `mcp_token_status_t` | N | default `ACTIVE` |
+| `expires_at` | TIMESTAMPTZ | N |  |
+| `last_used_at` | TIMESTAMPTZ | Y |  |
+| `created_at` | TIMESTAMPTZ | N |  |
+| `revoked_at` | TIMESTAMPTZ | Y |  |
+| `revoked_by_user_id` | BIGINT | Y | FK `users.id`, `NoAction` |
+
+Checks and indexes:
+
+| 종류 | 이름 | 조건/컬럼 |
+|---|---|---|
+| CHECK | `chk_mcp_tokens_expires_after_created` | `expires_at > created_at` |
+| UNIQUE | `ux_mcp_tokens_token_hash` | `token_hash` |
+| INDEX | `idx_mcp_tokens_owner_created_at` | `(owner_user_id, created_at)` |
+| INDEX | `idx_mcp_tokens_status_expires_at` | `(status, expires_at)` |
+
+## 6. 관계 요약
+
+| 관계 | 삭제 동작 | 설명 |
+|---|---|---|
+| `users.id -> spaces.created_by_user_id` | `NoAction` | Space 생성자 |
+| `spaces.id -> space_members.space_id` | `NoAction` | Space membership |
+| `users.id -> space_members.user_id` | `NoAction` | User membership |
+| `spaces.id -> space_invites.space_id` | `NoAction` | Space invite |
+| `users.id -> space_invites.inviter_user_id` | `NoAction` | 초대 발행자 |
+| `spaces.id -> folders.space_id` | `NoAction` | Space 폴더 |
+| `folders.id -> folders.parent_folder_id` | `NoAction` | 폴더 tree |
+| `spaces.id -> file_items.space_id` | `NoAction` | Space 파일 |
+| `folders.id -> file_items.folder_id` | `NoAction` | 폴더 파일 |
+| `users.id -> file_items.created_by_user_id` | `NoAction` | 파일 생성자 |
+| `upload_sessions.id -> file_reservations.upload_session_id` | `NoAction` | 업로드 세션과 예약의 1:1 대응 |
+| `share_links.id -> share_link_targets.share_link_id` | `NoAction` | 공유 링크 대상 |
+| `file_items.id -> download_sessions.file_item_id` | `NoAction` | 다운로드 대상 파일 |
+| `spaces.id -> outbox_events.space_id` | `SetNull` | 이벤트 Space scope |
+| `users.id -> outbox_events.actor_user_id` | `SetNull` | 이벤트 actor |
+| `users.id -> notifications.recipient_user_id` | `Cascade` | 개인 알림 |
+| `spaces.id -> notifications.space_id` | `Cascade` | Space 알림 |
+| `users.id -> notifications.actor_user_id` | `SetNull` | 알림 actor |
+| `outbox_events.id -> notifications.outbox_event_id` | `Restrict` | Outbox projection |
+| `users.id -> notification_read_positions.user_id` | `Cascade` | 사용자별 read cursor |
+| `notifications.id -> notification_read_positions.last_read_notification_id` | `Restrict` | 마지막 읽은 notification |
+| `users.id -> mcp_tokens.owner_user_id` | `NoAction` | MCP token 소유자 |
+| `users.id -> mcp_tokens.revoked_by_user_id` | `NoAction` | MCP token 폐기자 |
+
+## 7. 설계 메모
+
+- 파일, 폴더, 공유 링크, 업로드 세션, 파일 예약은 모두 `space_id`를 기준으로 Space에 귀속된다.
+- `file_items.storage_provider`와 `file_purge_requests.storage_provider`는 현재 `local` 저장소 구현을 기본값으로 둔다.
+- `file_purge_requests`는 현재 EF FK가 없는 작업 기록 테이블이다. 파일 삭제 이후 storage object 정리를 위해 식별자와 storage key를 별도로 보관한다.
+- `outbox_events`는 이벤트 처리 실패와 재시도를 위해 상태, attempt, worker lock 컬럼을 가진다.
+- `notifications`는 개인 알림(`recipient_user_id`) 또는 Space 알림(`space_id`) 중 하나만 직접 target으로 가진다.
+- `notification_read_positions`는 사용자별 전체 inbox cursor 1개만 관리한다.
+- `share_links`, `notifications`, `notification_read_positions`는 PostgreSQL에서 `xmin` row version을 사용한다.
