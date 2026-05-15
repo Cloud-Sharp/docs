@@ -102,6 +102,10 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SHARE_LINK_PASSWORD_REQUIRED` | 비밀번호가 필요한 공유 링크 |
 | `SHARE_LINK_PASSWORD_INVALID` | 공유 링크 비밀번호 불일치 |
 | `UNSUPPORTED_PREVIEW_TYPE` | 미리보기 미지원 형식 |
+| `TAG_NOT_FOUND` | 태그가 없거나 현재 Space에서 접근할 수 없음 |
+| `TAG_NAME_CONFLICT` | 같은 Space에 동일한 활성 태그명이 있음 |
+| `TAG_INVALID_COLOR` | 태그 색상이 `#RRGGBB` 형식이 아님 |
+| `FILE_TAG_SPACE_MISMATCH` | 파일과 태그가 같은 Space에 속하지 않음 |
 | `NOTIFICATION_NOT_FOUND` | 알림 또는 읽음 처리 대상 알림을 찾을 수 없음 |
 | `NOTIFICATION_INVALID_TARGET` | 알림 대상 범위가 유효하지 않음 |
 | `NOTIFICATION_INVALID_LAST_READ_NOTIFICATION_ID` | 마지막 읽은 알림 ID가 유효하지 않음 |
@@ -133,7 +137,7 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `SFR-037~040` | `GET /api/v1/spaces/{spaceSlug}/files/{fileId}/preview` |
 | `SFR-041~042` | Space quota 조회 + 업로드 세션 생성 전 사전 검증 |
 | `SFR-043` | `GET /api/v1/admin/spaces`, `GET /api/v1/admin/spaces/{spaceId}/usage` |
-| `SFR-044~045` | `FileItem.metadata`, `previewStatus`, `scanStatus`, `tags` |
+| `SFR-044~045` | `FileItem.metadata`, `previewStatus`, `scanStatus`, `tags`, [파일 태그 설계](strategies/file-tags.md) |
 | `SFR-049~051` | `GET/POST/DELETE /api/v1/spaces/{spaceSlug}/trash/files*` |
 | `SFR-046` | `FileUploaded` SSE 이벤트 및 내부 finalize 이벤트 기록 |
 | `SFR-047` | MCP/AI 확장 미구현 계약 |
@@ -229,6 +233,8 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - 루트 탐색은 `folderId = root` 를 사용한다.
 - 현재 구현된 목록 정렬 쿼리는 `sortBy = Name | Size | UpdatedAt`, `sortDirection = Asc | Desc` 이다.
 - 현재 구현된 검색 쿼리는 `q` 필수, `type = all | file | folder`, `sortBy = name | size | updatedAt | updated_at`, `sortDir = asc | desc`, `page` 기본값 `1`, `pageSize` 기본값 `50` 및 최대 `100` 이다.
+- 파일 태그 구현 후 폴더 children 응답의 파일 항목에는 `tags: TagSummary[]` 를 포함한다.
+- 파일 태그 구현 후 검색 API는 `tagIds=1,2`, `tagMatch=any|all` 태그 필터를 지원한다. 태그 필터가 있으면 파일 결과만 반환한다.
 - `parentFolderId` 는 요청에서 문자열로 받으며, 숫자 문자열 또는 `null` 만 유효하다.
 - `PATCH /folders/{folderId}` 는 `name` 과 `parentFolderId` 를 동시에 받을 수 있다.
 - 폴더 삭제 정책은 기본적으로 소프트 삭제이며, 하위 항목 존재 시 `409 Conflict` 또는 비동기 삭제 정책 중 하나로 처리한다.
@@ -239,6 +245,13 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 |---|---|---|---|---|---|
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` | `구현됨` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/tags` | Space 태그 목록 조회 | `VIEWER` | `SFR-044`, `SFR-045` | `미구현` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/tags` | Space 태그 생성 | `ADMIN` | `SFR-044`, `SFR-045` | `미구현` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/tags/{tagId}` | Space 태그 수정 | `ADMIN` | `SFR-044`, `SFR-045` | `미구현` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/tags/{tagId}` | Space 태그 삭제 | `ADMIN` | `SFR-044`, `SFR-045` | `미구현` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일에 태그 추가 | `MEMBER` | `SFR-044`, `SFR-045` | `미구현` |
+| `PUT` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일 태그 전체 교체 | `MEMBER` | `SFR-044`, `SFR-045` | `미구현` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일에서 태그 제거 | `MEMBER` | `SFR-044`, `SFR-045` | `미구현` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `구현됨` |
 | `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `구현됨` |
@@ -299,6 +312,15 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - `scanStatus = PENDING` 이어도 기본 다운로드는 허용한다.
   - `scanStatus = FAILED` 또는 감염 탐지 시 `fileStatus = QUARANTINED` 로 전환하고 다운로드를 차단한다.
   - `previewStatus = FAILED` 는 미리보기 실패일 뿐 다운로드 차단 사유가 아니다.
+
+**파일 태그 정책**
+
+- 상세 설계는 [파일 태그 설계](strategies/file-tags.md)를 기준으로 한다.
+- 태그는 Space에 종속되며, 파일에 붙이기 전에 `/api/v1/spaces/{spaceSlug}/tags` 로 먼저 생성되어야 한다.
+- 태그 생성 요청의 핵심 필드는 `name`, `color` 이며 둘 다 필수다. `name`은 1자 이상 30자 이하, `color`는 `#RRGGBB` 형식이다. 예: `{ "name": "프로젝트", "color": "#4A90E2" }`
+- 태그와 파일-태그 매핑의 식별자는 `integer(int64)`이다.
+- `GET /folders/{folderId}/children`의 파일 항목은 태그 구현 후 `tags` 배열을 포함한다.
+- `GET /search`는 태그 구현 후 `tagIds`, `tagMatch` 쿼리를 지원한다.
 
 ### 4.6 휴지통
 
