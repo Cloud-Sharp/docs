@@ -1,0 +1,209 @@
+.md-typeset .mermaid-host,
+.md-typeset pre.mermaid-host {
+  --mermaid-surface: #f6fbff;
+  --mermaid-border: #b8cad8;
+  --mermaid-text: #14212b;
+  --mermaid-muted: #516473;
+  --mermaid-row-even: #eaf2f8;
+  --mermaid-row-odd: #ffffff;
+  --mermaid-accent: #2f6f91;
+  --mermaid-label-bg: rgba(235, 244, 251, 0.98);
+  margin: 1.25em 0;
+  padding: 1rem;
+  border: 1px solid var(--mermaid-border);
+  border-radius: 0.75rem;
+  background: linear-gradient(180deg, #fdfefe 0%, #f2f7fb 100%);
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.md-typeset pre.mermaid-host {
+  white-space: normal;
+}
+
+.md-typeset .mermaid-host .mermaid-host__toolbar,
+.md-typeset pre.mermaid-host .mermaid-host__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.md-typeset .mermaid-host .mermaid-host__hint,
+.md-typeset pre.mermaid-host .mermaid-host__hint {
+  margin-right: auto;
+  color: var(--mermaid-muted);
+  font-size: 0.74rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset .mermaid-host .mermaid-host__button,
+.md-typeset pre.mermaid-host .mermaid-host__button {
+  appearance: none;
+  border: 1px solid var(--mermaid-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mermaid-surface) 86%, white 14%);
+  color: var(--mermaid-text);
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.42rem 0.72rem;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.md-typeset .mermaid-host .mermaid-host__button:hover,
+.md-typeset pre.mermaid-host .mermaid-host__button:hover {
+  background: color-mix(in srgb, var(--mermaid-surface) 72%, var(--mermaid-accent) 28%);
+  border-color: var(--mermaid-accent);
+}
+
+.md-typeset .mermaid-host .mermaid-host__button:active,
+.md-typeset pre.mermaid-host .mermaid-host__button:active {
+  transform: translateY(1px);
+}
+
+.md-typeset .mermaid-host:fullscreen,
+.md-typeset pre.mermaid-host:fullscreen {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0;
+}
+
+.md-typeset .mermaid-host:fullscreen .mermaid-host__svg,
+.md-typeset pre.mermaid-host:fullscreen .mermaid-host__svg {
+  height: calc(100vh - 4.75rem);
+}
+
+.md-typeset .mermaid-host .mermaid-host__svg,
+.md-typeset pre.mermaid-host .mermaid-host__svg {
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+
+.md-typeset .mermaid-host .mermaid-host__svg:active,
+.md-typeset pre.mermaid-host .mermaid-host__svg:active {
+  cursor: grabbing;
+}
+
+.md-typeset .mermaid-host .mermaid-host__svg svg,
+.md-typeset pre.mermaid-host .mermaid-host__svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.md-typeset .mermaid-host .mermaid-host__svg text,
+.md-typeset pre.mermaid-host .mermaid-host__svg text {
+  font-family: var(--md-text-font-family);
+  fill: var(--mermaid-text);
+}
+
+.md-typeset .mermaid-host[data-mermaid-rendered="error"],
+.md-typeset pre.mermaid-host[data-mermaid-rendered="error"] {
+  color: var(--md-default-fg-color);
+  font-family: var(--md-code-font-family);
+  white-space: pre-wrap;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .mermaid-host,
+[data-md-color-scheme="slate"] .md-typeset pre.mermaid-host {
+  --mermaid-surface: #16202a;
+  --mermaid-border: #4c6476;
+  --mermaid-text: #edf6fc;
+  --mermaid-muted: #adc0cf;
+  --mermaid-row-even: #22303d;
+  --mermaid-row-odd: #19242e;
+  --mermaid-accent: #7ec3e7;
+  --mermaid-label-bg: rgba(27, 39, 49, 0.96);
+  background: linear-gradient(180deg, #18212b 0%, #121a21 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.md-typeset .mermaid-host .entityBox,
+.md-typeset pre.mermaid-host .entityBox {
+  fill: var(--mermaid-surface) !important;
+  stroke: var(--mermaid-accent) !important;
+  stroke-width: 1.8px;
+}
+
+.md-typeset .mermaid-host .attributeBoxOdd,
+.md-typeset pre.mermaid-host .attributeBoxOdd {
+  fill: var(--mermaid-row-odd) !important;
+  stroke: var(--mermaid-border) !important;
+}
+
+.md-typeset .mermaid-host .attributeBoxEven,
+.md-typeset pre.mermaid-host .attributeBoxEven {
+  fill: var(--mermaid-row-even) !important;
+  stroke: var(--mermaid-border) !important;
+}
+
+.md-typeset .mermaid-host .relationshipLine,
+.md-typeset pre.mermaid-host .relationshipLine,
+.md-typeset .mermaid-host .er.relationshipLine,
+.md-typeset pre.mermaid-host .er.relationshipLine {
+  stroke: var(--mermaid-accent);
+  stroke-width: 1.5px;
+}
+
+.md-typeset .mermaid-host .relationshipLabelBox,
+.md-typeset pre.mermaid-host .relationshipLabelBox {
+  fill: var(--mermaid-label-bg) !important;
+  opacity: 1;
+}
+
+.md-typeset .mermaid-host .relationshipLabelBox rect,
+.md-typeset pre.mermaid-host .relationshipLabelBox rect {
+  fill: var(--mermaid-label-bg);
+  stroke: var(--mermaid-border);
+  opacity: 1;
+}
+
+.md-typeset .mermaid-host .entityTitleText,
+.md-typeset pre.mermaid-host .entityTitleText,
+.md-typeset .mermaid-host .attributeText,
+.md-typeset pre.mermaid-host .attributeText {
+  fill: var(--mermaid-text) !important;
+}
+
+.md-typeset .mermaid-host .attributeBoxOdd text,
+.md-typeset pre.mermaid-host .attributeBoxOdd text,
+.md-typeset .mermaid-host .attributeBoxEven text,
+.md-typeset pre.mermaid-host .attributeBoxEven text,
+.md-typeset .mermaid-host .relationshipLabelBox text,
+.md-typeset pre.mermaid-host .relationshipLabelBox text {
+  fill: var(--mermaid-text) !important;
+}
+
+.md-typeset .mermaid-host .edgeLabel rect,
+.md-typeset pre.mermaid-host .edgeLabel rect,
+.md-typeset .mermaid-host .labelBkg,
+.md-typeset pre.mermaid-host .labelBkg {
+  fill: var(--mermaid-label-bg) !important;
+}
+
+.md-typeset .mermaid-host .cluster rect,
+.md-typeset pre.mermaid-host .cluster rect {
+  fill: color-mix(in srgb, var(--mermaid-surface) 88%, var(--mermaid-accent) 12%);
+  stroke: var(--mermaid-border);
+}
+
+.md-typeset .mermaid-host .flowchart-link,
+.md-typeset pre.mermaid-host .flowchart-link,
+.md-typeset .mermaid-host .edgePath .path,
+.md-typeset pre.mermaid-host .edgePath .path {
+  stroke: var(--mermaid-accent) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .mermaid-host .entityBox,
+[data-md-color-scheme="slate"] .md-typeset pre.mermaid-host .entityBox {
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+}

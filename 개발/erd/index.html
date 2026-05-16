@@ -1,0 +1,3831 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../api/" rel="prev"/>
+<link href="../file-tags/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CloudSharp ERD 설계서 - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cloudsharp-erd">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CloudSharp ERD 설계서
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../SSE/">
+          
+  
+  
+  개발
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../api-redoc/">
+        
+  
+  
+    
+  
+  API(구현 기준)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EB%A7%81%ED%81%AC%20%EC%B4%88%EB%8C%80%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Space 링크 초대 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    개발
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    개발
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../SSE/">
+<span class="md-ellipsis">
+    
+  
+    Frontend SSE Integration Guide
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api-contract-patch-notes/">
+<span class="md-ellipsis">
+    
+  
+    OpenAPI Patch Notes
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp ERD 설계서
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp ERD 설계서
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 문서 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 현재 테이블 목록
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-enum">
+<span class="md-ellipsis">
+      
+        3. Enum 타입
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-erd">
+<span class="md-ellipsis">
+      
+        4. ERD
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 엔티티 상세
+      
+    </span>
+</a>
+<nav aria-label="5. 엔티티 상세" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51-users">
+<span class="md-ellipsis">
+      
+        5.1 users
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-spaces">
+<span class="md-ellipsis">
+      
+        5.2 spaces
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53-space_members">
+<span class="md-ellipsis">
+      
+        5.3 space_members
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-space_invites">
+<span class="md-ellipsis">
+      
+        5.4 space_invites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#55-folders">
+<span class="md-ellipsis">
+      
+        5.5 folders
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#56-file_items">
+<span class="md-ellipsis">
+      
+        5.6 file_items
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#57-file_purge_requests">
+<span class="md-ellipsis">
+      
+        5.7 file_purge_requests
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#58-upload_sessions">
+<span class="md-ellipsis">
+      
+        5.8 upload_sessions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#59-file_reservations">
+<span class="md-ellipsis">
+      
+        5.9 file_reservations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#510-share_links">
+<span class="md-ellipsis">
+      
+        5.10 share_links
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#511-share_link_targets">
+<span class="md-ellipsis">
+      
+        5.11 share_link_targets
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#512-download_sessions">
+<span class="md-ellipsis">
+      
+        5.12 download_sessions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#513-outbox_events">
+<span class="md-ellipsis">
+      
+        5.13 outbox_events
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#514-notifications">
+<span class="md-ellipsis">
+      
+        5.14 notifications
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#515-notification_read_positions">
+<span class="md-ellipsis">
+      
+        5.15 notification_read_positions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#516-mcp_tokens">
+<span class="md-ellipsis">
+      
+        5.16 mcp_tokens
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 관계 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 설계 메모
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../file-tags/">
+<span class="md-ellipsis">
+    
+  
+    File Tags 설계
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../notification/">
+<span class="md-ellipsis">
+    
+  
+    Notification 영속 Inbox 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../progress/">
+<span class="md-ellipsis">
+    
+  
+    구현 상태 트래커
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../sse-realtime-fanout/">
+<span class="md-ellipsis">
+    
+  
+    SSE Realtime Fan-out 전략
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Validation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(구현 기준)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1">
+<span class="md-ellipsis">
+      
+        1. 문서 기준
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2">
+<span class="md-ellipsis">
+      
+        2. 현재 테이블 목록
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-enum">
+<span class="md-ellipsis">
+      
+        3. Enum 타입
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-erd">
+<span class="md-ellipsis">
+      
+        4. ERD
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5">
+<span class="md-ellipsis">
+      
+        5. 엔티티 상세
+      
+    </span>
+</a>
+<nav aria-label="5. 엔티티 상세" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#51-users">
+<span class="md-ellipsis">
+      
+        5.1 users
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#52-spaces">
+<span class="md-ellipsis">
+      
+        5.2 spaces
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53-space_members">
+<span class="md-ellipsis">
+      
+        5.3 space_members
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-space_invites">
+<span class="md-ellipsis">
+      
+        5.4 space_invites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#55-folders">
+<span class="md-ellipsis">
+      
+        5.5 folders
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#56-file_items">
+<span class="md-ellipsis">
+      
+        5.6 file_items
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#57-file_purge_requests">
+<span class="md-ellipsis">
+      
+        5.7 file_purge_requests
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#58-upload_sessions">
+<span class="md-ellipsis">
+      
+        5.8 upload_sessions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#59-file_reservations">
+<span class="md-ellipsis">
+      
+        5.9 file_reservations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#510-share_links">
+<span class="md-ellipsis">
+      
+        5.10 share_links
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#511-share_link_targets">
+<span class="md-ellipsis">
+      
+        5.11 share_link_targets
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#512-download_sessions">
+<span class="md-ellipsis">
+      
+        5.12 download_sessions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#513-outbox_events">
+<span class="md-ellipsis">
+      
+        5.13 outbox_events
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#514-notifications">
+<span class="md-ellipsis">
+      
+        5.14 notifications
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#515-notification_read_positions">
+<span class="md-ellipsis">
+      
+        5.15 notification_read_positions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#516-mcp_tokens">
+<span class="md-ellipsis">
+      
+        5.16 mcp_tokens
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6">
+<span class="md-ellipsis">
+      
+        6. 관계 요약
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7">
+<span class="md-ellipsis">
+      
+        7. 설계 메모
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="cloudsharp-erd">CloudSharp ERD 설계서<a class="headerlink" href="#cloudsharp-erd" title="Permanent link">¶</a></h1>
+<h2 id="1">1. 문서 기준<a class="headerlink" href="#1" title="Permanent link">¶</a></h2>
+<p>이 문서는 현재 백엔드 EF Core 엔티티와 configuration을 기준으로 정리한 ERD다. 기준 코드는 <code>CloudSharp.Infrastructure/Persistence/Entities</code>와 <code>CloudSharp.Infrastructure/Persistence/Configurations</code>이다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>기준</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DbContext</td>
+<td><code>CloudSharpDbContext</code></td>
+</tr>
+<tr>
+<td>실제 테이블 소스</td>
+<td><code>*Entity.cs</code></td>
+</tr>
+<tr>
+<td>컬럼, 인덱스, 제약 조건 소스</td>
+<td><code>*EntityConfiguration.cs</code></td>
+</tr>
+<tr>
+<td>시간 타입</td>
+<td><code>DateTimeOffset</code>은 PostgreSQL 기준 <code>timestamp with time zone</code></td>
+</tr>
+<tr>
+<td>JSON 타입</td>
+<td>PostgreSQL 기준 <code>jsonb</code>, 테스트 provider에서는 문자열 변환</td>
+</tr>
+<tr>
+<td>삭제 동작 기본</td>
+<td>명시된 관계 대부분 <code>NoAction</code>, 알림 일부만 <code>Cascade</code>, <code>SetNull</code>, <code>Restrict</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2">2. 현재 테이블 목록<a class="headerlink" href="#2" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>테이블</th>
+<th>엔티티</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>users</code></td>
+<td><code>UserEntity</code></td>
+<td>계정, 인증 정보, 시스템 역할, 사용자 상태</td>
+</tr>
+<tr>
+<td><code>spaces</code></td>
+<td><code>SpaceEntity</code></td>
+<td>파일 저장과 공유의 최상위 공간, Space quota</td>
+</tr>
+<tr>
+<td><code>space_members</code></td>
+<td><code>SpaceMemberEntity</code></td>
+<td>User와 Space의 멤버십 및 Space role</td>
+</tr>
+<tr>
+<td><code>space_invites</code></td>
+<td><code>SpaceInviteEntity</code></td>
+<td>Space 링크 초대</td>
+</tr>
+<tr>
+<td><code>folders</code></td>
+<td><code>FolderEntity</code></td>
+<td>Space 내부 폴더 트리</td>
+</tr>
+<tr>
+<td><code>file_items</code></td>
+<td><code>FileItemEntity</code></td>
+<td>최종 저장 완료된 파일 메타데이터</td>
+</tr>
+<tr>
+<td><code>file_purge_requests</code></td>
+<td><code>FilePurgeRequestEntity</code></td>
+<td>휴지통 purge 작업 요청 기록</td>
+</tr>
+<tr>
+<td><code>upload_sessions</code></td>
+<td><code>UploadSessionEntity</code></td>
+<td>tus 업로드 세션 상태</td>
+</tr>
+<tr>
+<td><code>file_reservations</code></td>
+<td><code>FileReservationEntity</code></td>
+<td>업로드 전 파일명과 용량 예약</td>
+</tr>
+<tr>
+<td><code>share_links</code></td>
+<td><code>ShareLinkEntity</code></td>
+<td>외부 공유 링크 정책</td>
+</tr>
+<tr>
+<td><code>share_link_targets</code></td>
+<td><code>ShareLinkTargetEntity</code></td>
+<td>공유 링크 대상 파일 또는 폴더</td>
+</tr>
+<tr>
+<td><code>download_sessions</code></td>
+<td><code>DownloadSessionEntity</code></td>
+<td>다운로드 세션 토큰 기록</td>
+</tr>
+<tr>
+<td><code>outbox_events</code></td>
+<td><code>OutboxEventEntity</code></td>
+<td>도메인 이벤트 outbox</td>
+</tr>
+<tr>
+<td><code>notifications</code></td>
+<td><code>NotificationEntity</code></td>
+<td>사용자 또는 Space visible notification</td>
+</tr>
+<tr>
+<td><code>notification_read_positions</code></td>
+<td><code>NotificationReadPositionEntity</code></td>
+<td>사용자별 notification 읽음 위치</td>
+</tr>
+<tr>
+<td><code>mcp_tokens</code></td>
+<td><code>McpTokenEntity</code></td>
+<td>MCP access token 발급 및 폐기 이력</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-enum">3. Enum 타입<a class="headerlink" href="#3-enum" title="Permanent link">¶</a></h2>
+<p><code>CloudSharpDbContext</code>는 PostgreSQL 사용 시 아래 enum을 등록한다.</p>
+<table>
+<thead>
+<tr>
+<th>DB enum</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>system_role_t</code></td>
+<td><code>ADMIN</code>, <code>USER</code></td>
+</tr>
+<tr>
+<td><code>user_status_t</code></td>
+<td><code>ACTIVE</code>, <code>DISABLED</code>, <code>LOCKED</code></td>
+</tr>
+<tr>
+<td><code>space_status_t</code></td>
+<td><code>ACTIVE</code>, <code>ARCHIVED</code>, <code>DELETED</code></td>
+</tr>
+<tr>
+<td><code>space_member_role_t</code></td>
+<td><code>OWNER</code>, <code>ADMIN</code>, <code>MEMBER</code>, <code>VIEWER</code></td>
+</tr>
+<tr>
+<td><code>space_member_status_t</code></td>
+<td><code>ACTIVE</code>, <code>INVITED</code>, <code>SUSPENDED</code>, <code>LEFT</code></td>
+</tr>
+<tr>
+<td><code>file_status_t</code></td>
+<td><code>ACTIVE</code>, <code>DELETED</code>, <code>CORRUPTED</code>, <code>QUARANTINED</code></td>
+</tr>
+<tr>
+<td><code>preview_status_t</code></td>
+<td><code>PENDING</code>, <code>PROCESSING</code>, <code>DONE</code>, <code>FAILED</code>, <code>UNSUPPORTED</code></td>
+</tr>
+<tr>
+<td><code>scan_status_t</code></td>
+<td><code>PENDING</code>, <code>PASSED</code>, <code>FAILED</code>, <code>QUARANTINED</code></td>
+</tr>
+<tr>
+<td><code>upload_session_status_t</code></td>
+<td><code>CREATED</code>, <code>UPLOADING</code>, <code>FINALIZING</code>, <code>COMPLETED</code>, <code>FAILED</code>, <code>ABORTED</code>, <code>EXPIRED</code></td>
+</tr>
+<tr>
+<td><code>file_reservation_status_t</code></td>
+<td><code>RESERVED</code>, <code>ACTIVE</code>, <code>CONSUMED</code>, <code>CANCELLED</code>, <code>EXPIRED</code>, <code>FAILED</code></td>
+</tr>
+<tr>
+<td><code>share_link_status_t</code></td>
+<td><code>ACTIVE</code>, <code>DISABLED</code>, <code>EXPIRED</code>, <code>REVOKED</code></td>
+</tr>
+<tr>
+<td><code>share_link_target_type_t</code></td>
+<td><code>FILE</code>, <code>FOLDER</code></td>
+</tr>
+<tr>
+<td><code>download_subject_type_t</code></td>
+<td><code>USER</code>, <code>SHARE_LINK</code></td>
+</tr>
+<tr>
+<td><code>download_session_status_t</code></td>
+<td><code>ISSUED</code>, <code>EXPIRED</code></td>
+</tr>
+<tr>
+<td><code>mcp_token_status_t</code></td>
+<td><code>ACTIVE</code>, <code>REVOKED</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-erd">4. ERD<a class="headerlink" href="#4-erd" title="Permanent link">¶</a></h2>
+<pre class="mermaid-source"><code>erDiagram
+    USERS {
+        BIGINT id PK
+        VARCHAR email UK
+        VARCHAR password_hash
+        VARCHAR user_name
+        VARCHAR display_name
+        ENUM system_role
+        ENUM status
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
+    }
+
+    SPACES {
+        BIGINT id PK
+        BIGINT created_by_user_id FK
+        VARCHAR name
+        VARCHAR slug UK
+        TEXT description
+        BIGINT storage_allowed_bytes
+        BIGINT storage_used_bytes
+        BIGINT storage_reserved_bytes
+        ENUM status
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
+    }
+
+    SPACE_MEMBERS {
+        BIGINT id PK
+        BIGINT space_id FK
+        BIGINT user_id FK
+        ENUM role
+        ENUM status
+        TIMESTAMPTZ joined_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
+    }
+
+    SPACE_INVITES {
+        BIGINT id PK
+        BIGINT space_id FK
+        BIGINT inviter_user_id FK
+        VARCHAR token_hash UK
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    FOLDERS {
+        BIGINT id PK
+        BIGINT space_id FK
+        BIGINT parent_folder_id FK
+        BIGINT created_by_user_id FK
+        VARCHAR name
+        TEXT full_path
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
+    }
+
+    FILE_ITEMS {
+        BIGINT id PK
+        BIGINT space_id FK
+        BIGINT folder_id FK
+        BIGINT created_by_user_id FK
+        VARCHAR display_name
+        VARCHAR normalized_name
+        VARCHAR storage_key UK
+        VARCHAR storage_provider
+        BIGINT size_bytes
+        VARCHAR mime_type
+        VARCHAR checksum_sha256
+        ENUM file_status
+        ENUM preview_status
+        ENUM scan_status
+        JSONB metadata_json
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ deleted_at
+    }
+
+    FILE_PURGE_REQUESTS {
+        BIGINT file_id PK
+        BIGINT space_id
+        VARCHAR storage_provider
+        VARCHAR storage_key
+        TIMESTAMPTZ requested_at
+        TIMESTAMPTZ updated_at
+        TIMESTAMPTZ completed_at
+    }
+
+    UPLOAD_SESSIONS {
+        BIGINT id PK
+        BIGINT requester_user_id FK
+        BIGINT space_id FK
+        BIGINT target_folder_id FK
+        VARCHAR token UK
+        VARCHAR tus_upload_id UK
+        ENUM status
+        BIGINT expected_size
+        BIGINT received_size
+        VARCHAR original_name
+        VARCHAR normalized_name
+        VARCHAR client_mime_type
+        VARCHAR storage_key_temp
+        VARCHAR storage_key
+        VARCHAR checksum_sha256
+        BIGINT file_item_id FK
+        INTEGER finalize_attempts
+        VARCHAR last_error_code
+        TEXT last_error_message
+        TIMESTAMPTZ finalizing_started_at
+        TIMESTAMPTZ finalized_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ completed_at
+        TIMESTAMPTZ last_activity_at
+    }
+
+    FILE_RESERVATIONS {
+        BIGINT id PK
+        BIGINT requester_user_id FK
+        BIGINT space_id FK
+        BIGINT target_folder_id FK
+        BIGINT upload_session_id FK
+        BIGINT file_item_id FK
+        VARCHAR reserved_name
+        VARCHAR normalized_name
+        BIGINT expected_size
+        BIGINT reserved_bytes
+        BOOLEAN is_reserved
+        ENUM status
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ consumed_at
+        TIMESTAMPTZ released_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    SHARE_LINKS {
+        BIGINT id PK
+        BIGINT space_id FK
+        BIGINT created_by_user_id FK
+        VARCHAR token_hash UK
+        VARCHAR title
+        VARCHAR password_hash
+        ENUM status
+        BOOLEAN allow_download
+        BOOLEAN allow_preview
+        TIMESTAMPTZ expires_at
+        INTEGER max_download_count
+        INTEGER download_attempt_count
+        INTEGER download_completed_count
+        TIMESTAMPTZ last_accessed_at
+        TIMESTAMPTZ revoked_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    SHARE_LINK_TARGETS {
+        BIGINT id PK
+        BIGINT share_link_id FK
+        ENUM target_type
+        BIGINT file_item_id FK
+        BIGINT folder_id FK
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ deleted_at
+    }
+
+    DOWNLOAD_SESSIONS {
+        BIGINT id PK
+        BIGINT file_item_id FK
+        BIGINT share_link_id FK
+        BIGINT requester_user_id FK
+        VARCHAR session_token_hash UK
+        ENUM subject_type
+        ENUM status
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ last_used_at
+        TIMESTAMPTZ created_at
+    }
+
+    OUTBOX_EVENTS {
+        BIGINT id PK
+        UUID event_id UK
+        VARCHAR event_type
+        INTEGER event_version
+        VARCHAR aggregate_type
+        BIGINT aggregate_id
+        BIGINT space_id FK
+        BIGINT actor_user_id FK
+        JSONB payload
+        JSONB headers
+        VARCHAR status
+        INTEGER attempts
+        INTEGER max_attempts
+        TIMESTAMPTZ occurred_at
+        TIMESTAMPTZ enqueued_at
+        TIMESTAMPTZ available_at
+        VARCHAR worker_id
+        TIMESTAMPTZ worker_locked_at
+        TIMESTAMPTZ worker_lock_expires_at
+        TIMESTAMPTZ published_at
+        VARCHAR last_error_code
+        TEXT last_error_message
+    }
+
+    NOTIFICATIONS {
+        BIGINT id PK
+        UUID notification_id UK
+        VARCHAR type
+        JSONB payload
+        BIGINT recipient_user_id FK
+        BIGINT space_id FK
+        BIGINT actor_user_id FK
+        VARCHAR aggregate_type
+        BIGINT aggregate_id
+        BIGINT outbox_event_id FK
+        TIMESTAMPTZ occurred_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ expires_at
+    }
+
+    NOTIFICATION_READ_POSITIONS {
+        BIGINT id PK
+        BIGINT user_id FK
+        BIGINT last_read_notification_id FK
+        TIMESTAMPTZ last_read_at
+        TIMESTAMPTZ updated_at
+    }
+
+    MCP_TOKENS {
+        BIGINT id PK
+        BIGINT owner_user_id FK
+        VARCHAR name
+        VARCHAR token_hash UK
+        ENUM status
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ last_used_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ revoked_at
+        BIGINT revoked_by_user_id FK
+    }
+
+    USERS ||--o{ SPACES : creates
+    USERS ||--o{ SPACE_MEMBERS : joins
+    SPACES ||--o{ SPACE_MEMBERS : has
+
+    SPACES ||--o{ SPACE_INVITES : has
+    USERS ||--o{ SPACE_INVITES : sends
+
+    SPACES ||--o{ FOLDERS : owns
+    FOLDERS ||--o{ FOLDERS : parent_of
+    USERS ||--o{ FOLDERS : creates
+
+    SPACES ||--o{ FILE_ITEMS : owns
+    FOLDERS ||--o{ FILE_ITEMS : contains
+    USERS ||--o{ FILE_ITEMS : creates
+
+    SPACES ||--o{ UPLOAD_SESSIONS : scopes
+    USERS ||--o{ UPLOAD_SESSIONS : requests
+    FOLDERS ||--o{ UPLOAD_SESSIONS : target
+    FILE_ITEMS ||--o{ UPLOAD_SESSIONS : result
+
+    SPACES ||--o{ FILE_RESERVATIONS : scopes
+    USERS ||--o{ FILE_RESERVATIONS : requests
+    FOLDERS ||--o{ FILE_RESERVATIONS : reserves_in
+    UPLOAD_SESSIONS ||--|| FILE_RESERVATIONS : pairs
+    FILE_ITEMS ||--o{ FILE_RESERVATIONS : consumes
+
+    SPACES ||--o{ SHARE_LINKS : owns
+    USERS ||--o{ SHARE_LINKS : creates
+    SHARE_LINKS ||--o{ SHARE_LINK_TARGETS : has
+    FILE_ITEMS ||--o{ SHARE_LINK_TARGETS : shared_file
+    FOLDERS ||--o{ SHARE_LINK_TARGETS : shared_folder
+
+    FILE_ITEMS ||--o{ DOWNLOAD_SESSIONS : streamed_by
+    SHARE_LINKS ||--o{ DOWNLOAD_SESSIONS : grants
+    USERS ||--o{ DOWNLOAD_SESSIONS : requests
+
+    SPACES ||--o{ OUTBOX_EVENTS : scopes
+    USERS ||--o{ OUTBOX_EVENTS : acts
+
+    USERS ||--o{ NOTIFICATIONS : receives
+    SPACES ||--o{ NOTIFICATIONS : targets
+    USERS ||--o{ NOTIFICATIONS : acts
+    OUTBOX_EVENTS ||--o| NOTIFICATIONS : projects
+    USERS ||--o{ NOTIFICATION_READ_POSITIONS : reads
+    NOTIFICATIONS ||--o{ NOTIFICATION_READ_POSITIONS : cursor
+
+    USERS ||--o{ MCP_TOKENS : owns
+    USERS ||--o{ MCP_TOKENS : revokes</code></pre>
+<p><code>file_purge_requests.file_id</code>와 <code>space_id</code>는 현재 엔티티상 purge 작업을 위한 식별자로 보관되며 EF 관계는 구성되어 있지 않다.</p>
+<h2 id="5">5. 엔티티 상세<a class="headerlink" href="#5" title="Permanent link">¶</a></h2>
+<h3 id="51-users">5.1 <code>users</code><a class="headerlink" href="#51-users" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>VARCHAR(320)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>password_hash</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_name</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>system_role</code></td>
+<td><code>system_role_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>USER</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>user_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>ACTIVE</code></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-spaces">5.2 <code>spaces</code><a class="headerlink" href="#52-spaces" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>created_by_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(200)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>VARCHAR(36)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>TEXT</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_allowed_bytes</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td><code>NULL</code> means unlimited</td>
+</tr>
+<tr>
+<td><code>storage_used_bytes</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>storage_reserved_bytes</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>space_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>ACTIVE</code></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Checks:</p>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chk_spaces_storage_allowed_non_negative</code></td>
+<td><code>storage_allowed_bytes IS NULL OR storage_allowed_bytes &gt;= 0</code></td>
+</tr>
+<tr>
+<td><code>chk_spaces_storage_used_non_negative</code></td>
+<td><code>storage_used_bytes &gt;= 0</code></td>
+</tr>
+<tr>
+<td><code>chk_spaces_storage_reserved_non_negative</code></td>
+<td><code>storage_reserved_bytes &gt;= 0</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-space_members">5.3 <code>space_members</code><a class="headerlink" href="#53-space_members" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td><code>space_member_role_t</code></td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>space_member_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>INVITED</code></td>
+</tr>
+<tr>
+<td><code>joined_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Indexes:</p>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>컬럼</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ux_space_members_active</code></td>
+<td><code>(space_id, user_id)</code></td>
+<td>UNIQUE where <code>deleted_at IS NULL AND status IN ('ACTIVE', 'INVITED', 'SUSPENDED')</code></td>
+</tr>
+<tr>
+<td><code>idx_space_members_user_id</code></td>
+<td><code>user_id</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-space_invites">5.4 <code>space_invites</code><a class="headerlink" href="#54-space_invites" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>inviter_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>token_hash</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+</tbody>
+</table>
+<p>현재 API 계약상 초대 토큰 원문을 이 컬럼에 저장하지만 물리 컬럼명은 <code>token_hash</code>를 유지한다.</p>
+<h3 id="55-folders">5.5 <code>folders</code><a class="headerlink" href="#55-folders" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>parent_folder_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>self FK <code>folders.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>created_by_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>full_path</code></td>
+<td>TEXT</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_folders_name_not_blank</code></td>
+<td><code>BTRIM(name) &lt;&gt; ''</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_folders_space_parent</code></td>
+<td><code>(space_id, parent_folder_id)</code></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>ux_folders_space_root</code></td>
+<td><code>space_id</code> where <code>parent_folder_id IS NULL AND deleted_at IS NULL</code></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>ux_folders_parent_name_active</code></td>
+<td><code>(parent_folder_id, name)</code> where <code>deleted_at IS NULL AND parent_folder_id IS NOT NULL</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="56-file_items">5.6 <code>file_items</code><a class="headerlink" href="#56-file_items" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>folder_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>folders.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>created_by_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>normalized_name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_key</code></td>
+<td>VARCHAR(512)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>storage_provider</code></td>
+<td>VARCHAR(50)</td>
+<td style="text-align: right;">N</td>
+<td>default <code>local</code></td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>mime_type</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>checksum_sha256</code></td>
+<td>VARCHAR(64)</td>
+<td style="text-align: right;">Y</td>
+<td>indexed</td>
+</tr>
+<tr>
+<td><code>file_status</code></td>
+<td><code>file_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>ACTIVE</code></td>
+</tr>
+<tr>
+<td><code>preview_status</code></td>
+<td><code>preview_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>PENDING</code></td>
+</tr>
+<tr>
+<td><code>scan_status</code></td>
+<td><code>scan_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>PENDING</code></td>
+</tr>
+<tr>
+<td><code>metadata_json</code></td>
+<td>JSONB</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_file_items_size_non_negative</code></td>
+<td><code>size_bytes &gt;= 0</code></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>ux_file_items_name_active</code></td>
+<td><code>(space_id, folder_id, normalized_name)</code> where <code>deleted_at IS NULL AND file_status &lt;&gt; 'DELETED'</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_file_items_space_folder</code></td>
+<td><code>(space_id, folder_id)</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_file_items_checksum_sha256</code></td>
+<td><code>checksum_sha256</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="57-file_purge_requests">5.7 <code>file_purge_requests</code><a class="headerlink" href="#57-file_purge_requests" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, value generated never</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>indexed, no EF FK</td>
+</tr>
+<tr>
+<td><code>storage_provider</code></td>
+<td>VARCHAR(50)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_key</code></td>
+<td>VARCHAR(512)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>requested_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>completed_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td>indexed</td>
+</tr>
+</tbody>
+</table>
+<p>이 테이블은 purge worker용 작업 큐 성격이다. 현재 EF configuration에는 <code>file_items</code> 또는 <code>spaces</code> FK가 없다.</p>
+<h3 id="58-upload_sessions">5.8 <code>upload_sessions</code><a class="headerlink" href="#58-upload_sessions" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>requester_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>target_folder_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>folders.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>tus_upload_id</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">Y</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>upload_session_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>CREATED</code></td>
+</tr>
+<tr>
+<td><code>expected_size</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>received_size</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>original_name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>normalized_name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>client_mime_type</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_key_temp</code></td>
+<td>VARCHAR(512)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_key</code></td>
+<td>VARCHAR(512)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>checksum_sha256</code></td>
+<td>VARCHAR(64)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>file_item_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>file_items.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>finalize_attempts</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>last_error_code</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_error_message</code></td>
+<td>TEXT</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>finalizing_started_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>finalized_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>completed_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_activity_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_upload_sessions_expected_size_non_negative</code></td>
+<td><code>expected_size &gt;= 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_upload_sessions_received_size_non_negative</code></td>
+<td><code>received_size &gt;= 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_upload_sessions_received_size_lte_expected</code></td>
+<td><code>received_size &lt;= expected_size</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_upload_sessions_finalize_attempts_non_negative</code></td>
+<td><code>finalize_attempts &gt;= 0</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_upload_sessions_space_status</code></td>
+<td><code>(space_id, status)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="59-file_reservations">5.9 <code>file_reservations</code><a class="headerlink" href="#59-file_reservations" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>requester_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>target_folder_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>folders.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>upload_session_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>upload_sessions.id</code>, <code>NoAction</code>, UNIQUE</td>
+</tr>
+<tr>
+<td><code>file_item_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>file_items.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>reserved_name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>normalized_name</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>expected_size</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>reserved_bytes</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_reserved</code></td>
+<td>BOOLEAN</td>
+<td style="text-align: right;">N</td>
+<td>default <code>false</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>file_reservation_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>RESERVED</code></td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>consumed_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>released_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_file_reservations_expected_size_non_negative</code></td>
+<td><code>expected_size &gt;= 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_file_reservations_reserved_bytes_non_negative</code></td>
+<td><code>reserved_bytes &gt;= 0</code></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>ux_file_reservations_name_active</code></td>
+<td><code>(space_id, target_folder_id, normalized_name)</code> where <code>status IN ('RESERVED', 'ACTIVE')</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_file_reservations_space_status</code></td>
+<td><code>(space_id, status)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="510-share_links">5.10 <code>share_links</code><a class="headerlink" href="#510-share_links" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>spaces.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>created_by_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>token_hash</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>password_hash</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>share_link_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>ACTIVE</code></td>
+</tr>
+<tr>
+<td><code>allow_download</code></td>
+<td>BOOLEAN</td>
+<td style="text-align: right;">N</td>
+<td>default <code>true</code></td>
+</tr>
+<tr>
+<td><code>allow_preview</code></td>
+<td>BOOLEAN</td>
+<td style="text-align: right;">N</td>
+<td>default <code>true</code></td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>max_download_count</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>download_attempt_count</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>download_completed_count</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>last_accessed_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>revoked_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_share_links_max_download_count_non_negative</code></td>
+<td><code>max_download_count IS NULL OR max_download_count &gt;= 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_share_links_attempt_count_non_negative</code></td>
+<td><code>download_attempt_count &gt;= 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_share_links_completed_count_non_negative</code></td>
+<td><code>download_completed_count &gt;= 0</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_share_links_space_status</code></td>
+<td><code>(space_id, status)</code></td>
+</tr>
+</tbody>
+</table>
+<p>PostgreSQL에서는 shadow property <code>xmin</code>을 row version으로 사용한다.</p>
+<h3 id="511-share_link_targets">5.11 <code>share_link_targets</code><a class="headerlink" href="#511-share_link_targets" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>share_link_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>share_links.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>target_type</code></td>
+<td><code>share_link_target_type_t</code></td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>file_item_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>file_items.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>folder_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>folders.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>deleted_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Check:</p>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chk_share_link_targets_target_match</code></td>
+<td>file target이면 <code>file_item_id</code>만 있고 folder target이면 <code>folder_id</code>만 있음</td>
+</tr>
+</tbody>
+</table>
+<h3 id="512-download_sessions">5.12 <code>download_sessions</code><a class="headerlink" href="#512-download_sessions" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>file_item_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>file_items.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>share_link_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>share_links.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>requester_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>users.id</code>, <code>NoAction</code>, indexed</td>
+</tr>
+<tr>
+<td><code>session_token_hash</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>subject_type</code></td>
+<td><code>download_subject_type_t</code></td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>download_session_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>ISSUED</code></td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>indexed</td>
+</tr>
+<tr>
+<td><code>last_used_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Check:</p>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chk_download_sessions_subject_match</code></td>
+<td><code>USER</code>면 <code>requester_user_id</code>만 있고 <code>SHARE_LINK</code>면 <code>share_link_id</code>만 있음</td>
+</tr>
+</tbody>
+</table>
+<h3 id="513-outbox_events">5.13 <code>outbox_events</code><a class="headerlink" href="#513-outbox_events" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>event_id</code></td>
+<td>UUID</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>event_type</code></td>
+<td>VARCHAR(200)</td>
+<td style="text-align: right;">N</td>
+<td>indexed with <code>occurred_at</code></td>
+</tr>
+<tr>
+<td><code>event_version</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">N</td>
+<td>default <code>1</code></td>
+</tr>
+<tr>
+<td><code>aggregate_type</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td>indexed with <code>aggregate_id</code>, <code>occurred_at</code></td>
+</tr>
+<tr>
+<td><code>aggregate_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>spaces.id</code>, <code>SetNull</code></td>
+</tr>
+<tr>
+<td><code>actor_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>users.id</code>, <code>SetNull</code></td>
+</tr>
+<tr>
+<td><code>payload</code></td>
+<td>JSONB</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>JSONB</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>VARCHAR(30)</td>
+<td style="text-align: right;">N</td>
+<td>default <code>PENDING</code></td>
+</tr>
+<tr>
+<td><code>attempts</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">N</td>
+<td>default <code>0</code></td>
+</tr>
+<tr>
+<td><code>max_attempts</code></td>
+<td>INTEGER</td>
+<td style="text-align: right;">N</td>
+<td>default <code>10</code></td>
+</tr>
+<tr>
+<td><code>occurred_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>enqueued_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>available_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>worker_id</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>worker_locked_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>worker_lock_expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td>indexed for processing rows</td>
+</tr>
+<tr>
+<td><code>published_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_error_code</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_error_message</code></td>
+<td>TEXT</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and polling indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_outbox_events_attempts_non_negative</code></td>
+<td><code>attempts &gt;= 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_outbox_events_max_attempts_positive</code></td>
+<td><code>max_attempts &gt; 0</code></td>
+</tr>
+<tr>
+<td>CHECK</td>
+<td><code>chk_outbox_events_event_version_positive</code></td>
+<td><code>event_version &gt; 0</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_outbox_events_polling</code></td>
+<td><code>(available_at, id)</code> where <code>status IN ('PENDING', 'FAILED')</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_outbox_events_worker_lock_expires_at</code></td>
+<td><code>worker_lock_expires_at</code> where <code>status = 'PROCESSING'</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="514-notifications">5.14 <code>notifications</code><a class="headerlink" href="#514-notifications" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>notification_id</code></td>
+<td>UUID</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">N</td>
+<td>indexed with <code>occurred_at</code></td>
+</tr>
+<tr>
+<td><code>payload</code></td>
+<td>JSONB</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>recipient_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>users.id</code>, <code>Cascade</code></td>
+</tr>
+<tr>
+<td><code>space_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>spaces.id</code>, <code>Cascade</code></td>
+</tr>
+<tr>
+<td><code>actor_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>users.id</code>, <code>SetNull</code></td>
+</tr>
+<tr>
+<td><code>aggregate_type</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>aggregate_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>outbox_event_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>outbox_events.id</code>, <code>Restrict</code>, UNIQUE when not null</td>
+</tr>
+<tr>
+<td><code>occurred_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_notifications_target_exclusive</code></td>
+<td><code>recipient_user_id IS NULL OR space_id IS NULL</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_notifications_recipient_id_desc</code></td>
+<td><code>(recipient_user_id, id)</code> where <code>recipient_user_id IS NOT NULL</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_notifications_space_id_desc</code></td>
+<td><code>(space_id, id)</code> where <code>space_id IS NOT NULL</code></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>ux_notifications_outbox_event_id</code></td>
+<td><code>outbox_event_id</code> where <code>outbox_event_id IS NOT NULL</code></td>
+</tr>
+</tbody>
+</table>
+<p>PostgreSQL에서는 shadow property <code>xmin</code>을 row version으로 사용한다.</p>
+<h3 id="515-notification_read_positions">5.15 <code>notification_read_positions</code><a class="headerlink" href="#515-notification_read_positions" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>Cascade</code>, UNIQUE</td>
+</tr>
+<tr>
+<td><code>last_read_notification_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>notifications.id</code>, <code>Restrict</code></td>
+</tr>
+<tr>
+<td><code>last_read_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td>default <code>NOW()</code></td>
+</tr>
+</tbody>
+</table>
+<p>PostgreSQL에서는 shadow property <code>xmin</code>을 row version으로 사용한다.</p>
+<h3 id="516-mcp_tokens">5.16 <code>mcp_tokens</code><a class="headerlink" href="#516-mcp_tokens" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th style="text-align: right;">Null</th>
+<th>제약/기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>PK, identity</td>
+</tr>
+<tr>
+<td><code>owner_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">N</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>VARCHAR(100)</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>token_hash</code></td>
+<td>VARCHAR(255)</td>
+<td style="text-align: right;">N</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>mcp_token_status_t</code></td>
+<td style="text-align: right;">N</td>
+<td>default <code>ACTIVE</code></td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_used_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">N</td>
+<td></td>
+</tr>
+<tr>
+<td><code>revoked_at</code></td>
+<td>TIMESTAMPTZ</td>
+<td style="text-align: right;">Y</td>
+<td></td>
+</tr>
+<tr>
+<td><code>revoked_by_user_id</code></td>
+<td>BIGINT</td>
+<td style="text-align: right;">Y</td>
+<td>FK <code>users.id</code>, <code>NoAction</code></td>
+</tr>
+</tbody>
+</table>
+<p>Checks and indexes:</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>이름</th>
+<th>조건/컬럼</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHECK</td>
+<td><code>chk_mcp_tokens_expires_after_created</code></td>
+<td><code>expires_at &gt; created_at</code></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>ux_mcp_tokens_token_hash</code></td>
+<td><code>token_hash</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_mcp_tokens_owner_created_at</code></td>
+<td><code>(owner_user_id, created_at)</code></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>idx_mcp_tokens_status_expires_at</code></td>
+<td><code>(status, expires_at)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="6">6. 관계 요약<a class="headerlink" href="#6" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>관계</th>
+<th>삭제 동작</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>users.id -&gt; spaces.created_by_user_id</code></td>
+<td><code>NoAction</code></td>
+<td>Space 생성자</td>
+</tr>
+<tr>
+<td><code>spaces.id -&gt; space_members.space_id</code></td>
+<td><code>NoAction</code></td>
+<td>Space membership</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; space_members.user_id</code></td>
+<td><code>NoAction</code></td>
+<td>User membership</td>
+</tr>
+<tr>
+<td><code>spaces.id -&gt; space_invites.space_id</code></td>
+<td><code>NoAction</code></td>
+<td>Space invite</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; space_invites.inviter_user_id</code></td>
+<td><code>NoAction</code></td>
+<td>초대 발행자</td>
+</tr>
+<tr>
+<td><code>spaces.id -&gt; folders.space_id</code></td>
+<td><code>NoAction</code></td>
+<td>Space 폴더</td>
+</tr>
+<tr>
+<td><code>folders.id -&gt; folders.parent_folder_id</code></td>
+<td><code>NoAction</code></td>
+<td>폴더 tree</td>
+</tr>
+<tr>
+<td><code>spaces.id -&gt; file_items.space_id</code></td>
+<td><code>NoAction</code></td>
+<td>Space 파일</td>
+</tr>
+<tr>
+<td><code>folders.id -&gt; file_items.folder_id</code></td>
+<td><code>NoAction</code></td>
+<td>폴더 파일</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; file_items.created_by_user_id</code></td>
+<td><code>NoAction</code></td>
+<td>파일 생성자</td>
+</tr>
+<tr>
+<td><code>upload_sessions.id -&gt; file_reservations.upload_session_id</code></td>
+<td><code>NoAction</code></td>
+<td>업로드 세션과 예약의 1:1 대응</td>
+</tr>
+<tr>
+<td><code>share_links.id -&gt; share_link_targets.share_link_id</code></td>
+<td><code>NoAction</code></td>
+<td>공유 링크 대상</td>
+</tr>
+<tr>
+<td><code>file_items.id -&gt; download_sessions.file_item_id</code></td>
+<td><code>NoAction</code></td>
+<td>다운로드 대상 파일</td>
+</tr>
+<tr>
+<td><code>spaces.id -&gt; outbox_events.space_id</code></td>
+<td><code>SetNull</code></td>
+<td>이벤트 Space scope</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; outbox_events.actor_user_id</code></td>
+<td><code>SetNull</code></td>
+<td>이벤트 actor</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; notifications.recipient_user_id</code></td>
+<td><code>Cascade</code></td>
+<td>개인 알림</td>
+</tr>
+<tr>
+<td><code>spaces.id -&gt; notifications.space_id</code></td>
+<td><code>Cascade</code></td>
+<td>Space 알림</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; notifications.actor_user_id</code></td>
+<td><code>SetNull</code></td>
+<td>알림 actor</td>
+</tr>
+<tr>
+<td><code>outbox_events.id -&gt; notifications.outbox_event_id</code></td>
+<td><code>Restrict</code></td>
+<td>Outbox projection</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; notification_read_positions.user_id</code></td>
+<td><code>Cascade</code></td>
+<td>사용자별 read cursor</td>
+</tr>
+<tr>
+<td><code>notifications.id -&gt; notification_read_positions.last_read_notification_id</code></td>
+<td><code>Restrict</code></td>
+<td>마지막 읽은 notification</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; mcp_tokens.owner_user_id</code></td>
+<td><code>NoAction</code></td>
+<td>MCP token 소유자</td>
+</tr>
+<tr>
+<td><code>users.id -&gt; mcp_tokens.revoked_by_user_id</code></td>
+<td><code>NoAction</code></td>
+<td>MCP token 폐기자</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7">7. 설계 메모<a class="headerlink" href="#7" title="Permanent link">¶</a></h2>
+<ul>
+<li>파일, 폴더, 공유 링크, 업로드 세션, 파일 예약은 모두 <code>space_id</code>를 기준으로 Space에 귀속된다.</li>
+<li><code>file_items.storage_provider</code>와 <code>file_purge_requests.storage_provider</code>는 현재 <code>local</code> 저장소 구현을 기본값으로 둔다.</li>
+<li><code>file_purge_requests</code>는 현재 EF FK가 없는 작업 기록 테이블이다. 파일 삭제 이후 storage object 정리를 위해 식별자와 storage key를 별도로 보관한다.</li>
+<li><code>outbox_events</code>는 이벤트 처리 실패와 재시도를 위해 상태, attempt, worker lock 컬럼을 가진다.</li>
+<li><code>notifications</code>는 개인 알림(<code>recipient_user_id</code>) 또는 Space 알림(<code>space_id</code>) 중 하나만 직접 target으로 가진다.</li>
+<li><code>notification_read_positions</code>는 사용자별 전체 inbox cursor 1개만 관리한다.</li>
+<li><code>share_links</code>, <code>notifications</code>, <code>notification_read_positions</code>는 PostgreSQL에서 <code>xmin</code> row version을 사용한다.</li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>

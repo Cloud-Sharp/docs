@@ -1,0 +1,1958 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../notification/" rel="prev"/>
+<link href="../sse-realtime-fanout/" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS feed" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="RSS feed of updated content" type="application/rss+xml"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>구현 상태 트래커 - 개발 문서</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/mermaid.css" rel="stylesheet"/>
+<link href="../../stylesheets/redoc-fullscreen.css" rel="stylesheet"/>
+<link href="../../stylesheets/table-fullscreen.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/panzoom.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta name="panzoom-theme" content="material">
+<meta name="panzoom-data" content='{"selectors": ["img", ".d2"], "initial_zoom_level": 1.0}'> </head>
+<body data-md-color-accent="amber" data-md-color-primary="brown" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#_1">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="개발 문서" class="md-header__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            개발 문서
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              구현 상태 트래커
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="다크 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="brown" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="다크 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="라이트 모드로 전환" class="md-option" data-md-color-accent="amber" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="brown" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="라이트 모드로 전환">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+          
+  
+  
+  기획
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+          
+  
+  
+  설계
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../SSE/">
+          
+  
+  
+  개발
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+          
+  
+  
+  컨벤션
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+        
+  
+  
+    
+  
+  API(초안)
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../api-redoc/">
+        
+  
+  
+    
+  
+  API(구현 기준)
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="개발 문서" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="개발 문서">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    개발 문서
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    기획
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    기획
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/CloudSharp%20-%20Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%ED%98%B8%EC%8A%A4%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B8%B0%ED%9A%8D%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp - Space 기반 파일 호스팅 서비스 기획서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%84%9C%EB%B9%84%EC%8A%A4%EC%99%80%20%EB%A9%80%ED%8B%B0%20%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%20%ED%86%B5%ED%95%A9%20%ED%83%90%EC%83%89%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    Space 기반 파일 서비스와 멀티 클라우드 통합 탐색 아키텍처
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Usecases/">
+<span class="md-ellipsis">
+    
+  
+    Usecases
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EA%B8%B0%ED%9A%8D/Wireframe/">
+<span class="md-ellipsis">
+    
+  
+    Wireframe
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    설계
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    설계
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/API%20%EB%AA%85%EC%84%B8/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EA%B8%B0%EB%8A%A5%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD/">
+<span class="md-ellipsis">
+    
+  
+    기능 요구사항 상세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EB%AA%A8%EB%85%B8%EB%A0%88%ED%8F%AC%20%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC%20%EA%B5%AC%EC%A1%B0/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# 모노레포 디렉토리 구조 명세서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98/">
+<span class="md-ellipsis">
+    
+  
+    MVP 기술 아키텍처 표
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Db
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Db
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/db/ERD%20%EC%84%A4%EA%B3%84%EC%84%9C/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# — Space 중심 통합 ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/pipeline/%EC%97%85%EB%A1%9C%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8/">
+<span class="md-ellipsis">
+    
+  
+    업로드 파이프라인
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    전략
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    전략
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EA%B8%B0%EB%B0%98%20%ED%8C%8C%EC%9D%BC%20%EC%A0%80%EC%9E%A5%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Cloud# Space 기반 파일 저장 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/Space%20%EB%A7%81%ED%81%AC%20%EC%B4%88%EB%8C%80%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    Space 링크 초대 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/finalize%20%EC%A4%91%EB%B3%B5%20%EB%B0%A9%EC%A7%80%20%EB%9D%BD%20%EC%A0%84%EB%9E%B5/">
+<span class="md-ellipsis">
+    
+  
+    CAS 기반 Finalize 설계안 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/quota%20%ED%8C%90%EC%A0%95%20%EA%B3%B5%EC%8B%9D/">
+<span class="md-ellipsis">
+    
+  
+    Storage Quota 관리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%84%B8%EC%85%98%20%EA%B6%8C%ED%95%9C%20%EB%B3%80%EA%B2%BD%C2%B7%EA%B0%95%EC%A0%9C%20revoke%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    다운로드 세션 권한 변경 및 Revoke 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%EC%A6%9D%C2%B7%EC%9D%B8%EA%B0%80%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    사용자 인증 및 인가 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%97%85%EB%A1%9C%EB%93%9C%20API%20%EA%B3%84%EC%95%BD%20%EB%B3%B4%EC%99%84/">
+<span class="md-ellipsis">
+    
+  
+    업로드 API 계약 보완
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%EC%A0%95%EB%A6%AC%20%EB%B0%B0%EC%B9%98%C2%B7%EB%A7%8C%EB%A3%8C%20%EC%B2%98%EB%A6%AC%20%EC%9A%B4%EC%98%81%20%EA%B7%9C%EC%B9%99/">
+<span class="md-ellipsis">
+    
+  
+    정리 배치·만료 처리 운영 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C%20%EC%A0%84%EB%9E%B5%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8/">
+<span class="md-ellipsis">
+    
+  
+    파일 업로드 다운로드 전략 체크리스트
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%8C%8C%EC%9D%BC%EB%AA%85%20%EC%B6%A9%EB%8F%8C%20%EC%B5%9C%EC%A2%85%20%EC%A0%95%EC%B1%85/">
+<span class="md-ellipsis">
+    
+  
+    파일명 충돌 처리 정책
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/%EC%A0%84%EB%9E%B5/%ED%9B%84%EC%B2%98%EB%A6%AC%20%EA%B2%B0%EA%B3%BC%20%E2%86%94%20%ED%8C%8C%EC%9D%BC%20%EC%A0%91%EA%B7%BC%20%EC%A0%95%EC%B1%85%20%EC%97%B0%EA%B2%B0/">
+<span class="md-ellipsis">
+    
+  
+    후처리 결과와 파일 접근 정책 연결
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    개발
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    개발
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../SSE/">
+<span class="md-ellipsis">
+    
+  
+    Frontend SSE Integration Guide
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api-contract-patch-notes/">
+<span class="md-ellipsis">
+    
+  
+    OpenAPI Patch Notes
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 명세
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../erd/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp ERD 설계서
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../file-tags/">
+<span class="md-ellipsis">
+    
+  
+    File Tags 설계
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../notification/">
+<span class="md-ellipsis">
+    
+  
+    Notification 영속 Inbox 전략
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    구현 상태 트래커
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    구현 상태 트래커
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#infrastructure">
+<span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#auth">
+<span class="md-ellipsis">
+      
+        인증 (Auth)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#admin">
+<span class="md-ellipsis">
+      
+        관리자 (Admin)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mcp">
+<span class="md-ellipsis">
+      
+        MCP 권한 토큰
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#space">
+<span class="md-ellipsis">
+      
+        Space
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spacemember-spaceinvite">
+<span class="md-ellipsis">
+      
+        멤버십 (SpaceMember / SpaceInvite)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        파일·폴더
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3">
+<span class="md-ellipsis">
+      
+        업로드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4">
+<span class="md-ellipsis">
+      
+        다운로드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sharelink">
+<span class="md-ellipsis">
+      
+        공유 (ShareLink)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#outbox">
+<span class="md-ellipsis">
+      
+        이벤트 Outbox
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sse-redis-pubsub">
+<span class="md-ellipsis">
+      
+        실시간 이벤트 (SSE / Redis Pub/Sub)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metadata-thumbnail-ai-worker">
+<span class="md-ellipsis">
+      
+        후처리 (Metadata / Thumbnail / AI Worker)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../sse-realtime-fanout/">
+<span class="md-ellipsis">
+    
+  
+    SSE Realtime Fan-out 전략
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    컨벤션
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    컨벤션
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/CSharp%20%EA%B0%9D%EC%B2%B4%20%EC%B4%88%EA%B8%B0%ED%99%94/">
+<span class="md-ellipsis">
+    
+  
+    C# 개체 이니셜라이저 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/CloudSharp%20Backend%20HTTP%20Endpoint%20Convention/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Backend HTTP Endpoint Convention
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Command%20Query/">
+<span class="md-ellipsis">
+    
+  
+    UseCase Command / Query 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/IntegrationTests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp API 통합 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Migration/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp EF Core Migration 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Repository%20Unit%20Tests/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Repository 테스트 컨벤션
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Results/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp FluentResults 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Test/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp 유닛 테스트 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/UseCases%20Directory/">
+<span class="md-ellipsis">
+    
+  
+    UseCases 디렉토리 / 네임스페이스 정리
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Codding/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 작성 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Usecases%20Output/">
+<span class="md-ellipsis">
+    
+  
+    UseCase 반환 규칙
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/Validation/">
+<span class="md-ellipsis">
+    
+  
+    CloudSharp Validation 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%BB%A8%EB%B2%A4%EC%85%98/%ED%81%B4%EB%A6%B0%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EA%B8%B0%EC%A4%80%20%EA%B0%9C%EB%B0%9C%20%EC%88%9C%EC%84%9C%20%EA%B0%80%EC%9D%B4%EB%93%9C/">
+<span class="md-ellipsis">
+    
+  
+    클린 아키텍처 기준 개발 순서 가이드
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../%EC%84%A4%EA%B3%84/api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(초안)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../api-redoc/">
+<span class="md-ellipsis">
+    
+  
+    API(구현 기준)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#infrastructure">
+<span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#auth">
+<span class="md-ellipsis">
+      
+        인증 (Auth)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#admin">
+<span class="md-ellipsis">
+      
+        관리자 (Admin)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mcp">
+<span class="md-ellipsis">
+      
+        MCP 권한 토큰
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#space">
+<span class="md-ellipsis">
+      
+        Space
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spacemember-spaceinvite">
+<span class="md-ellipsis">
+      
+        멤버십 (SpaceMember / SpaceInvite)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      
+        파일·폴더
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3">
+<span class="md-ellipsis">
+      
+        업로드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4">
+<span class="md-ellipsis">
+      
+        다운로드
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sharelink">
+<span class="md-ellipsis">
+      
+        공유 (ShareLink)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#outbox">
+<span class="md-ellipsis">
+      
+        이벤트 Outbox
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sse-redis-pubsub">
+<span class="md-ellipsis">
+      
+        실시간 이벤트 (SSE / Redis Pub/Sub)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metadata-thumbnail-ai-worker">
+<span class="md-ellipsis">
+      
+        후처리 (Metadata / Thumbnail / AI Worker)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="_1">구현 상태 트래커<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
+<blockquote>
+<p>LLM이 개발 진행에 따라 업데이트한다. 상태: <code>[ ]</code> 미착수 / <code>[~]</code> 진행 중 / <code>[x]</code> 완료</p>
+</blockquote>
+<hr/>
+<h2 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker Compose 기본 구성</td>
+<td>[x]</td>
+<td>postgres, redis, tusd</td>
+</tr>
+<tr>
+<td>Health check 엔드포인트</td>
+<td>[x]</td>
+<td><code>/api/v1/health</code></td>
+</tr>
+<tr>
+<td>EF Core DbContext 설정</td>
+<td>[x]</td>
+<td><code>CloudSharpDbContext</code> 및 엔티티 configuration 적용</td>
+</tr>
+<tr>
+<td>InitialCreate Migration</td>
+<td>[x]</td>
+<td>기본 DB 스키마 생성</td>
+</tr>
+<tr>
+<td>UserName 컬럼 Migration</td>
+<td>[x]</td>
+<td><code>users.user_name</code> nullable <code>VARCHAR(100)</code> 컬럼 추가</td>
+</tr>
+<tr>
+<td>Folder uniqueness Migration</td>
+<td>[x]</td>
+<td>폴더 중복 제약 추가</td>
+</tr>
+<tr>
+<td>StorageProvider Migration</td>
+<td>[x]</td>
+<td><code>file_items.storage_provider</code> 추가</td>
+</tr>
+<tr>
+<td>FileReservation 예약 상태 Migration</td>
+<td>[x]</td>
+<td><code>file_reservations.is_reserved</code> 추가</td>
+</tr>
+<tr>
+<td>SpaceInvite 링크 초대 Migration</td>
+<td>[x]</td>
+<td>SpaceInvite를 링크 초대 구조로 전환</td>
+</tr>
+<tr>
+<td>FilePurgeRequest Migration</td>
+<td>[x]</td>
+<td>영구 삭제 요청 추적 테이블 추가</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="auth">인증 (Auth)<a class="headerlink" href="#auth" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>회원가입</td>
+<td>[x]</td>
+<td><code>POST /api/v1/auth/register</code></td>
+</tr>
+<tr>
+<td>로그인 / 세션 토큰 발급</td>
+<td>[x]</td>
+<td><code>POST /api/v1/auth/login</code></td>
+</tr>
+<tr>
+<td>세션 만료 처리</td>
+<td>[x]</td>
+<td>Redis TTL 기반 opaque session token</td>
+</tr>
+<tr>
+<td>세션 연장</td>
+<td>[ ]</td>
+<td>별도 refresh/extend API 없음</td>
+</tr>
+<tr>
+<td>로그아웃</td>
+<td>[x]</td>
+<td><code>POST /api/v1/auth/logout</code></td>
+</tr>
+<tr>
+<td>내 프로필 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/me</code>, legacy <code>POST /api/v1/me</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="admin">관리자 (Admin)<a class="headerlink" href="#admin" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>전역 관리자 권한 모델</td>
+<td>[x]</td>
+<td><code>RequireAdminAccess()</code> + <code>AdminSessionOnly</code> policy</td>
+</tr>
+<tr>
+<td>사용자 목록 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/admin/users</code></td>
+</tr>
+<tr>
+<td>사용자 상세 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/admin/users/{userId}</code></td>
+</tr>
+<tr>
+<td>사용자 상태 관리</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/admin/users/{userId}/status</code></td>
+</tr>
+<tr>
+<td>전체 Space 목록 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/admin/spaces</code></td>
+</tr>
+<tr>
+<td>Space별 사용량 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/admin/spaces/{spaceId}/usage</code></td>
+</tr>
+<tr>
+<td>운영자용 Space 상태/Quota 관리</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/admin/spaces/{spaceId}/status</code>, <code>PATCH /api/v1/admin/spaces/{spaceId}/quota</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="mcp">MCP 권한 토큰<a class="headerlink" href="#mcp" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP 토큰 권한 모델 설계</td>
+<td>[~]</td>
+<td>현재는 사용자 소유 token 단위, 세부 scope/허용 Space 정책은 확장 여지</td>
+</tr>
+<tr>
+<td>MCP 토큰 발급</td>
+<td>[x]</td>
+<td><code>POST /api/v1/mcp-tokens</code>, raw token은 발급 시 1회만 반환</td>
+</tr>
+<tr>
+<td>MCP 토큰 목록/상세 조회</td>
+<td>[~]</td>
+<td><code>GET /api/v1/mcp-tokens</code> 목록 구현, 단건 상세 API 없음</td>
+</tr>
+<tr>
+<td>MCP 토큰 폐기</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/mcp-tokens/{tokenId}</code></td>
+</tr>
+<tr>
+<td>MCP 토큰 인증 핸들러</td>
+<td>[x]</td>
+<td><code>McpTokenAuthenticationHandler</code></td>
+</tr>
+<tr>
+<td>MCP 토큰 기반 권한 검사</td>
+<td>[~]</td>
+<td>MCP token 인증은 존재, 세부 scope + Space policy 조합은 확장 필요</td>
+</tr>
+<tr>
+<td>MCP 관리 UI</td>
+<td>[~]</td>
+<td>프론트 mock 화면 존재, backend API 연동 없음</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="space">Space<a class="headerlink" href="#space" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Space 생성</td>
+<td>[x]</td>
+<td><code>POST /api/v1/spaces</code></td>
+</tr>
+<tr>
+<td>Space 목록 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces</code></td>
+</tr>
+<tr>
+<td>Space 상세 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}</code></td>
+</tr>
+<tr>
+<td>Space 수정</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}</code></td>
+</tr>
+<tr>
+<td>Space 삭제</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}</code></td>
+</tr>
+<tr>
+<td>Quota 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/quota</code></td>
+</tr>
+<tr>
+<td>Quota 변경</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/quota</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="spacemember-spaceinvite">멤버십 (SpaceMember / SpaceInvite)<a class="headerlink" href="#spacemember-spaceinvite" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>초대 도메인 모델</td>
+<td>[x]</td>
+<td>Core <code>SpaceInvite</code> aggregate 구현</td>
+</tr>
+<tr>
+<td>초대 링크 생성/조회</td>
+<td>[x]</td>
+<td><code>GET/POST /api/v1/spaces/{spaceSlug}/invites</code></td>
+</tr>
+<tr>
+<td>초대 링크 상세 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/invites/{inviteToken}</code></td>
+</tr>
+<tr>
+<td>초대 링크 수락</td>
+<td>[x]</td>
+<td><code>POST /api/v1/invites/accept</code>, 기본 Role <code>VIEWER</code></td>
+</tr>
+<tr>
+<td>초대 링크 폐기</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/invites/{inviteToken}</code></td>
+</tr>
+<tr>
+<td>Role 변경</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/members/{memberId}</code></td>
+</tr>
+<tr>
+<td>멤버 강퇴</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/members/{memberId}</code></td>
+</tr>
+<tr>
+<td>Space 나가기</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/leave</code></td>
+</tr>
+<tr>
+<td>멤버 목록 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/members</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="_2">파일·폴더<a class="headerlink" href="#_2" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>폴더 생성</td>
+<td>[x]</td>
+<td><code>POST /api/v1/spaces/{spaceSlug}/folders</code></td>
+</tr>
+<tr>
+<td>폴더 목록 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/folders/{folderId}/children</code></td>
+</tr>
+<tr>
+<td>폴더 이름 변경</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/folders/{folderId}</code></td>
+</tr>
+<tr>
+<td>폴더 이동</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/folders/{folderId}</code></td>
+</tr>
+<tr>
+<td>폴더 삭제</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/folders/{folderId}</code></td>
+</tr>
+<tr>
+<td>파일 목록 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/folders/{folderId}/children</code> 응답에 파일 포함</td>
+</tr>
+<tr>
+<td>파일 이름 변경</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/files/{fileId}</code></td>
+</tr>
+<tr>
+<td>파일 이동</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/files/{fileId}</code></td>
+</tr>
+<tr>
+<td>파일 삭제</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/files/{fileId}</code></td>
+</tr>
+<tr>
+<td>파일 상세 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/files/{fileId}</code>, <code>metadataJson</code>, thumbnail/metadata status 포함</td>
+</tr>
+<tr>
+<td>파일 썸네일 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/files/{fileId}/thumbnail</code>, <code>image/jpeg</code></td>
+</tr>
+<tr>
+<td>파일/폴더 검색</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/search</code></td>
+</tr>
+<tr>
+<td>파일 미리보기</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/files/{fileId}/preview</code></td>
+</tr>
+<tr>
+<td>Space 태그 CRUD</td>
+<td>[x]</td>
+<td><code>GET/POST /api/v1/spaces/{spaceSlug}/tags</code>, <code>PATCH/DELETE /api/v1/spaces/{spaceSlug}/tags/{tagId}</code></td>
+</tr>
+<tr>
+<td>파일 태그 추가/교체/제거</td>
+<td>[x]</td>
+<td><code>POST/PUT/DELETE /api/v1/spaces/{spaceSlug}/files/tags</code></td>
+</tr>
+<tr>
+<td>휴지통 파일 목록</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/trash/files</code></td>
+</tr>
+<tr>
+<td>휴지통 파일 복원</td>
+<td>[x]</td>
+<td><code>POST /api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore</code></td>
+</tr>
+<tr>
+<td>휴지통 파일 영구 삭제</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/trash/files/{fileId}</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="_3">업로드<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FileReservation 생성</td>
+<td>[x]</td>
+<td><code>POST /api/v1/spaces/{spaceSlug}/upload-sessions</code></td>
+</tr>
+<tr>
+<td>UploadSession 생성</td>
+<td>[x]</td>
+<td><code>POST /api/v1/spaces/{spaceSlug}/upload-sessions</code></td>
+</tr>
+<tr>
+<td>UploadSession 조회</td>
+<td>[x]</td>
+<td><code>GET /api/v1/spaces/{spaceSlug}/upload-sessions/{token}</code></td>
+</tr>
+<tr>
+<td>tusd 훅 연동</td>
+<td>[x]</td>
+<td><code>POST /internal/tusd/hooks</code></td>
+</tr>
+<tr>
+<td>Finalize 처리</td>
+<td>[x]</td>
+<td><code>POST /api/internal/uploads/finalize</code>, tusd <code>post-finish</code></td>
+</tr>
+<tr>
+<td>Finalize 복구 배치</td>
+<td>[x]</td>
+<td><code>UploadFinalizeRecoveryService</code> stale <code>FINALIZING</code> 세션 복구</td>
+</tr>
+<tr>
+<td>실패 업로드 정리 배치</td>
+<td>[ ]</td>
+<td>실패/만료 세션 및 임시 파일 정리 정책 미구현</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="_4">다운로드<a class="headerlink" href="#_4" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DownloadSession 생성</td>
+<td>[x]</td>
+<td><code>POST /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions</code></td>
+</tr>
+<tr>
+<td>파일 스트리밍</td>
+<td>[x]</td>
+<td><code>GET /public/v1/download-sessions/{sessionToken}/stream</code></td>
+</tr>
+<tr>
+<td>공유 링크 다운로드 세션</td>
+<td>[x]</td>
+<td><code>POST /public/v1/share-links/{shareToken}/download-sessions</code></td>
+</tr>
+<tr>
+<td>세션 revoke</td>
+<td>[ ]</td>
+<td>Redis download session revoke API 없음</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="sharelink">공유 (ShareLink)<a class="headerlink" href="#sharelink" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ShareLink 도메인/영속화</td>
+<td>[x]</td>
+<td>Domain, Repository, EF entity/configuration 구현</td>
+</tr>
+<tr>
+<td>ShareLink 생성</td>
+<td>[x]</td>
+<td><code>POST /api/v1/share-links</code></td>
+</tr>
+<tr>
+<td>ShareLink 옵션 수정</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}</code></td>
+</tr>
+<tr>
+<td>ShareLink 상태 변경</td>
+<td>[x]</td>
+<td><code>PATCH /api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}/status</code></td>
+</tr>
+<tr>
+<td>ShareLink 삭제/폐기</td>
+<td>[x]</td>
+<td><code>DELETE /api/v1/spaces/{spaceSlug}/share-links/{shareLinkId}</code></td>
+</tr>
+<tr>
+<td>공개 링크 검증</td>
+<td>[x]</td>
+<td><code>POST /public/v1/share-links/{shareToken}/verify</code></td>
+</tr>
+<tr>
+<td>링크 기반 파일/폴더 탐색</td>
+<td>[x]</td>
+<td><code>POST /public/v1/share-links/{shareToken}/browse</code></td>
+</tr>
+<tr>
+<td>링크 기반 다운로드 세션 발급</td>
+<td>[x]</td>
+<td><code>POST /public/v1/share-links/{shareToken}/download-sessions</code></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="outbox">이벤트 Outbox<a class="headerlink" href="#outbox" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Outbox 이벤트 모델 설계</td>
+<td>[x]</td>
+<td>event type, aggregate, payload, retry metadata</td>
+</tr>
+<tr>
+<td>Outbox EF 엔티티/마이그레이션</td>
+<td>[x]</td>
+<td><code>outbox_events</code> 테이블</td>
+</tr>
+<tr>
+<td>UseCase 내 명시적 outbox append</td>
+<td>[x]</td>
+<td>업로드 완료, 파일 삭제, 공유/초대/권한 변경 등</td>
+</tr>
+<tr>
+<td>Outbox polling background service</td>
+<td>[x]</td>
+<td>dispatcher 등록 여부 기반 claim, retry, 실패 기록</td>
+</tr>
+<tr>
+<td>Outbox 처리 중복 방지</td>
+<td>[x]</td>
+<td><code>PROCESSING</code> lock + worker id 기반 상태 전이</td>
+</tr>
+<tr>
+<td>Outbox RealtimeFanout dispatcher</td>
+<td>[x]</td>
+<td><code>RealtimeFanoutOutboxEventDispatcher</code>, <code>ISseConnectionStore</code></td>
+</tr>
+<tr>
+<td>Outbox 테스트</td>
+<td>[x]</td>
+<td>Repository 상태 전이 + API runner routing + SSE/dispatcher 테스트</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="sse-redis-pubsub">실시간 이벤트 (SSE / Redis Pub/Sub)<a class="headerlink" href="#sse-redis-pubsub" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSE API (인메모리 fan-out)</td>
+<td>[x]</td>
+<td><code>GET /api/v1/events/stream</code>, <code>ISseConnectionStore</code>, <code>RealtimeFanoutOutboxEventDispatcher</code></td>
+</tr>
+<tr>
+<td>Space/사용자별 이벤트 권한 필터</td>
+<td>[x]</td>
+<td>active member 기준 space 이벤트, <code>MemberRemoved</code>는 제거된 user 포함, <code>UploadFinalizeFailed</code>는 requester 개인</td>
+</tr>
+<tr>
+<td>Redis Pub/Sub 이벤트 발행</td>
+<td>[ ]</td>
+<td>Outbox 처리 결과를 Redis로 fan-out (다중 인스턴스 확장)</td>
+</tr>
+<tr>
+<td>Redis Pub/Sub 구독 서비스</td>
+<td>[ ]</td>
+<td>API 인스턴스별 SSE 연결에 전달 (다중 인스턴스 확장)</td>
+</tr>
+<tr>
+<td>프론트엔드 SSE 클라이언트</td>
+<td>[ ]</td>
+<td>재연결, 상태 업데이트 반영 (별도 작업)</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="metadata-thumbnail-ai-worker">후처리 (Metadata / Thumbnail / AI Worker)<a class="headerlink" href="#metadata-thumbnail-ai-worker" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>상태</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>후처리 작업 이벤트 계약</td>
+<td>[ ]</td>
+<td>File finalized 이벤트 기반 작업 분기</td>
+</tr>
+<tr>
+<td>파일별 JSON 메타데이터 저장 필드</td>
+<td>[x]</td>
+<td><code>file_items.metadata_json</code> 도메인/EF/응답 매핑 존재</td>
+</tr>
+<tr>
+<td>파일별 JSON 메타데이터 구조</td>
+<td>[ ]</td>
+<td>AI/thumbnail 결과용 schema 확정 필요</td>
+</tr>
+<tr>
+<td>파일 유형 판별/기본 메타데이터 추출</td>
+<td>[ ]</td>
+<td>SFR-044</td>
+</tr>
+<tr>
+<td>이미지 썸네일 생성</td>
+<td>[ ]</td>
+<td>실패해도 다운로드 차단하지 않음</td>
+</tr>
+<tr>
+<td>비디오 썸네일 생성</td>
+<td>[ ]</td>
+<td>ffmpeg 기반</td>
+</tr>
+<tr>
+<td>AI 메타데이터 추출</td>
+<td>[ ]</td>
+<td>SFR-045/SFR-047 기반 자동 태그/검색 확장</td>
+</tr>
+<tr>
+<td>후처리 상태 응답 필드</td>
+<td>[x]</td>
+<td>파일 상세 응답에 <code>scanStatus</code>, <code>previewStatus</code>, <code>thumbnailStatus</code>, <code>metadataStatus</code> 존재</td>
+</tr>
+<tr>
+<td>후처리 실패 정책 구현</td>
+<td>[ ]</td>
+<td>quarantined/downloadable 정책 연결</td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../javascripts/ngrok-swagger-patch.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.4/dist/panzoom.min.js"></script>
+<script src="../../javascripts/mermaid.mjs" type="module"></script>
+<script src="../../javascripts/redoc-fullscreen.js"></script>
+<script src="../../javascripts/table-fullscreen.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../assets/javascripts/panzoom.min.js"></script>
+<script src="../../assets/javascripts/zoompan.js"></script>
+<script>document$.subscribe(() => {
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("redoc-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>
