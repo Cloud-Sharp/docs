@@ -3,6 +3,35 @@
 > 실제 `CloudSharp.Api` endpoint 매핑과 OpenAPI/API 계약의 차이를 맞춘 변경 이력을 기록한다.
 
 
+# 2026-05-16 - Backend endpoint inventory sync
+
+### Added
+
+- `GET /api/v1/spaces/{spaceSlug}/files/{fileId}` 파일 상세 조회 계약을 `api.md`에 추가했다.
+- `GET /api/v1/spaces/{spaceSlug}/files/{fileId}/thumbnail` 썸네일 조회 계약을 `api.md`와 `openapi.yaml` 기준으로 확인하고 구현 상태를 명시했다.
+- `GET /api/v1/spaces/{spaceSlug}/files/{fileId}/preview` 미리보기 path가 OpenAPI에 누락되어 있어 복구했다.
+- `GET /api/v1/spaces/{spaceSlug}/share-links` 공유 링크 목록 path가 OpenAPI에 누락되어 있어 복구했다.
+- Tags API 전체를 `openapi.yaml`에 추가했다.
+  - `GET/POST /api/v1/spaces/{spaceSlug}/tags`
+  - `PATCH/DELETE /api/v1/spaces/{spaceSlug}/tags/{tagId}`
+  - `POST/PUT/DELETE /api/v1/spaces/{spaceSlug}/files/tags`
+- MCP token 목록/폐기 API를 `api.md`와 `openapi.yaml`에 추가했다.
+  - `GET /api/v1/mcp-tokens`
+  - `DELETE /api/v1/mcp-tokens/{tokenId}`
+- Tags 및 MCP token 관련 request/response schema를 OpenAPI components에 추가했다.
+
+### Changed
+
+- `api.md`에서 Tags API 구현 상태를 `미구현`에서 `구현됨`으로 갱신했다.
+- `progress.md`에서 Admin, MCP token, 파일 상세/썸네일, Tags, 휴지통 복원/영구삭제, ShareLink 관리 경로 상태를 현재 backend endpoint 기준으로 갱신했다.
+- 파일 태그 검색 필터(`tagIds`, `tagMatch`)는 현재 `SearchRequestParams`에 없으므로 구현 항목이 아니라 전략 초안으로 표시했다.
+
+### Fixed
+
+- `openapi.yaml`의 중복 Share/Admin/Public path block을 제거했다.
+- `openapi.yaml`의 `PATCH /api/v1/spaces/{spaceSlug}/files/{fileId}` 중복 method key를 정리했다.
+- `POST /api/v1/spaces/{spaceSlug}/files/{fileId}/download-sessions`의 `404` response schema 누락을 복구했다.
+
 # 2026-05-13 - SSE 실시간 이벤트 계약 문서화
 
 ### Added

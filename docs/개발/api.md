@@ -110,6 +110,9 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 | `NOTIFICATION_INVALID_TARGET` | 알림 대상 범위가 유효하지 않음 |
 | `NOTIFICATION_INVALID_LAST_READ_NOTIFICATION_ID` | 마지막 읽은 알림 ID가 유효하지 않음 |
 | `NOTIFICATION_SAVE_CONFLICT` | 알림 저장 중 중복 또는 동시성 충돌 |
+| `MCP_TOKEN_NOT_FOUND` | MCP token을 찾을 수 없거나 현재 사용자가 소유하지 않음 |
+| `MCP_TOKEN_INVALID_NAME` | MCP token 이름이 비어 있거나 길이 제한을 초과함 |
+| `MCP_TOKEN_INVALID_EXPIRATION` | MCP token 만료 기간이 허용 범위를 벗어남 |
 
 ## 3. 기능 요구사항 추적표
 
@@ -243,15 +246,17 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 
 | Method | Path | 설명 | 최소 Role | 관련 SFR | 구현 상태 |
 |---|---|---|---|---|---|
+| `GET` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 상세/메타데이터 조회 | `VIEWER` | `SFR-044`, `SFR-045` | `구현됨` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/files/{fileId}/thumbnail` | 파일 썸네일 바이너리 조회 | `VIEWER` | `SFR-044`, `SFR-045` | `구현됨` |
 | `PATCH` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일명 변경 또는 폴더 이동 | `MEMBER` | `SFR-027`, `SFR-028` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/files/{fileId}` | 파일 삭제 | `MEMBER` | `SFR-029` | `구현됨` |
-| `GET` | `/api/v1/spaces/{spaceSlug}/tags` | Space 태그 목록 조회 | `VIEWER` | `SFR-044`, `SFR-045` | `미구현` |
-| `POST` | `/api/v1/spaces/{spaceSlug}/tags` | Space 태그 생성 | `ADMIN` | `SFR-044`, `SFR-045` | `미구현` |
-| `PATCH` | `/api/v1/spaces/{spaceSlug}/tags/{tagId}` | Space 태그 수정 | `ADMIN` | `SFR-044`, `SFR-045` | `미구현` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/tags/{tagId}` | Space 태그 삭제 | `ADMIN` | `SFR-044`, `SFR-045` | `미구현` |
-| `POST` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일에 태그 추가 | `MEMBER` | `SFR-044`, `SFR-045` | `미구현` |
-| `PUT` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일 태그 전체 교체 | `MEMBER` | `SFR-044`, `SFR-045` | `미구현` |
-| `DELETE` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일에서 태그 제거 | `MEMBER` | `SFR-044`, `SFR-045` | `미구현` |
+| `GET` | `/api/v1/spaces/{spaceSlug}/tags` | Space 태그 목록 조회 | `VIEWER` | `SFR-044`, `SFR-045` | `구현됨` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/tags` | Space 태그 생성 | `ADMIN` | `SFR-044`, `SFR-045` | `구현됨` |
+| `PATCH` | `/api/v1/spaces/{spaceSlug}/tags/{tagId}` | Space 태그 수정 | `ADMIN` | `SFR-044`, `SFR-045` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/tags/{tagId}` | Space 태그 삭제 | `ADMIN` | `SFR-044`, `SFR-045` | `구현됨` |
+| `POST` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일에 태그 추가 | `MEMBER` | `SFR-044`, `SFR-045` | `구현됨` |
+| `PUT` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일 태그 전체 교체 | `MEMBER` | `SFR-044`, `SFR-045` | `구현됨` |
+| `DELETE` | `/api/v1/spaces/{spaceSlug}/files/tags` | 파일에서 태그 제거 | `MEMBER` | `SFR-044`, `SFR-045` | `구현됨` |
 | `GET` | `/api/v1/spaces/{spaceSlug}/trash/files` | 휴지통 파일 목록 조회 | `MEMBER` | `SFR-049` | `구현됨` |
 | `POST` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}/restore` | 휴지통 파일 복원 | `MEMBER` | `SFR-050` | `구현됨` |
 | `DELETE` | `/api/v1/spaces/{spaceSlug}/trash/files/{fileId}` | 휴지통 파일 영구삭제 | `MEMBER` | `SFR-051` | `구현됨` |
@@ -319,8 +324,15 @@ ReDoc 렌더 버전은 [API(구현 기준)](api-redoc.md)에서 확인한다.
 - 태그는 Space에 종속되며, 파일에 붙이기 전에 `/api/v1/spaces/{spaceSlug}/tags` 로 먼저 생성되어야 한다.
 - 태그 생성 요청의 핵심 필드는 `name`, `color` 이며 둘 다 필수다. `name`은 1자 이상 30자 이하, `color`는 `#RRGGBB` 형식이다. 예: `{ "name": "프로젝트", "color": "#4A90E2" }`
 - 태그와 파일-태그 매핑의 식별자는 `integer(int64)`이다.
-- `GET /folders/{folderId}/children`의 파일 항목은 태그 구현 후 `tags` 배열을 포함한다.
-- `GET /search`는 태그 구현 후 `tagIds`, `tagMatch` 쿼리를 지원한다.
+- `GET /folders/{folderId}/children`의 파일 항목은 `tags: TagSummary[]` 배열을 포함한다.
+- 파일 태그 추가/교체/제거 요청은 `fileId`와 `tagIds: long[]`를 받으며, 응답은 `fileId`, `tags`를 반환한다.
+- `GET /search`의 `tagIds`, `tagMatch` 쿼리 필터는 아직 요청 모델에 없으며 전략 초안으로만 남아 있다.
+
+**파일 상세/썸네일 정책**
+
+- 파일 상세 응답은 `metadataJson`, `thumbnailStatus`, `metadataStatus`, `accessStatus`를 포함한다.
+- `thumbnailStatus`와 `metadataStatus`는 `PENDING`, `PROCESSING`, `DONE`, `FAILED`, `UNSUPPORTED`, `UNKNOWN` 중 하나다.
+- 썸네일 조회는 `image/jpeg` 바이너리를 반환한다. 썸네일이 없거나 지원하지 않는 파일이면 `404 Not Found`로 응답한다.
 
 ### 4.6 휴지통
 
@@ -524,8 +536,18 @@ Response:
 | 실시간 이벤트 스트림 | `GET /api/v1/events/stream` | `구현됨` |
 | SSE 이벤트 envelope | `RealtimeEventEnvelope` JSON 스키마 | `구현됨` |
 | MCP token 발급 | `POST /api/v1/mcp-tokens` | `구현됨` |
+| MCP token 목록 | `GET /api/v1/mcp-tokens` | `구현됨` |
+| MCP token 폐기 | `DELETE /api/v1/mcp-tokens/{tokenId}` | `구현됨` |
 | MCP/AI 자연어 탐색 | MVP 비보장, 추후 별도 경로로 확장 | `미구현` |
 | 감사 로그 | 외부 공개 API 없음, 서버 내부 운영 계약 | `미구현` |
+
+**MCP token 관리**
+
+- 모든 MCP token 관리 API는 일반 사용자 인증이 필요하다.
+- 발급 요청은 `name`과 선택적 `expiresInDays`를 받는다. `expiresInDays`는 현재 1~180일 범위다.
+- 발급 응답의 `accessToken` 원문은 1회만 반환하며, 응답 헤더에 `Cache-Control: no-store`, `Pragma: no-cache`를 설정한다.
+- 목록 응답은 `items[]`로 `id`, `name`, `status`, `createdAt`, `expiresAt`, `lastUsedAt`을 반환한다.
+- 폐기 API는 현재 사용자 소유 token만 폐기할 수 있으며 성공 시 `204 No Content`다.
 
 **관리자 조회 응답 핵심 필드**
 

@@ -26,6 +26,7 @@ x-tagGroups:
       - Files
       - Search
       - Preview
+      - Tags
       - Trash
       - UploadSessions
       - Downloads
@@ -54,6 +55,7 @@ tags:
   - name: Files
   - name: Search
   - name: Preview
+  - name: Tags
   - name: Trash
   - name: UploadSessions
   - name: Downloads
@@ -121,6 +123,22 @@ components:
       description: 공유 링크 식별자
       schema:
         type: string
+    tagId:
+      name: tagId
+      in: path
+      required: true
+      description: Space 태그 식별자. bigint
+      schema:
+        type: integer
+        format: int64
+    tokenId:
+      name: tokenId
+      in: path
+      required: true
+      description: MCP token 식별자. bigint
+      schema:
+        type: integer
+        format: int64
     uploadSessionToken:
       name: token
       in: path
@@ -373,6 +391,45 @@ components:
         - tokenType
         - expiresAt
         - createdAt
+    McpTokenListItemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - REVOKED
+            - UNKNOWN
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        lastUsedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - name
+        - status
+        - createdAt
+        - expiresAt
+    ListMcpTokensResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpTokenListItemResponse'
+      required:
+        - items
     AdminUser:
       type: object
       properties:
@@ -781,6 +838,24 @@ components:
         updatedAt:
           type: string
           format: date-time
+        tags:
+          type: array
+          description: 파일 항목에만 포함되는 태그 요약 목록. 폴더 항목에는 생략된다.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              name:
+                type: string
+              color:
+                type: string
+                pattern: '^#[0-9A-Fa-f]{6}$'
+            required:
+              - id
+              - name
+              - color
       required:
         - id
         - type
@@ -846,6 +921,99 @@ components:
         - q
         - items
         - page
+    TagResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - spaceId
+        - name
+        - color
+        - createdAt
+        - updatedAt
+    ListTagsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagResponse'
+      required:
+        - items
+    TagSummaryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+      required:
+        - id
+        - name
+        - color
+    CreateTagRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 30
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+      required:
+        - name
+        - color
+    UpdateTagRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreateTagRequest'
+    FileTagsRequest:
+      type: object
+      properties:
+        fileId:
+          type: integer
+          format: int64
+        tagIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+      required:
+        - fileId
+        - tagIds
+    FileTagsResponse:
+      type: object
+      properties:
+        fileId:
+          type: integer
+          format: int64
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagSummaryResponse'
+      required:
+        - fileId
+        - tags
     FileResource:
       type: object
       properties:
@@ -907,6 +1075,103 @@ components:
         - fileStatus
         - previewStatus
         - scanStatus
+        - createdAt
+        - updatedAt
+    FileDetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        spaceId:
+          type: integer
+          format: int64
+          description: ?몃? ?묐떟???몄텧?섎뒗 Space ?앸퀎?? bigint
+          example: 123
+        folderId:
+          type: string
+        displayName:
+          type: string
+        sizeBytes:
+          type: integer
+        mimeType:
+          type: string
+          nullable: true
+        checksumSha256:
+          type: string
+          nullable: true
+        fileStatus:
+          type: string
+          enum:
+            - ACTIVE
+            - DELETED
+            - CORRUPTED
+            - QUARANTINED
+            - UNKNOWN
+        previewStatus:
+          type: string
+          enum:
+            - PENDING
+            - PROCESSING
+            - DONE
+            - FAILED
+            - UNSUPPORTED
+            - UNKNOWN
+        scanStatus:
+          type: string
+          enum:
+            - PENDING
+            - PASSED
+            - FAILED
+            - QUARANTINED
+            - UNKNOWN
+        thumbnailStatus:
+          type: string
+          enum:
+            - PENDING
+            - PROCESSING
+            - DONE
+            - FAILED
+            - UNSUPPORTED
+            - UNKNOWN
+        metadataStatus:
+          type: string
+          enum:
+            - PENDING
+            - PROCESSING
+            - DONE
+            - FAILED
+            - UNSUPPORTED
+            - UNKNOWN
+        accessStatus:
+          type: string
+          enum:
+            - DOWNLOADABLE
+            - BLOCKED
+            - UNKNOWN
+        metadataJson:
+          type: object
+          nullable: true
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - spaceId
+        - folderId
+        - displayName
+        - sizeBytes
+        - mimeType
+        - checksumSha256
+        - fileStatus
+        - previewStatus
+        - scanStatus
+        - thumbnailStatus
+        - metadataStatus
+        - accessStatus
         - createdAt
         - updatedAt
     TrashFileItem:
@@ -3191,7 +3456,361 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResponse'
+  /api/v1/spaces/{spaceSlug}/tags:
+    get:
+      tags:
+        - Tags
+      summary: Space 태그 목록 조회
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      responses:
+        '200':
+          description: 태그 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTagsResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Space 조회 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Space 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - Tags
+      summary: Space 태그 생성
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '201':
+          description: 태그 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 태그 관리 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Space 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 태그 이름 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/tags/{tagId}:
+    patch:
+      tags:
+        - Tags
+      summary: Space 태그 수정
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/tagId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTagRequest'
+      responses:
+        '200':
+          description: 태그 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 태그 관리 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 태그 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 태그 이름 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Tags
+      summary: Space 태그 삭제
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/tagId'
+      responses:
+        '204':
+          description: 태그 삭제 성공
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 태그 관리 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 태그 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/files/tags:
+    post:
+      tags:
+        - Tags
+      summary: 파일에 태그 추가
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileTagsRequest'
+      responses:
+        '200':
+          description: 파일 태그 추가 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileTagsResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 파일 수정 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 파일/태그 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 파일과 태그의 Space 불일치 또는 상태 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Tags
+      summary: 파일 태그 전체 교체
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileTagsRequest'
+      responses:
+        '200':
+          description: 파일 태그 교체 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileTagsResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 파일 수정 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 파일/태그 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 파일과 태그의 Space 불일치 또는 상태 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Tags
+      summary: 파일에서 태그 제거
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileTagsRequest'
+      responses:
+        '200':
+          description: 파일 태그 제거 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileTagsResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 파일 수정 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 파일/태그 없음 또는 접근 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 파일과 태그의 Space 불일치 또는 상태 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/spaces/{spaceSlug}/files/{fileId}:
+    get:
+      tags:
+        - Files
+      summary: 파일 상세 / 메타데이터 조회
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '200':
+          description: 파일 상세 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileDetailResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Space 멤버가 아니거나 파일 접근 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 파일 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     patch:
       tags:
         - Files
@@ -3539,13 +4158,60 @@ paths:
         - $ref: '#/components/parameters/fileId'
       responses:
         '200':
-          description: 미리보기 응답
+          description: 미리보기 조회 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PreviewResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
-          description: 접근 불가 또는 파일 없음
+          description: 파일 없음 또는 미리보기 불가
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/spaces/{spaceSlug}/files/{fileId}/thumbnail:
+    get:
+      tags:
+        - Files
+      summary: 파일 썸네일 조회
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/spaceSlug'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '200':
+          description: 파일 썸네일 응답 성공
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Space 멤버가 아니거나 파일 접근 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 파일 없음 또는 썸네일 없음
           content:
             application/json:
               schema:
@@ -3560,12 +4226,11 @@ paths:
         - $ref: '#/components/parameters/spaceSlug'
         - name: active
           in: query
-          required: false
           schema:
             type: boolean
+          required: false
         - name: sort
           in: query
-          required: false
           schema:
             type: string
             enum:
@@ -3574,25 +4239,24 @@ paths:
               - expiresAt
               - expires_at
               - title
-            default: createdAt
+          required: false
         - name: order
           in: query
-          required: false
           schema:
             type: string
             enum:
               - asc
               - desc
-            default: desc
+          required: false
       responses:
         '200':
-          description: 조회 성공
+          description: 공유 링크 목록 조회 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListShareLinksResponse'
         '400':
-          description: query validation 실패
+          description: 요청 검증 실패
           content:
             application/json:
               schema:
@@ -3605,6 +4269,12 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '403':
           description: Space 공유 링크 조회 권한 없음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Space 없음 또는 접근 불가
           content:
             application/json:
               schema:
@@ -3843,6 +4513,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShareLink'
   /api/v1/mcp-tokens:
+    get:
+      tags:
+        - MCP Tokens
+      summary: MCP token 목록 조회
+      x-implementation-status: implemented
+      responses:
+        '200':
+          description: 토큰 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMcpTokensResponse'
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       tags:
         - MCP Tokens
@@ -3890,6 +4590,41 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: 토큰 발급 충돌
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/mcp-tokens/{tokenId}:
+    delete:
+      tags:
+        - MCP Tokens
+      summary: MCP token 폐기
+      x-implementation-status: implemented
+      parameters:
+        - $ref: '#/components/parameters/tokenId'
+      responses:
+        '204':
+          description: 토큰 폐기 성공
+        '400':
+          description: 요청 검증 실패
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 인증 필요
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 토큰 없음 또는 소유자 불일치
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 오류
           content:
             application/json:
               schema:
