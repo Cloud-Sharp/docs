@@ -605,10 +605,13 @@ data: {"eventId":"...","eventType":"FileUploaded","eventVersion":1,"occurredAt":
 | `SpaceInviteAccepted` | `SpaceInviteAcceptedPayload` | Space active members |
 | `FileUploaded`, `FileRenamed`, `FileMoved`, `FileDeleted` | `FileEventPayload` | Space active members |
 | `UploadFinalizeFailed` | `UploadFinalizeFailedPayload` | 업로드 요청자 user |
+| `TagCreated`, `TagUpdated`, `TagDeleted` | `TagEventPayload` | Space active members |
+| `FileTagsAdded`, `FileTagsReplaced`, `FileTagsRemoved` | `FileTagsChangedPayload` | Space active members |
 | `FolderCreated`, `FolderRenamed`, `FolderMoved`, `FolderDeleted` | `FolderEventPayload` | Space active members |
 | `ShareLinkCreated`, `ShareLinkUpdated`, `ShareLinkRevoked` | `ShareLinkEventPayload` | Space active members |
 
 이벤트별 payload 필드의 상세 계약은 [SSE 실시간 이벤트 fan-out 전략](strategies/sse-realtime-fanout.md)을 기준으로 한다.
+`FileFinalized`는 worker 후처리용 outbox 이벤트이며 SSE로 발행하지 않는다.
 
 **기존 업로드 완료 이벤트 초안**
 

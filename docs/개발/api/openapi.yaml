@@ -2167,6 +2167,12 @@ components:
             - FileRenamed
             - FileMoved
             - FileDeleted
+            - TagCreated
+            - TagUpdated
+            - TagDeleted
+            - FileTagsAdded
+            - FileTagsReplaced
+            - FileTagsRemoved
             - FolderCreated
             - FolderRenamed
             - FolderMoved
@@ -2196,6 +2202,7 @@ components:
             - SpaceMember
             - SpaceInvite
             - FileItem
+            - Tag
             - Folder
             - ShareLink
             - UploadSession
@@ -2212,6 +2219,8 @@ components:
             - $ref: '#/components/schemas/RealtimeSpaceInviteAcceptedPayload'
             - $ref: '#/components/schemas/RealtimeFileEventPayload'
             - $ref: '#/components/schemas/RealtimeUploadFinalizeFailedPayload'
+            - $ref: '#/components/schemas/RealtimeTagEventPayload'
+            - $ref: '#/components/schemas/RealtimeFileTagsChangedPayload'
             - $ref: '#/components/schemas/RealtimeFolderEventPayload'
             - $ref: '#/components/schemas/RealtimeShareLinkEventPayload'
       required:
@@ -2472,6 +2481,76 @@ components:
         - errorMessage
         - releasedReservedStorage
         - failedAt
+    RealtimeTagEventPayload:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        normalizedName:
+          type: string
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+        createdByUserId:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - tagId
+        - spaceId
+        - name
+        - normalizedName
+        - color
+        - createdByUserId
+        - createdAt
+        - updatedAt
+    RealtimeFileTagsChangedPayload:
+      type: object
+      properties:
+        fileItemId:
+          type: integer
+          format: int64
+        spaceId:
+          type: integer
+          format: int64
+        requestedTagIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        currentTagIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        changedByUserId:
+          type: integer
+          format: int64
+        changedAt:
+          type: string
+          format: date-time
+      required:
+        - fileItemId
+        - spaceId
+        - requestedTagIds
+        - currentTagIds
+        - changedByUserId
+        - changedAt
     RealtimeFolderEventPayload:
       type: object
       properties:
@@ -2617,7 +2696,7 @@ paths:
         - Events
       summary: 인증 사용자 실시간 이벤트 스트림 구독
       description: |
-        Server-Sent Events(SSE)로 Space, member, file, folder, upload, share link 변경 이벤트를 전달한다.
+        Server-Sent Events(SSE)로 Space, member, file, tag, folder, upload, share link 변경 이벤트를 전달한다.
         응답은 장시간 열린 상태로 유지되며, 이벤트가 없으면 30초마다 `:keepalive` comment frame을 전송한다.
         SSE `event` 이름은 `data.eventType`과 동일하다.
       x-implementation-status: implemented
